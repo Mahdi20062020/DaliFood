@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31410.414
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.AdminPanel", "DaliFood.AdminPanel\DaliFood.AdminPanel.csproj", "{92E1A305-ACD7-4EAE-9FFE-CC458BF931C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaliFood.Models", "DaliFood.Models\DaliFood.Models.csproj", "{495A1302-8BFA-48BF-9B1D-BF08D648F9C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.Models", "DaliFood.Models\DaliFood.Models.csproj", "{495A1302-8BFA-48BF-9B1D-BF08D648F9C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaliFood.Utilites", "DaliFood.Utilites\DaliFood.Utilites.csproj", "{DB18646E-742C-4091-9C00-07C4601660DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.Utilites", "DaliFood.Utilites\DaliFood.Utilites.csproj", "{DB18646E-742C-4091-9C00-07C4601660DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

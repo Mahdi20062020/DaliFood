@@ -1,0 +1,26 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.ProductCategorie.IndexModel
+@{
+}
+<div class="container">
+<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن دسته بندی جدید</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">نام</th>
+                <th scope="col">توضیحات</th>
+                <th scope="col">#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ProductCategorie)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td><a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

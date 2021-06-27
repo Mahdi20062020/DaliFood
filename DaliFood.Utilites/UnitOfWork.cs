@@ -29,7 +29,7 @@ namespace DaliFood.Utilites
         }
 
         private Repository<ProductCategorie> _ProductCategorieRepository;
-        public Repository<ProductCategorie> ProductCategorietRepository
+        public Repository<ProductCategorie> ProductCategorieRepository
         {
             get
             {
