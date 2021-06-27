@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DaliFood.Models\DaliFood.Models.csproj" />
+    <ProjectReference Include="..\DaliFood.Utilites\DaliFood.Utilites.csproj" />
   </ItemGroup>
 
 </Project>

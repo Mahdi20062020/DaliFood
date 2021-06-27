@@ -1,5 +1,5 @@
-﻿using DaliFood.AdminPanel.Data;
-using DaliFood.Models;
+﻿using DaliFood.Models;
+using DaliFood.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

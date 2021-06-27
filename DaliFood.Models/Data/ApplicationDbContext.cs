@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DaliFood.AdminPanel.Data
+namespace DaliFood.Models.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
