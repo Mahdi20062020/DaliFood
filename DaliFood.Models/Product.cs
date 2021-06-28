@@ -29,5 +29,13 @@ namespace DaliFood.Models
         [Display(Name = "تاریخ ایجاد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }
+
+        public virtual ProductCategorie ProductCategorie { get; set; }
+        public virtual Restaurant Restaurant { get; set; }
+
+        public Product()
+        {
+
+        }
     }
 }

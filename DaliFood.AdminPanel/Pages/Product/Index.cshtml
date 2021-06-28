@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th scope="col">نام</th>
+            
                 <th scope="col">قیمت</th>
                 <th scope="col">#</th>
             </tr>
@@ -17,6 +18,7 @@
             {
                 <tr>
                     <td>@item.Name</td>
+                    
                     <td>@item.Price</td>
                     <td>
                     <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
