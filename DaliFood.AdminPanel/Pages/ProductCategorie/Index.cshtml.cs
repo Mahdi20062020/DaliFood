@@ -23,5 +23,15 @@ namespace DaliFood.AdminPanel.Pages.ProductCategorie
         {
             ProductCategorie = unitofwork.ProductCategorieRepository.GetAll(orderby:p=>p.OrderByDescending(p=>p.CreateDate));
         }
+        public ActionResult OnGetDelete(int Id)
+        {
+            var productcategorie = unitofwork.ProductCategorieRepository.GetById(Id);
+            if (productcategorie == null)
+                return NotFound();
+            unitofwork.ProductCategorieRepository.Delete(productcategorie);
+            unitofwork.ProductCategorieRepository.Save();
+            return RedirectToPage("Index");
+
+        }
     }
 }

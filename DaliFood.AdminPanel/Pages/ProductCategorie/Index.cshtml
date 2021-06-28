@@ -18,7 +18,10 @@
                 <tr>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
-                    <td><a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a></td>
+                    <td>
+                    <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                    <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                </td>
                 </tr>
             }
         </tbody>

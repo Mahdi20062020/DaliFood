@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,6 +40,12 @@ namespace DaliFood.AdminPanel.Pages.ProductCategorie
             ProductCategorie.CreateDate= DateTime.Now;
             if (!ModelState.IsValid)
                 return Page();
+            if (unitofwork.ProductCategorieRepository.GetAll().Any(p=>p.Name==ProductCategorie.Name))
+            {
+                ModelState.AddModelError("ProductCategorie.Name", "دسته بندی با این نام قبلا ثبت شده است");
+                return Page();
+            }
+
             if (ProductCategorie.Id==0)
             {
                 unitofwork.ProductCategorieRepository.Create(ProductCategorie);
