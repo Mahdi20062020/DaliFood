@@ -1,4 +1,94 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.Product.UpsertModel
 @{
+    var Categorie = (SelectList)ViewData["CategorieId"];
+    var Restaurant = (SelectList)ViewData["RestaurantId"];
+}
+<br />
+<h2 class="text-info">
+    @if (Model.Product.Id == 0)
+    {
+        <span>افزودن غذا جدید</span>
+    }
+    else
+    {
+        <span>ویرایش غذا</span>
+    }
+
+
+</h2>
+<hr />
+<form method="post">
+    <div class="border p-3">
+        @if (Model.Product.Id != 0)
+        {
+            <input type="hidden" asp-for="Product.Id" />
+            <input type="hidden" asp-for="Product.CreateDate" />
+
+        }
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                دسته بندی:
+            </div>
+            <div class="col-5">
+        <select asp-for="Product.CategorieId" class="m-t-10 form-control Koodak " asp-items="Categorie"></select>
+                <span asp-validation-for="Product.Description"></span>
+            </div>
+        </div>
+          <div class="form-group row">
+            <div class="col-2 text-right">
+                رستوران :
+            </div>
+            <div class="col-5">
+        <select asp-for="Product.RestaurantId" class="m-t-10 form-control Koodak " asp-items="Restaurant"></select>
+                <span asp-validation-for="Product.Name"></span>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                نام :
+            </div>
+            <div class="col-5">
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name"></span>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                توضیحات:
+            </div>
+            <div class="col-5">
+                <input asp-for="Product.Description" class="form-control" />
+                <span asp-validation-for="Product.Description"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                قیمت:
+            </div>
+            <div class="col-5">
+                <input type="number" asp-for="Product.Price" class="form-control" />
+                <span asp-validation-for="Product.Price"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" class="btn btn-info form-control" value="ثبت" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-page="Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+<partial name="_ValidationScriptsPartial" />
 }
