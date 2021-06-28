@@ -63,15 +63,15 @@ namespace DaliFood.Utilites
             try
             {
                 if (context.Entry(model).State == EntityState.Detached)
-                {
+                {                
                     _dbset.Attach(model);
                 }
                 context.Entry(model).State = EntityState.Modified;
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return false;
+                throw e;
             }
         }
         public virtual bool Delete(TEntity model)

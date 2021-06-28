@@ -1,16 +1,16 @@
 ﻿@page
-@model DaliFood.AdminPanel.Pages.ProductCategorie.UpsertModel
+@model DaliFood.AdminPanel.Pages.Restaurant.UpsertModel
 @{
 }
 <br />
 <h2 class="text-info">
-    @if (Model.ProductCategorie.Id==0)
+    @if (Model.Restaurant.Id==0)
     {
-        <span>افزودن دسته بندی جدید</span>
+        <span>افزودن رستوران جدید</span>
     }
     else
     {
-        <span>ویرایش دسته بندی</span>
+        <span>ویرایش رستوران</span>
     }
    
 
@@ -19,30 +19,21 @@
 <form method="post">
     <div class="border p-3">
         <div class="form-group row">
-            @if (Model.ProductCategorie.Id!=0)
+            @if (Model.Restaurant.Id!=0)
             {
-                <input type="hidden" asp-for="ProductCategorie.Id" />
-                                <input type="hidden" asp-for="Restaurant.CreateDate" />
-
+                <input type="hidden" asp-for="Restaurant.Id" />
+                <input type="hidden" asp-for="Restaurant.CreateDate" />
             }
             <div class="col-2 text-right">
                 نام :
             </div>
             <div class="col-5">
-                <input asp-for="ProductCategorie.Name" class="form-control" />
-                <span asp-validation-for="ProductCategorie.Name"></span>
+                <input asp-for="Restaurant.Name" class="form-control" />
+                <span asp-validation-for="Restaurant.Name"></span>
             </div>
 
         </div>
-        <div class="form-group row">
-            <div class="col-2 text-right">
-                توضیحات:
-            </div>
-            <div class="col-5">
-                <input asp-for="ProductCategorie.Description" class="form-control" />
-                <span asp-validation-for="ProductCategorie.Description"></span>
-            </div>
-        </div>
+       
         <div class="form-group row">
             <div class="col-5 offset-2">
                 <div class="row">

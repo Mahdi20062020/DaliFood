@@ -1,23 +1,21 @@
 ﻿@page
-@model DaliFood.AdminPanel.Pages.ProductCategorie.IndexModel
+@model DaliFood.AdminPanel.Pages.Restaurant.IndexModel
 @{
 }
 <div class="container">
-<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن دسته بندی جدید</a>
+<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن رستوران جدید</a>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">نام</th>
-                <th scope="col">توضیحات</th>
                 <th scope="col">#</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.ProductCategorie)
+            @foreach (var item in Model.Restaurant)
             {
                 <tr>
                     <td>@item.Name</td>
-                    <td>@item.Description</td>
                     <td>
                     <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
                     <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>

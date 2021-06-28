@@ -6,7 +6,7 @@ using DaliFood.Utilites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DaliFood.AdminPanel.Pages.ProductCategorie
+namespace DaliFood.AdminPanel.Pages.Restaurant
 {
     public class UpsertModel : PageModel
     {
@@ -16,19 +16,19 @@ namespace DaliFood.AdminPanel.Pages.ProductCategorie
             this.unitofwork = unitofwork;
         }
         [BindProperty]
-        public Models.ProductCategorie ProductCategorie { get; set; }
+        public Models.Restaurant Restaurant { get; set; }
 
         public ActionResult OnGet(int? Id)
         {
-            ProductCategorie = new Models.ProductCategorie();
+            Restaurant = new Models.Restaurant();
             if (Id == null)
             {
                 return Page();
             }
 
-            ProductCategorie = unitofwork.ProductCategorieRepository.GetById(Id);
+            Restaurant = unitofwork.RestaurantRepository.GetById(Id);
 
-            if (ProductCategorie == null)
+            if (Restaurant == null)
             {
                 return NotFound();
             }
@@ -37,20 +37,21 @@ namespace DaliFood.AdminPanel.Pages.ProductCategorie
         }
         public ActionResult OnPost()
         {
-            if (ProductCategorie.Id==0) 
-                    ProductCategorie.CreateDate= DateTime.Now;
+            if (Restaurant.Id==0)
+                Restaurant.CreateDate = DateTime.Now;
             if (!ModelState.IsValid)
                 return Page();
-        
-            if (ProductCategorie.Id==0)
+            
+
+            if (Restaurant.Id==0)
             {
-                unitofwork.ProductCategorieRepository.Create(ProductCategorie);
+                unitofwork.RestaurantRepository.Create(Restaurant);
             }
             else
             {
-                unitofwork.ProductCategorieRepository.Modifie(ProductCategorie);
+                unitofwork.RestaurantRepository.Modifie(Restaurant);
             }
-            unitofwork.ProductCategorieRepository.Save();
+            unitofwork.RestaurantRepository.Save();
             return RedirectToPage("Index");
         }
     }
