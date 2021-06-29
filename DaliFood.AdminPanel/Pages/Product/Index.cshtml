@@ -27,7 +27,7 @@
                 <td>@item.Price</td>
                 @if (item.Discount != null)
                 {
-                    <td>@Utilites.PriceWithDicount(item.Price, item.Discount.DiscountRate)</td>
+                    <td>@item.Price.UseDiscount(item.Discount.DiscountRate)</td>
                 }
                 else
                 {

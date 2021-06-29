@@ -18,7 +18,7 @@ namespace DaliFood.AdminPanel.Pages
 
         public void OnGet()
         {
-            Utilites.Utilites.DatabaseConfigration(unitofwork);
+           unitofwork.Configure();
         }
     }
 }

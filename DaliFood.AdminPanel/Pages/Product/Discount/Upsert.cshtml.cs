@@ -25,7 +25,7 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
         public string ProductName { get; set; }
         [BindProperty]
         public bool IsEditing { get; set; }
-        
+
         public ActionResult OnGet(int Id)
         {
             if (unitofwork.ProductRepository.GetById(Id) == null)
@@ -34,9 +34,15 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
             var Dicounts = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id);
             IsEditing = Dicounts.Any();
             ProductId = Id;
+
             ProductName = unitofwork.ProductRepository.GetById(Id).Name;
             if (!IsEditing)
-                return Page();  
+            {
+                Discount.StartDate = DateTime.Now;
+                Discount.ExpirationDate = DateTime.Now;
+                return Page(); 
+            }
+
             Discount = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id).FirstOrDefault();
             return Page();
         }
