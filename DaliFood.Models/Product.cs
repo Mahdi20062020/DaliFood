@@ -11,7 +11,7 @@ namespace DaliFood.Models
     {
         [Key]
         public int Id { get; set; }
-        [Display(Name = "رستوران")]
+        [Display(Name = "فروشنده")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int CustomerId { get; set; }
         [Display(Name = "دسته بندی")]

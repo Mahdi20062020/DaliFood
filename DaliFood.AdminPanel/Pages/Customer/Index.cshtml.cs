@@ -21,6 +21,10 @@ namespace DaliFood.AdminPanel.Pages.Customer
         public void OnGet()
         {
             Customer = unitofwork.CustomerRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            foreach (var item in Customer)
+            {
+                item.CustomerType = unitofwork.CustomerTypeRepository.GetById(item.TypeId);
+            }
         }
         public ActionResult OnGetDelete(int Id)
         {
