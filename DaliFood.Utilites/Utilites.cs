@@ -10,7 +10,7 @@ namespace DaliFood.Utilites
     {
         public static int PriceWithDicount(int Price,int Discount)
         {
-            return (Price * Discount) / 100;
+            return Price-((Price * Discount) / 100);
         }
     }
 }

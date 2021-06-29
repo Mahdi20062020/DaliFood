@@ -19,33 +19,39 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
         }
         [BindProperty]
         public Models.Discount Discount { get; set; }
-
-        public ActionResult OnGet(int? Id)
+        [BindProperty]
+        public int ProductId { get; set; }
+        [BindProperty]
+        public string ProductName { get; set; }
+        [BindProperty]
+        public bool IsEditing { get; set; }
+        
+        public ActionResult OnGet(int Id)
         {
-            Discount = new Models.Discount();
-            if (Id == null)
-            {
-                ViewData["ProductId"] = new SelectList(unitofwork.ProductRepository.GetAll(), "Id", "Name");
-                return Page();
-            }
-
-            Discount = unitofwork.DiscountRepository.GetById(Id);
-
-            if (Discount == null)
-            {
+            if (unitofwork.ProductRepository.GetById(Id) == null)
                 return NotFound();
-            }
-            ViewData["ProductId"] = new SelectList(unitofwork.ProductRepository.GetAll(), "Id", "Name",Discount.ProductId);
-
+            Discount = new Models.Discount();
+            IsEditing = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id) != null;
+            ProductId = Id;
+            ProductName = unitofwork.ProductRepository.GetById(Id).Name;
+            if (!IsEditing)
+                return Page();  
+            Discount = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id).FirstOrDefault();
             return Page();
         }
         public ActionResult OnPost()
         {
-            if (Discount.Id == 0)
+            if (!IsEditing)
+            {
                 Discount.CreateDate = DateTime.Now;
+            }
+            else
+            {
+                Discount.ProductId = ProductId;
+            }
             if (!ModelState.IsValid)
                 return Page();
-            if (Discount.Id == 0)
+            if (!IsEditing)
             {
                 unitofwork.DiscountRepository.Create(Discount);
             }
@@ -54,7 +60,7 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
                 unitofwork.DiscountRepository.Modifie(Discount);
             }
             unitofwork.DiscountRepository.Save();
-            return RedirectToPage("Index");
+            return RedirectToPage("../Index");
         }
     }
 }

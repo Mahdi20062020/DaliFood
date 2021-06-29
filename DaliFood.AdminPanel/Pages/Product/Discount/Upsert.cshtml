@@ -1,12 +1,10 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.Product.Discount.UpsertModel
 @{
-    var Product = (SelectList)ViewData["ProductId"];
-
 }
 <br />
 <h2 class="text-info">
-    @if (Model.Discount.Id == 0)
+    @if (!Model.IsEditing)
     {
         <span>افزودن تخفیف جدید</span>
     }
@@ -20,22 +18,22 @@
 <hr />
 <form method="post">
     <div class="border p-3">
-        @if (Model.Discount.Id != 0)
+        @if (Model.IsEditing)
         {
             <input type="hidden" asp-for="Discount.Id" />
             <input type="hidden" asp-for="Discount.CreateDate" />
-
         }
+        <input type="hidden" asp-for="ProductId" />
+        <input type="hidden" asp-for="IsEditing" />
         <div class="form-group row">
             <div class="col-2 text-right">
                 غذا:
             </div>
             <div class="col-5">
-                <select asp-for="Discount.ProductId" class="m-t-10 form-control Koodak " asp-items="Product"></select>
-                <span asp-validation-for="Discount.ProductId"></span>
+                @Model.ProductName
             </div>
         </div>
-       
+
         <div class="form-group row">
             <div class="col-2 text-right">
                 میزان تخفیف(درصد) :
@@ -51,7 +49,7 @@
                 تاریخ شروع:
             </div>
             <div class="col-5">
-                <input  type="date" asp-for="Discount.StartDate" class="form-control" />
+                <input type="date" asp-for="Discount.StartDate" class="form-control" />
                 <span asp-validation-for="Discount.StartDate"></span>
             </div>
         </div>
@@ -60,7 +58,7 @@
                 تاریخ انقضا:
             </div>
             <div class="col-5">
-                <input  type="date" asp-for="Discount.ExpirationDate" class="form-control" />
+                <input type="date" asp-for="Discount.ExpirationDate" class="form-control" />
                 <span asp-validation-for="Discount.ExpirationDate"></span>
             </div>
         </div>
@@ -71,7 +69,7 @@
                         <input type="submit" class="btn btn-info form-control" value="ثبت" />
                     </div>
                     <div class="col-6">
-                        <a asp-page="Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
+                        <a asp-page="../Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
                     </div>
                 </div>
             </div>
