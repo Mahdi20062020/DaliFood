@@ -76,6 +76,31 @@ namespace DaliFood.Utilites
                 return _DiscountRepository;
             }
         }
+        private Repository<PhotoFor> _PhotoForRepository;
+        public Repository<PhotoFor> PhotoForRepository
+        {
+            get
+            {
+                if (_PhotoForRepository == null)
+                {
+                    _PhotoForRepository = new Repository<PhotoFor>(context);
+                }
+                return _PhotoForRepository;
+            }
+        }
+
+        private Repository<Photo> _PhotoRepository;
+        public Repository<Photo> PhotoRepository
+        {
+            get
+            {
+                if (_PhotoRepository == null)
+                {
+                    _PhotoRepository = new Repository<Photo>(context);
+                }
+                return _PhotoRepository;
+            }
+        }
         public void Dispose()
         {
             Dispose(true);

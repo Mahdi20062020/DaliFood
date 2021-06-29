@@ -16,10 +16,17 @@ namespace DaliFood.Models.Data
         {
             optionsBuilder.UseLazyLoadingProxies();
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Ignore<object>();
+            base.OnModelCreating(builder);
+        }
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductCategorie> ProductCategorie { get; set; }
         public DbSet<CustomerType> CustomerType { get; set; }
         public DbSet<Customer> Customer { get; set; }
+        public DbSet<PhotoFor> PhotoFor { get; set; }
+        public DbSet<Photo> Photo { get; set; }
     }
 }
 

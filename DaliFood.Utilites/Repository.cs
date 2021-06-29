@@ -69,9 +69,9 @@ namespace DaliFood.Utilites
                 context.Entry(model).State = EntityState.Modified;
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                return false;
             }
         }
         public virtual bool Delete(TEntity model)

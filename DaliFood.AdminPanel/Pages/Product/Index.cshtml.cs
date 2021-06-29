@@ -28,11 +28,16 @@ namespace DaliFood.AdminPanel.Pages.Product
         }
         public ActionResult OnGetDelete(int Id)
         {
+            var part = SD.GetPart(unitofwork, SD.PhotoForProducts.Name);
+
             var Product = unitofwork.ProductRepository.GetById(Id);
             if (Product == null)
                 return NotFound();
+            var photos = unitofwork.PhotoRepository.GetAll(where: p => p.ItemId == Product.Id && p.PartId == part.Id);
+
             unitofwork.ProductRepository.Delete(Product);
             unitofwork.ProductRepository.Save();
+            Files.DeletePhotos(unitofwork, photos, part);
             return RedirectToPage("Index");
 
         }

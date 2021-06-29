@@ -1,25 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DaliFood.Utilites;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace DaliFood.AdminPanel.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        readonly UnitOfWork unitofwork;
+        public IndexModel(UnitOfWork unitofwork)
         {
-            _logger = logger;
+            this.unitofwork = unitofwork;
         }
 
         public void OnGet()
         {
-
+            Utilites.Utilites.DatabaseConfigration(unitofwork);
         }
     }
 }

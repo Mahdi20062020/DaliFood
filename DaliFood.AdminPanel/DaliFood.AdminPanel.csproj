@@ -21,4 +21,10 @@
     <ProjectReference Include="..\DaliFood.Utilites\DaliFood.Utilites.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Customers\" />
+    <Folder Include="wwwroot\Images\ProductCategories\" />
+    <Folder Include="wwwroot\Images\Products\" />
+  </ItemGroup>
+
 </Project>
