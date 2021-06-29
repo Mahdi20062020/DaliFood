@@ -31,7 +31,8 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
             if (unitofwork.ProductRepository.GetById(Id) == null)
                 return NotFound();
             Discount = new Models.Discount();
-            IsEditing = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id) != null;
+            var Dicounts = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id);
+            IsEditing = Dicounts.Any();
             ProductId = Id;
             ProductName = unitofwork.ProductRepository.GetById(Id).Name;
             if (!IsEditing)
@@ -45,10 +46,7 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
             {
                 Discount.CreateDate = DateTime.Now;
             }
-            else
-            {
-                Discount.ProductId = ProductId;
-            }
+            Discount.ProductId = ProductId;
             if (!ModelState.IsValid)
                 return Page();
             if (!IsEditing)
