@@ -2,7 +2,7 @@
 @model DaliFood.AdminPanel.Pages.Product.UpsertModel
 @{
     var Categorie = (SelectList)ViewData["CategorieId"];
-    var Restaurant = (SelectList)ViewData["RestaurantId"];
+    var Customer = (SelectList)ViewData["CustomerId"];
 }
 <br />
 <h2 class="text-info">
@@ -40,8 +40,8 @@
                 رستوران :
             </div>
             <div class="col-5">
-        <select asp-for="Product.RestaurantId" class="m-t-10 form-control Koodak " asp-items="Restaurant"></select>
-                <span asp-validation-for="Product.RestaurantId"></span>
+        <select asp-for="Product.CustomerId" class="m-t-10 form-control Koodak " asp-items="Customer"></select>
+                <span asp-validation-for="Product.CustomerId"></span>
             </div>
 
         </div>

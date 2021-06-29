@@ -13,7 +13,7 @@ namespace DaliFood.Models
         public int Id { get; set; }
         [Display(Name = "رستوران")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public int RestaurantId { get; set; }
+        public int CustomerId { get; set; }
         [Display(Name = "دسته بندی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")] 
         public int CategorieId { get; set; }
@@ -25,14 +25,14 @@ namespace DaliFood.Models
         public string Description { get; set; }
         [Display(Name = "قیمت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Price { get; set; }
+        public int Price { get; set; }
         [Display(Name = "تاریخ ایجاد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }
 
         public virtual ProductCategorie ProductCategorie { get; set; }
-        public virtual Restaurant Restaurant { get; set; }
-
+        public virtual Customer Customer { get; set; }
+        public virtual Discount Discount { get; set; }
         public Product()
         {
 

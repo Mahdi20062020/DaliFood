@@ -40,20 +40,42 @@ namespace DaliFood.Utilites
                 return _ProductCategorieRepository;
             }
         }
-
-        private Repository<Restaurant> _RestaurantRepository;
-        public Repository<Restaurant> RestaurantRepository
+        private Repository<CustomerType> _CustomerTypeRepository;
+        public Repository<CustomerType> CustomerTypeRepository
         {
             get
             {
-                if (_RestaurantRepository == null)
+                if (_CustomerTypeRepository == null)
                 {
-                    _RestaurantRepository = new Repository<Restaurant>(context);
+                    _CustomerTypeRepository = new Repository<CustomerType>(context);
                 }
-                return _RestaurantRepository;
+                return _CustomerTypeRepository;
             }
         }
-
+        private Repository<Customer> _CustomerRepository;
+        public Repository<Customer> CustomerRepository
+        {
+            get
+            {
+                if (_CustomerRepository == null)
+                {
+                    _CustomerRepository = new Repository<Customer>(context);
+                }
+                return _CustomerRepository;
+            }
+        }
+        private Repository<Discount> _DiscountRepository;
+        public Repository<Discount> DiscountRepository
+        {
+            get
+            {
+                if (_DiscountRepository == null)
+                {
+                    _DiscountRepository = new Repository<Discount>(context);
+                }
+                return _DiscountRepository;
+            }
+        }
         public void Dispose()
         {
             Dispose(true);

@@ -1,9 +1,10 @@
 ﻿@page
-@model DaliFood.AdminPanel.Pages.Restaurant.IndexModel
+@model DaliFood.AdminPanel.Pages.Customer.IndexModel
 @{
+    string Title = "فروشنده";
 }
 <div class="container">
-<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن رستوران جدید</a>
+<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن @Title جدید</a>
     <table class="table">
         <thead>
             <tr>
@@ -12,13 +13,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Restaurant)
+            @foreach (var item in Model.Customer)
             {
                 <tr>
                     <td>@item.Name</td>
                     <td>
                     <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
-                    <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                    <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این @Title مطمئن هستید؟');" class="btn btn-danger">حذف</a>
                 </td>
                 </tr>
             }

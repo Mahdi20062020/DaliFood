@@ -6,7 +6,7 @@ using DaliFood.Utilites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DaliFood.AdminPanel.Pages.Product
+namespace DaliFood.AdminPanel.Pages.Product.Discount
 {
     public class IndexModel : PageModel
     {
@@ -16,23 +16,19 @@ namespace DaliFood.AdminPanel.Pages.Product
             this.unitofwork = unitofwork;
         }
         [BindProperty]
-        public IEnumerable<Models.Product> Product { get; set; }
+        public IEnumerable<Models.Discount> Discount { get; set; }
 
         public void OnGet()
         {
-            Product = unitofwork.ProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
-            foreach (var item in Product)
-            {
-                item.ProductCategorie = unitofwork.ProductCategorieRepository.GetById(item.CategorieId);
-            }
+            Discount = unitofwork.DiscountRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
         }
         public ActionResult OnGetDelete(int Id)
         {
-            var Product = unitofwork.ProductRepository.GetById(Id);
-            if (Product == null)
+            var Discount = unitofwork.DiscountRepository.GetById(Id);
+            if (Discount == null)
                 return NotFound();
-            unitofwork.ProductRepository.Delete(Product);
-            unitofwork.ProductRepository.Save();
+            unitofwork.DiscountRepository.Delete(Discount);
+            unitofwork.DiscountRepository.Save();
             return RedirectToPage("Index");
 
         }

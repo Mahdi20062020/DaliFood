@@ -19,6 +19,82 @@ namespace DaliFood.Models.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DaliFood.Models.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CustomerTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerTypeId");
+
+                    b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.CustomerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CustomerType");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DiscountRate")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("Discount");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +108,9 @@ namespace DaliFood.Models.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -40,21 +119,17 @@ namespace DaliFood.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Price")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ProductCategorieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductCategorieId");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("ProductCategorieId");
 
                     b.ToTable("Product");
                 });
@@ -80,25 +155,6 @@ namespace DaliFood.Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductCategorie");
-                });
-
-            modelBuilder.Entity("DaliFood.Models.Restaurant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -301,21 +357,41 @@ namespace DaliFood.Models.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.Customer", b =>
+                {
+                    b.HasOne("DaliFood.Models.CustomerType", "CustomerType")
+                        .WithMany("Customer")
+                        .HasForeignKey("CustomerTypeId");
+
+                    b.Navigation("CustomerType");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Discount", b =>
+                {
+                    b.HasOne("DaliFood.Models.Product", "Product")
+                        .WithOne("Discount")
+                        .HasForeignKey("DaliFood.Models.Discount", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Product", b =>
                 {
+                    b.HasOne("DaliFood.Models.Customer", "Customer")
+                        .WithMany("Product")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DaliFood.Models.ProductCategorie", "ProductCategorie")
                         .WithMany("Product")
                         .HasForeignKey("ProductCategorieId");
 
-                    b.HasOne("DaliFood.Models.Restaurant", "Restaurant")
-                        .WithMany("Product")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Customer");
 
                     b.Navigation("ProductCategorie");
-
-                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -369,12 +445,22 @@ namespace DaliFood.Models.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DaliFood.Models.ProductCategorie", b =>
+            modelBuilder.Entity("DaliFood.Models.Customer", b =>
                 {
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("DaliFood.Models.Restaurant", b =>
+            modelBuilder.Entity("DaliFood.Models.CustomerType", b =>
+                {
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Product", b =>
+                {
+                    b.Navigation("Discount");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.ProductCategorie", b =>
                 {
                     b.Navigation("Product");
                 });

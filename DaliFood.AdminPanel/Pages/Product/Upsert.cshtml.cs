@@ -26,7 +26,7 @@ namespace DaliFood.AdminPanel.Pages.Product
             if (Id == null)
             {
                 ViewData["CategorieId"] = new SelectList(unitofwork.ProductCategorieRepository.GetAll(),"Id", "Name");
-                ViewData["RestaurantId"] = new SelectList(unitofwork.RestaurantRepository.GetAll(),"Id", "Name");          
+                ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(),"Id", "Name");          
                 return Page();
             }
 
@@ -37,7 +37,7 @@ namespace DaliFood.AdminPanel.Pages.Product
                 return NotFound();
             }
             ViewData["CategorieId"] = new SelectList(unitofwork.ProductCategorieRepository.GetAll(), "Id", "Name", Product.CategorieId);
-            ViewData["RestaurantId"] = new SelectList(unitofwork.RestaurantRepository.GetAll(), "Id", "Name",Product.RestaurantId);
+            ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(), "Id", "Name",Product.CustomerId);
             return Page();
         }
         public ActionResult OnPost()

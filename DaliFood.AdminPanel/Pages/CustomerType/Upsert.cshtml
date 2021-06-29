@@ -1,0 +1,56 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.CustomerType.UpsertModel
+@{
+    string Title = "نوع";
+}
+<br />
+<h2 class="text-info">
+    @if (Model.CustomerType.Id == 0)
+    {
+    <span>افزودن @Title جدید</span>
+    }
+    else
+    {
+<span>ویرایش @Title</span>
+    }
+
+
+</h2>
+<hr />
+<form method="post">
+    <div class="border p-3">
+        <div class="form-group row">
+            @if (Model.CustomerType.Id != 0)
+            {
+                <input type="hidden" asp-for="CustomerType.Id" />
+                <input type="hidden" asp-for="CustomerType.CreateDate" />
+
+            }
+            <div class="col-2 text-right">
+                نام :
+            </div>
+            <div class="col-5">
+                <input asp-for="CustomerType.Name" class="form-control" />
+                <span asp-validation-for="CustomerType.Name"></span>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" class="btn btn-info form-control" value="ثبت" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-page="Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

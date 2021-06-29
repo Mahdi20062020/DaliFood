@@ -1,0 +1,85 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Product.Discount.UpsertModel
+@{
+    var Product = (SelectList)ViewData["ProductId"];
+
+}
+<br />
+<h2 class="text-info">
+    @if (Model.Discount.Id == 0)
+    {
+        <span>افزودن تخفیف جدید</span>
+    }
+    else
+    {
+        <span>ویرایش تخفیف</span>
+    }
+
+
+</h2>
+<hr />
+<form method="post">
+    <div class="border p-3">
+        @if (Model.Discount.Id != 0)
+        {
+            <input type="hidden" asp-for="Discount.Id" />
+            <input type="hidden" asp-for="Discount.CreateDate" />
+
+        }
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                غذا:
+            </div>
+            <div class="col-5">
+                <select asp-for="Discount.ProductId" class="m-t-10 form-control Koodak " asp-items="Product"></select>
+                <span asp-validation-for="Discount.ProductId"></span>
+            </div>
+        </div>
+       
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                میزان تخفیف(درصد) :
+            </div>
+            <div class="col-5">
+                <input asp-for="Discount.DiscountRate" class="form-control" />
+                <span asp-validation-for="Discount.DiscountRate"></span>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                تاریخ شروع:
+            </div>
+            <div class="col-5">
+                <input  type="date" asp-for="Discount.StartDate" class="form-control" />
+                <span asp-validation-for="Discount.StartDate"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-2 text-right">
+                تاریخ انقضا:
+            </div>
+            <div class="col-5">
+                <input  type="date" asp-for="Discount.ExpirationDate" class="form-control" />
+                <span asp-validation-for="Discount.ExpirationDate"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-5 offset-2">
+                <div class="row">
+                    <div class="col-6">
+                        <input type="submit" class="btn btn-info form-control" value="ثبت" />
+                    </div>
+                    <div class="col-6">
+                        <a asp-page="Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

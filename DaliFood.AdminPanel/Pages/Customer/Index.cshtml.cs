@@ -6,7 +6,7 @@ using DaliFood.Utilites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DaliFood.AdminPanel.Pages.Restaurant
+namespace DaliFood.AdminPanel.Pages.Customer
 {
     public class IndexModel : PageModel
     {
@@ -16,19 +16,19 @@ namespace DaliFood.AdminPanel.Pages.Restaurant
             this.unitofwork = unitofwork;
         }
         [BindProperty]
-        public IEnumerable<Models.Restaurant> Restaurant { get; set; }
+        public IEnumerable<Models.Customer> Customer { get; set; }
 
         public void OnGet()
         {
-            Restaurant = unitofwork.RestaurantRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            Customer = unitofwork.CustomerRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
         }
         public ActionResult OnGetDelete(int Id)
         {
-            var restaurant = unitofwork.RestaurantRepository.GetById(Id);
-            if (restaurant == null)
+            var Customer = unitofwork.CustomerRepository.GetById(Id);
+            if (Customer == null)
                 return NotFound();
-            unitofwork.RestaurantRepository.Delete(restaurant);
-            unitofwork.RestaurantRepository.Save();
+            unitofwork.CustomerRepository.Delete(Customer);
+            unitofwork.CustomerRepository.Save();
             return RedirectToPage("Index");
 
         }

@@ -8,8 +8,11 @@
         <thead>
             <tr>
                 <th scope="col">نام</th>
+                <th scope="col">رستوران</th>
+                <th scope="col">دسته بندی</th>
             
                 <th scope="col">قیمت</th>
+                <th scope="col">قیمت با اعمال تخفیف</th>
                 <th scope="col">#</th>
             </tr>
         </thead>
@@ -18,6 +21,8 @@
             {
                 <tr>
                     <td>@item.Name</td>
+                    <td>@item.Customer.Name</td>
+                    <td>@item.ProductCategorie.Name</td>
                     
                     <td>@item.Price</td>
                     <td>
