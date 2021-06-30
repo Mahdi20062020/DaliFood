@@ -1,5 +1,5 @@
 ﻿@page
-@model DaliFood.AdminPanel.Pages.Product.Discount.IndexModel
+@model DaliFood.AdminPanel.Pages.CustomersProduct.Discount.IndexModel
 @{
 }
 <div class="container">
@@ -9,7 +9,7 @@
             <tr>
                 <th scope="col">نام</th>
 
-                <th scope="col">قیمت</th>
+                <th scope="col">میزان تخفیف</th>
                 <th scope="col">#</th>
             </tr>
         </thead>
@@ -17,9 +17,9 @@
             @foreach (var item in Model.Discount)
             {
                 <tr>
-                    <td>@item.Product.Name</td>
+                    <td>@item.CustomersProduct.Product.Name</td>
 
-                    <td>@item.DiscountRate</td>
+                    <td>@(item.DiscountRate)%</td>
                     <td>
                         <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
                         <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>

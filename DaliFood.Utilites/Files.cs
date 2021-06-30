@@ -30,13 +30,13 @@ namespace DaliFood.Utilites
             }
            
         }
-        public static bool ImportPhotos(UnitOfWork unitofwork, IEnumerable<IFormFile> ImagesUpload, Product product, PhotoFor part)
+        public static bool ImportPhotos(UnitOfWork unitofwork, IEnumerable<IFormFile> ImagesUpload, CustomersProduct CustomersProduct, PhotoFor part)
         {
             try
             {
                 foreach (var ImageUpload in ImagesUpload)
                 {
-                    var photo = new Models.Photo() { PartId = part.Id, ItemId = product.Id, Extention = Path.GetExtension(ImageUpload.FileName) };
+                    var photo = new Models.Photo() { PartId = part.Id, ItemId = CustomersProduct.Id, Extention = Path.GetExtension(ImageUpload.FileName) };
                     unitofwork.PhotoRepository.Create(photo);
                     int photoId = 0;
                     if (!unitofwork.PhotoRepository.GetAll().Any())

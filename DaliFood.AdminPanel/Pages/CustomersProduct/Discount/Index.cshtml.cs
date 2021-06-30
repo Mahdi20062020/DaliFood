@@ -6,7 +6,7 @@ using DaliFood.Utilites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DaliFood.AdminPanel.Pages.Product.Discount
+namespace DaliFood.AdminPanel.Pages.CustomersProduct.Discount
 {
     public class IndexModel : PageModel
     {

@@ -25,6 +25,7 @@ namespace DaliFood.Models.Data
         public DbSet<ProductCategorie> ProductCategorie { get; set; }
         public DbSet<CustomerType> CustomerType { get; set; }
         public DbSet<Customer> Customer { get; set; }
+        public DbSet<CustomersProduct> CustomersProduct { get; set; }
         public DbSet<PhotoFor> PhotoFor { get; set; }
         public DbSet<Photo> Photo { get; set; }
     }

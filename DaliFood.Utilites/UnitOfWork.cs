@@ -15,6 +15,18 @@ namespace DaliFood.Utilites
         {
             this.context = context;
         }
+        private Repository<CustomersProduct> _CustomersProductRepository;
+        public Repository<CustomersProduct> CustomersProductRepository
+        {
+            get
+            {
+                if (_CustomersProductRepository == null)
+                {
+                    _CustomersProductRepository = new Repository<CustomersProduct>(context);
+                }
+                return _CustomersProductRepository;
+            }
+        }
         private Repository<Product> _ProductRepository;
         public Repository<Product> ProductRepository
         {
@@ -27,7 +39,6 @@ namespace DaliFood.Utilites
                 return _ProductRepository;
             }
         }
-
         private Repository<ProductCategorie> _ProductCategorieRepository;
         public Repository<ProductCategorie> ProductCategorieRepository
         {

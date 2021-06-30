@@ -4,14 +4,16 @@ using DaliFood.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DaliFood.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210630115840_Edit-Product")]
+    partial class EditProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,6 +84,9 @@ namespace DaliFood.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DiscountId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -91,6 +96,8 @@ namespace DaliFood.Models.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("DiscountId");
 
                     b.HasIndex("ProductId");
 
@@ -107,22 +114,21 @@ namespace DaliFood.Models.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomersProductId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DiscountRate")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomersProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Discount");
                 });
@@ -452,6 +458,10 @@ namespace DaliFood.Models.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DaliFood.Models.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("DiscountId");
+
                     b.HasOne("DaliFood.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -460,18 +470,20 @@ namespace DaliFood.Models.Migrations
 
                     b.Navigation("Customer");
 
+                    b.Navigation("Discount");
+
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Discount", b =>
                 {
-                    b.HasOne("DaliFood.Models.CustomersProduct", "CustomersProduct")
-                        .WithOne("Discount")
-                        .HasForeignKey("DaliFood.Models.Discount", "CustomersProductId")
+                    b.HasOne("DaliFood.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CustomersProduct");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Photo", b =>
@@ -555,11 +567,6 @@ namespace DaliFood.Models.Migrations
             modelBuilder.Entity("DaliFood.Models.CustomerType", b =>
                 {
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("DaliFood.Models.CustomersProduct", b =>
-                {
-                    b.Navigation("Discount");
                 });
 
             modelBuilder.Entity("DaliFood.Models.PhotoFor", b =>

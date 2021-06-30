@@ -1,5 +1,5 @@
 ﻿@page
-@model DaliFood.AdminPanel.Pages.Product.Discount.UpsertModel
+@model DaliFood.AdminPanel.Pages.CustomersProduct.Discount.UpsertModel
 @{
 }
 <br />
@@ -23,14 +23,14 @@
             <input type="hidden" asp-for="Discount.Id" />
             <input type="hidden" asp-for="Discount.CreateDate" />
         }
-        <input type="hidden" asp-for="ProductId" />
+        <input type="hidden" asp-for="CustomersProductId" />
         <input type="hidden" asp-for="IsEditing" />
         <div class="form-group row">
             <div class="col-2 text-right">
                 غذا:
             </div>
             <div class="col-5">
-                @Model.ProductName
+                @Model.CustomersProductName
             </div>
         </div>
 

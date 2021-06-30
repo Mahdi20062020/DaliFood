@@ -10,7 +10,9 @@ namespace DaliFood.Utilites
     {
         public static int UseDiscount(this int Price,int Discount)
         {
-            return Price - ((Price * Discount) / 100);
+            double _price = (double)Price;
+            double _discount = (double)Discount;
+            return (int)(_price - ((_price * _discount) / 100));
         }
         public static void Configure(this UnitOfWork unitOfWork)
         {
@@ -18,11 +20,11 @@ namespace DaliFood.Utilites
             if (!PhotoFors.Any(p => p.Name == SD.PhotoForProductCategories.Name))
                 unitOfWork.PhotoForRepository.Create(SD.PhotoForProductCategories);
 
-            if (!PhotoFors.Any(p => p.Name == SD.PhotoForProducts.Name))
-                unitOfWork.PhotoForRepository.Create(SD.PhotoForProducts);
+            if (!PhotoFors.Any(p => p.Name == SD.PhotoForCustomersProducts.Name))
+                unitOfWork.PhotoForRepository.Create(SD.PhotoForCustomersProducts);
 
-            if (!PhotoFors.Any(p => p.Name == SD.PhotoForCustomers.Name))
-                unitOfWork.PhotoForRepository.Create(SD.PhotoForCustomers);
+            if (!PhotoFors.Any(p => p.Name == SD.PhotoForCustomersProducts.Name))
+                unitOfWork.PhotoForRepository.Create(SD.PhotoForCustomersProducts);
 
             if (PhotoFors.Count() < 3)
                 unitOfWork.PhotoForRepository.Save();

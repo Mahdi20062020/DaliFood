@@ -2,7 +2,6 @@
 @model DaliFood.AdminPanel.Pages.Product.UpsertModel
 @{
     var Categorie = (SelectList)ViewData["CategorieId"];
-    var Customer = (SelectList)ViewData["CustomerId"];
 }
 <br />
 <h2 class="text-info">
@@ -26,63 +25,30 @@
             <input type="hidden" asp-for="Product.CreateDate" />
 
         }
-        <div class="form-group row">
+       
+          <div class="form-group row">
             <div class="col-2 text-right">
-                دسته بندی:
+                دسته بندی :
             </div>
             <div class="col-5">
         <select asp-for="Product.CategorieId" class="m-t-10 form-control Koodak " asp-items="Categorie"></select>
                 <span asp-validation-for="Product.CategorieId"></span>
             </div>
-        </div>
-          <div class="form-group row">
-            <div class="col-2 text-right">
-                فروشنده :
-            </div>
-            <div class="col-5">
-        <select asp-for="Product.CustomerId" class="m-t-10 form-control Koodak " asp-items="Customer"></select>
-                <span asp-validation-for="Product.CustomerId"></span>
-            </div>
 
         </div>
-        <div class="form-group row">
+      
+          <div class="form-group row">
             <div class="col-2 text-right">
-                نام :
+                نام:
             </div>
             <div class="col-5">
                 <input asp-for="Product.Name" class="form-control" />
                 <span asp-validation-for="Product.Name"></span>
             </div>
-
         </div>
-        <div class="form-group row">
-            <div class="col-2 text-right">
-                توضیحات:
-            </div>
-            <div class="col-5">
-                <input asp-for="Product.Description" class="form-control" />
-                <span asp-validation-for="Product.Description"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-2 text-right">
-                قیمت:
-            </div>
-            <div class="col-5">
-                <input type="number" asp-for="Product.Price" class="form-control" />
-                <span asp-validation-for="Product.Price"></span>
-            </div>
-        </div>
-         <div class="form-group row">
-            <div class="col-2 text-right">
-                عکس ها :
-            </div>
-            <div class="col-5">
-                <input asp-for="ImagesUpload" class="form-control" />
-                <span asp-validation-for="ImagesUpload"></span>
-            </div>
-
-        </div>
+        
+       
+        
         <div class="form-group row">
             <div class="col-5 offset-2">
                 <div class="row">

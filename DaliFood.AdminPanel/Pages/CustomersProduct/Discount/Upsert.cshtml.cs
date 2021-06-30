@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace DaliFood.AdminPanel.Pages.Product.Discount
+namespace DaliFood.AdminPanel.Pages.CustomersProduct.Discount
 {
     public class UpsertModel : PageModel
     {
@@ -20,22 +20,22 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
         [BindProperty]
         public Models.Discount Discount { get; set; }
         [BindProperty]
-        public int ProductId { get; set; }
+        public int CustomersProductId { get; set; }
         [BindProperty]
-        public string ProductName { get; set; }
+        public string CustomersProductName { get; set; }
         [BindProperty]
         public bool IsEditing { get; set; }
 
         public ActionResult OnGet(int Id)
         {
-            if (unitofwork.ProductRepository.GetById(Id) == null)
+            if (unitofwork.CustomersProductRepository.GetById(Id) == null)
                 return NotFound();
             Discount = new Models.Discount();
-            var Dicounts = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id);
+            var Dicounts = unitofwork.DiscountRepository.GetAll(where: p => p.CustomersProductId == Id);
             IsEditing = Dicounts.Any();
-            ProductId = Id;
+            CustomersProductId = Id;
 
-            ProductName = unitofwork.ProductRepository.GetById(Id).Name;
+            CustomersProductName = unitofwork.ProductRepository.GetById(unitofwork.CustomersProductRepository.GetById(Id).ProductId).Name;
             if (!IsEditing)
             {
                 Discount.StartDate = DateTime.Now;
@@ -43,7 +43,7 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
                 return Page(); 
             }
 
-            Discount = unitofwork.DiscountRepository.GetAll(where: p => p.ProductId == Id).FirstOrDefault();
+            Discount = unitofwork.DiscountRepository.GetAll(where: p => p.CustomersProductId == Id).FirstOrDefault();
             return Page();
         }
         public ActionResult OnPost()
@@ -52,7 +52,7 @@ namespace DaliFood.AdminPanel.Pages.Product.Discount
             {
                 Discount.CreateDate = DateTime.Now;
             }
-            Discount.ProductId = ProductId;
+            Discount.CustomersProductId = CustomersProductId;
             if (!ModelState.IsValid)
                 return Page();
             if (!IsEditing)
