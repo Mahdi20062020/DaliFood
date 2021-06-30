@@ -28,6 +28,8 @@ namespace DaliFood.Models.Data
         public DbSet<CustomersProduct> CustomersProduct { get; set; }
         public DbSet<PhotoFor> PhotoFor { get; set; }
         public DbSet<Photo> Photo { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
     }
 }
 

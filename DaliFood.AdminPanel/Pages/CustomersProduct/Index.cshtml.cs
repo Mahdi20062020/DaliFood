@@ -18,13 +18,25 @@ namespace DaliFood.AdminPanel.Pages.CustomersProduct
         [BindProperty]
         public IEnumerable<Models.CustomersProduct> CustomersProduct { get; set; }
 
-        public void OnGet()
+        public ActionResult OnGet(int? Id)
         {
-            CustomersProduct = unitofwork.CustomersProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            if (Id == null)
+            {
+                CustomersProduct = unitofwork.CustomersProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            }
+            else if(unitofwork.CustomerRepository.GetById(Id)==null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                CustomersProduct = unitofwork.CustomersProductRepository.GetAll(where:p=>p.CustomerId==Id,orderby: p => p.OrderByDescending(p => p.CreateDate));
+            }
             foreach (var item in CustomersProduct)
             {
                 item.Product = unitofwork.ProductRepository.GetById(item.ProductId);
             }
+            return Page();
         }
         public ActionResult OnGetDelete(int Id)
         {

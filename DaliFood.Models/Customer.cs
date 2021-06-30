@@ -22,6 +22,7 @@ namespace DaliFood.Models
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }
         public virtual IEnumerable<Product> Product { get; set; }
+        public virtual IEnumerable<OrderItem> OrderItem { get; set; }
         public virtual CustomerType CustomerType { get; set; }
         public Customer()
         {
