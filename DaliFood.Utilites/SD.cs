@@ -12,6 +12,10 @@ namespace DaliFood.Utilites
         public const string BlogCustomerRole = "BlogCustomer";
         public const string ProductCustomerRole = "ProductCustomer";
         public const string NormalUserRole = "NormalUser";
+        public const string CheckingOrderStatus = "درحال بررسی";
+        public const string BakingOrderStatus = "درحال پخت";
+        public const string SendingOrderStatus = "درحال ارسال";
+        public const string ReceivingOrderStatus = "درحال دریافت";
         public readonly static PhotoFor PhotoForCustomersProducts = new PhotoFor() {Name="Products",PhotoSavedAddress="Images/Products",CreateDate=DateTime.Now };
         public readonly static PhotoFor PhotoForProductCategories = new PhotoFor() {Name= "ProductCategories", PhotoSavedAddress= "Images/ProductCategories", CreateDate = DateTime.Now };
         public readonly static PhotoFor PhotoForCustomers = new PhotoFor() {Name= "Customers", PhotoSavedAddress= "Images/Customers", CreateDate = DateTime.Now };

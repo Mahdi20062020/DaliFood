@@ -103,7 +103,7 @@ namespace DaliFood.Utilites
                 context.SaveChanges();
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }

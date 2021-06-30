@@ -1,0 +1,31 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Order.IndexModel
+@{
+    string Title = "فروشنده";
+}
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">کاربر</th>
+                <th scope="col">قیمت کل</th>
+                <th scope="col">وضعیت</th>
+                <th scope="col">#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order)
+            {
+                <tr>
+                    <td>@item.UserId</td>
+                    <td>@item.TotalPrice</td>
+                    <td>@item.Status</td>
+                    <td>
+                    <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                    <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این @Title مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

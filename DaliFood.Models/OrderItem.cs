@@ -29,7 +29,7 @@ namespace DaliFood.Models
         public int Count { get; set; }
         [Display(Name = "وضعیت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public int Status { get; set; }
+        public string Status { get; set; }
         [Display(Name = "تاریخ ایجاد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }

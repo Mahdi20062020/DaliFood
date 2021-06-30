@@ -100,6 +100,7 @@ namespace DaliFood.Utilites
             }
         }
 
+      
         private Repository<Photo> _PhotoRepository;
         public Repository<Photo> PhotoRepository
         {
@@ -110,6 +111,32 @@ namespace DaliFood.Utilites
                     _PhotoRepository = new Repository<Photo>(context);
                 }
                 return _PhotoRepository;
+            }
+        }
+
+        private Repository<Order> _OrderRepository;
+        public Repository<Order> OrderRepository
+        {
+            get
+            {
+                if (_OrderRepository == null)
+                {
+                    _OrderRepository = new Repository<Order>(context);
+                }
+                return _OrderRepository;
+            }
+        }
+
+        private Repository<OrderItem> _OrderItemRepository;
+        public Repository<OrderItem> OrderItemRepository
+        {
+            get
+            {
+                if (_OrderItemRepository == null)
+                {
+                    _OrderItemRepository = new Repository<OrderItem>(context);
+                }
+                return _OrderItemRepository;
             }
         }
         public void Dispose()

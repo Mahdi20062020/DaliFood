@@ -19,7 +19,7 @@ namespace DaliFood.Models
         public bool Status { get; set; }
         [Display(Name = "قیمت کل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public bool TotalPrice { get; set; }
+        public int TotalPrice { get; set; }
         [Display(Name = "تاریخ ایجاد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }

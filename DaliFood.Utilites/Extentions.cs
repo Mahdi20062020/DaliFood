@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DaliFood.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace DaliFood.Utilites
 
             if (PhotoFors.Count() < 3)
                 unitOfWork.PhotoForRepository.Save();
-
+           
         }
     }
 }

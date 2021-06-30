@@ -1,0 +1,53 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Order.Item.IndexModel
+@{
+    string Title = "فروشنده";
+}
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">سفارش</th>
+                <th scope="col">فروشنده</th>
+                <th scope="col">غذا</th>
+                <th scope="col">قیمت</th>
+                <th scope="col">وضعیت</th>
+                <th scope="col">#</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItem)
+            {
+                <tr>
+                    <td>@item.OrderId</td>
+                    <td>@item.Customer.Name</td>
+                    <td>@item.CustomersProduct.Product.Name</td>
+                    <td>@item.Price</td>
+                    <td>
+                        @item.Status
+                        
+                    </td>
+                    <td>
+@switch (item.Status)
+                        {
+                            case SD.CheckingOrderStatus:
+                                    <a asp-page-handler="ChangeStatus" asp-route-Id="@item.Id" class="btn btn-success">پخت</a>
+                                break;
+                            case SD.BakingOrderStatus:
+                                   <a asp-page-handler="ChangeStatus" asp-route-Id="@item.Id" class="btn btn-success">ارسال</a>
+                                break;
+                            case SD.SendingOrderStatus:
+                                    <a asp-page-handler="ChangeStatus" asp-route-Id="@item.Id" class="btn btn-success">تحویل</a>
+                                break;
+                            case SD.ReceivingOrderStatus:
+                                break;
+                            default:                          
+                                    <a asp-page-handler="ChangeStatus" asp-route-Id="@item.Id" asp-route-Status="@SD.CheckingOrderStatus" class="btn btn-success">بررسی</a>
+                                break;
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
