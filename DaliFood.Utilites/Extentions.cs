@@ -1,4 +1,5 @@
 ﻿using DaliFood.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace DaliFood.Utilites
             double _price = (double)Price;
             double _discount = (double)Discount;
             return (int)(_price - ((_price * _discount) / 100));
-        }
-        public static void Configure(this UnitOfWork unitOfWork)
+        }     
+        public async static Task Configure(this UnitOfWork unitOfWork,RoleManager<IdentityRole> roleManager)
         {
             var PhotoFors = unitOfWork.PhotoForRepository.GetAll();
             if (!PhotoFors.Any(p => p.Name == SD.PhotoForProductCategories.Name))
@@ -29,7 +30,13 @@ namespace DaliFood.Utilites
 
             if (PhotoFors.Count() < 3)
                 unitOfWork.PhotoForRepository.Save();
-           
+
+            if (!await roleManager.RoleExistsAsync(SD.CustomerOwnerRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(SD.CustomerOwnerRole));
+            }
+
+
         }
     }
 }

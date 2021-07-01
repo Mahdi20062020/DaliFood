@@ -9,7 +9,7 @@ namespace DaliFood.Utilites
     public static class SD
     {
         public const string AdminRole = "Admin";
-        public const string BlogCustomerRole = "BlogCustomer";
+        public const string CustomerOwnerRole = "CustomerOwner";
         public const string ProductCustomerRole = "ProductCustomer";
         public const string NormalUserRole = "NormalUser";
         public const string CheckingOrderStatus = "درحال بررسی";

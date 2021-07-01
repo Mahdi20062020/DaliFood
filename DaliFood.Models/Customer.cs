@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DaliFood.Models.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,12 +14,14 @@ namespace DaliFood.Models
 
         [Key]
         public int Id { get; set; }
+        [ForeignKey(nameof(ApplicationCustomerUser))]
+        public string UserId { get; set; }
         [Display(Name = "نام")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Name { get; set; }
         [Display(Name = "نوع")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [ForeignKey("CustomerType")]
+        [ForeignKey(nameof(CustomerType))]
         public int TypeId { get; set; }
         [Display(Name = "جواز کسب")]
      
@@ -34,6 +37,7 @@ namespace DaliFood.Models
         public virtual IEnumerable<Product> Product { get; set; }
         public virtual IEnumerable<OrderItem> OrderItem { get; set; }
         public virtual CustomerType CustomerType { get; set; }
+        public virtual ApplicationCustomerUser ApplicationCustomerUser { get; set; }
         public Customer()
         {
 

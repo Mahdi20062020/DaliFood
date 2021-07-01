@@ -9,7 +9,7 @@
 </style>
 <br/>
 <h2 class="text-info">
-    @if (Model.Customer.Id == 0)
+    @if (Model.Customer.Id==0)
     {
         <span>افزودن @Title جدید</span>
     }
@@ -21,7 +21,7 @@
 <hr />
 <form method="post" enctype="multipart/form-data">
     <div class="border p-3">
-        @if (Model.Customer.Id != 0)
+        @if (Model.Customer.Id!=0)
         {
             <input type="hidden" asp-for="Customer.Id" />
             <input type="hidden" asp-for="Customer.LicenseSaveAddress" />

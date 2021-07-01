@@ -42,7 +42,7 @@ namespace DaliFood.AdminPanel.Pages.Customer
         }
         public ActionResult OnPost()
         {
-            if (Customer.Id == 0)
+            if (Customer.Id==0)
                 Customer.CreateDate = DateTime.Now;
             if (ImageUpload != null)
             {
