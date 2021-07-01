@@ -11,7 +11,7 @@ namespace DaliFood.Utilites
 {
     public static class Files
     {
-        public static bool DeletePhotos(UnitOfWork unitofwork,IEnumerable<Photo> photos,PhotoFor part)
+        public static bool DeletePhotosProduct(UnitOfWork unitofwork,IEnumerable<Photo> photos,PhotoFor part)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace DaliFood.Utilites
             }
            
         }
-        public static bool ImportPhotos(UnitOfWork unitofwork, IEnumerable<IFormFile> ImagesUpload, CustomersProduct CustomersProduct, PhotoFor part)
+        public static bool ImportPhotosProduct(UnitOfWork unitofwork, IEnumerable<IFormFile> ImagesUpload, CustomersProduct CustomersProduct, PhotoFor part)
         {
             try
             {
@@ -49,12 +49,7 @@ namespace DaliFood.Utilites
                     {
                         photoId = unitofwork.PhotoRepository.GetAll().Last().Id + 1;
                     }
-
-                    var savepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", part.PhotoSavedAddress, photoId.ToString() + photo.Extention);
-                    using (var Filestream = new FileStream(savepath, FileMode.Create))
-                    {
-                        ImageUpload.CopyTo(Filestream);
-                    }
+                    SavePhoto(ImageUpload, part.PhotoSavedAddress, photoId.ToString() + photo.Extention);        
                     unitofwork.PhotoRepository.Save();
                 }
 
@@ -64,6 +59,23 @@ namespace DaliFood.Utilites
             {
                 return false;
             }
+        }
+        public static bool SavePhoto(IFormFile ImageUpload, string Savepath,string filename)
+        {
+            try
+            {
+                var savepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","Images",Savepath, filename);
+                using (var Filestream = new FileStream(savepath, FileMode.Create))
+                {
+                    ImageUpload.CopyTo(Filestream);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
     }
 }

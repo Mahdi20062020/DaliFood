@@ -2,11 +2,12 @@
 @model DaliFood.AdminPanel.Pages.Customer.UpsertModel
 @{
     string Title = "فروشنده";
-}
-@{
     var CustomerType = (SelectList)ViewData["CustomerTypeId"];
 }
-<br />
+<style>
+ 
+</style>
+<br/>
 <h2 class="text-info">
     @if (Model.Customer.Id == 0)
     {
@@ -16,15 +17,14 @@
     {
         <span>ویرایش @Title</span>
     }
-
-
 </h2>
 <hr />
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="border p-3">
         @if (Model.Customer.Id != 0)
         {
             <input type="hidden" asp-for="Customer.Id" />
+            <input type="hidden" asp-for="Customer.LicenseSaveAddress" />
             <input type="hidden" asp-for="Customer.CreateDate" />
 
         }
@@ -47,6 +47,37 @@
                 <span asp-validation-for="Customer.Name"></span>
             </div>
            </div>
+            <div class="form-group row">
+          
+            <div class="col-2 text-right">
+                آدرس :
+            </div>
+            <div class="col-5">
+                <input asp-for="Customer.Address" class="form-control" />
+                <span asp-validation-for="Customer.Address"></span>
+            </div>
+           </div>
+           
+            <div class="form-group row">
+            <div class="col-2 text-right">
+               شماره شبا :
+            </div>
+            <div class="col-5">
+                <input asp-for="Customer.ShabaNumber" class="form-control" />
+                <span asp-validation-for="Customer.ShabaNumber"></span>
+            </div>
+            </div>
+             <div class="form-group row">
+            <div class="col-2 text-right">
+               جواز کسب :
+            </div>
+            <div class="col-5">
+                <input type="file" name="ImageUpload" class="form-control" />
+                <span asp-validation-for="Customer.LicenseSaveAddress"></span>
+            </div>
+           </div>
+           </div>
+           <div class="form-group row">
 
             <div class="form-group row">
                 <div class="col-5 offset-2">
@@ -65,5 +96,6 @@
 
 @section Scripts
 {
+   
     <partial name="_ValidationScriptsPartial" />
 }

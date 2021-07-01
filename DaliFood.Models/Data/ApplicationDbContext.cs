@@ -1,4 +1,5 @@
 ﻿using DaliFood.Models;
+using DaliFood.Models.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,6 +31,7 @@ namespace DaliFood.Models.Data
         public DbSet<Photo> Photo { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }
 
