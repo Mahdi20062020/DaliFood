@@ -32,10 +32,24 @@ namespace DaliFood.AdminPanel
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            services.ConfigureApplicationCookie(
+             options =>
+             {
+                 options.LoginPath = "/Identity/Account/login";
+                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                 options.LogoutPath = "/Identity/Account/logoutmodel";
+
+
+             });
+           
             
             services.AddScoped<UnitOfWork, UnitOfWork>();
+            services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
@@ -64,6 +78,9 @@ namespace DaliFood.AdminPanel
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                      name: "default",
+                      pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
