@@ -1,9 +1,15 @@
 ﻿using DaliFood.Models;
+using DaliFood.Models.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace DaliFood.Utilites
@@ -37,6 +43,20 @@ namespace DaliFood.Utilites
             }
 
 
+        }
+
+        public async static Task SendConfirmationEmail(this IEmailSender _emailSender,UserManager<ApplicationUser> _userManager,ApplicationUser user,IUrlHelper Url, HttpRequest Request,string returnUrl="")
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                protocol: Request.Scheme);
+
+            await _emailSender.SendEmailAsync(user.Email, "ایمیل فعال سازی حساب دالی فود",
+                $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
         }
     }
 }

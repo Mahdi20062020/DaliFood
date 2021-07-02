@@ -22,26 +22,26 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly UnitOfWork unitofwork;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
 
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger,
-             RoleManager<IdentityRole> roleManager, ApplicationDbContext db, UnitOfWork _unitofwork)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<RegisterModel> logger,            
+             IEmailSender emailSender,
+             ApplicationDbContext db,
+             UnitOfWork _unitofwork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            //_emailSender = emailSender;
-            _roleManager = roleManager;
+            _emailSender = emailSender;
             _db = db;
             unitofwork = _unitofwork;
         }
@@ -54,50 +54,50 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 
         public class InputModel
         {
-           
 
 
-            [Required]
+
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام")]
             [MaxLength(100)]
-            public string name { get; set; }
-            [Required]
+            public string Name { get; set; }
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [MaxLength(100)]
             [Display(Name = "نام خانوادگی")]
-            public string family { get; set; }
-            [Required]
+            public string Family { get; set; }
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [MaxLength(100)]
             [Display(Name = "کدملی")]
             public string NationalId { get; set; }
-            [Required]
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "تاریخ تولد")]
-         
+
             public DateTime Birthday { get; set; }
 
 
-            [Required]
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام فروشگاه")]
             [MaxLength(100)]
             public string CustomerName { get; set; }
-            [Required]
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نوع فروشگاه")]
-        
+
             public int CustomerType { get; set; }
-            [Required]
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "آدرس فروشگاه")]
             [MaxLength(100)]
             public string CustomerAddress { get; set; }
 
 
-            [Required]
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [EmailAddress(ErrorMessage = "{0} وارد شده نامعتبر است")]
             [Display(Name = "ایمیل")]
             public string Email { get; set; }
-            [Required]
-          
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+
             [Display(Name = "شماره تلفن")]
             public string PhoneNumber { get; set; }
-            [Required]
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [StringLength(100, ErrorMessage = "{0} باید کمتر از {2} و بیشتر از {1} باشد", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "رمز عبور")]
@@ -123,7 +123,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
-               
+
                 var userDetail = new ApplicationCustomerUser()
                 {
                     CustomerName = Input.CustomerName,
@@ -131,78 +131,41 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     NationalId = Input.NationalId,
                     CreateDate = DateTime.Now
                 };
-               
+
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    Name = Input.name,
-                    Family = Input.family,
-                    PhoneNumber=Input.PhoneNumber,
+                    Name = Input.Name,
+                    Family = Input.Family,
+                    PhoneNumber = Input.PhoneNumber,
                     ApplicationUserDetail = userDetail
                 };
                 var customer = new Models.Customer()
                 {
+                   
                     Name = Input.CustomerName,
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-                    ApplicationCustomerUser= userDetail
+                   
+                    ApplicationCustomerUser = userDetail
                 };
+               
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+               
+                    var UserId= await _userManager.GetUserIdAsync(user);
+                    customer.UserId = UserId;
+                    unitofwork.CustomerRepository.Create(customer);
+                    await unitofwork.CustomerRepository.SaveAsync();
+                    var CustomerId = unitofwork.CustomerRepository.GetAll(where: p => p.UserId == UserId).FirstOrDefault().Id.ToString();
+                    await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, CustomerId));
                     await _userManager.AddToRoleAsync(user, SD.CustomerOwnerRole);
-                    //{
-                    //    if (!await _roleManager.RoleExistsAsync(SD.AdminRole))
-                    //    {
-                    //        await _roleManager.CreateAsync(new IdentityRole(SD.AdminRole));
-                    //    }
-                    //    if (!await _roleManager.RoleExistsAsync(SD.ProductCustomerRole))
-                    //    {
-                    //        await _roleManager.CreateAsync(new IdentityRole(SD.ProductCustomerRole));
-                    //    }
-                    //    if (!await _roleManager.RoleExistsAsync(SD.BlogCustomerRole))
-                    //    {
-                    //        await _roleManager.CreateAsync(new IdentityRole(SD.BlogCustomerRole));
-                    //    }
-                    //    if (!await _roleManager.RoleExistsAsync(SD.NormalUserRole))
-                    //    {
-                    //        await _roleManager.CreateAsync(new IdentityRole(SD.NormalUserRole));
-                    //    }
-                    //    if (Input.IsAdmin || Input.IsBlogCustomer || Input.IsProductCustomer)
-                    //    {
-                    //        if (Input.IsAdmin)
-                    //        {
-                    //            await _userManager.AddToRoleAsync(user, SD.AdminRole);
-                    //        }
-                    //        if (Input.IsBlogCustomer)
-                    //        {
-                    //            await _userManager.AddToRoleAsync(user, SD.BlogCustomerRole);
-                    //        }
-                    //        if (Input.IsProductCustomer)
-                    //        {
-                    //            await _userManager.AddToRoleAsync(user, SD.ProductCustomerRole);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        await _userManager.AddToRoleAsync(user, SD.NormalUserRole);
-                    //    }
-
                     _logger.LogInformation("User created a new account with password.");
 
-                    //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //    var callbackUrl = Url.Page(
-                    //        "/Account/ConfirmEmail",
-                    //        pageHandler: null,
-                    //        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                    //        protocol: Request.Scheme);
-
-                    //    await _emailSender.SendEmailAsync(Input.Email, "ایمیل فعال سازی بانوفاخر",
-                    //        $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
-
+                    await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request, returnUrl);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
@@ -222,6 +185,6 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             //// If we got this far, something failed, redisplay form
             return Page();
         }
-    
-}
+
+    }
 }

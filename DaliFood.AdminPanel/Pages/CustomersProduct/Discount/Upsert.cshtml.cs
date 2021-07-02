@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DaliFood.Utilites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DaliFood.AdminPanel.Pages.CustomersProduct.Discount
 {
+    [Authorize(Policy = SD.CustomerPolicy)]
     public class UpsertModel : PageModel
     {
 
@@ -28,8 +30,14 @@ namespace DaliFood.AdminPanel.Pages.CustomersProduct.Discount
 
         public ActionResult OnGet(int Id)
         {
+            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
+            var customer = unitofwork.CustomersProductRepository.GetById(Id);
             if (unitofwork.CustomersProductRepository.GetById(Id) == null)
                 return NotFound();
+            if (customer.CustomerId != customerId)
+            {
+                return BadRequest();
+            }
             Discount = new Models.Discount();
             var Dicounts = unitofwork.DiscountRepository.GetAll(where: p => p.CustomersProductId == Id);
             IsEditing = Dicounts.Any();
@@ -55,6 +63,13 @@ namespace DaliFood.AdminPanel.Pages.CustomersProduct.Discount
             Discount.CustomersProductId = CustomersProductId;
             if (!ModelState.IsValid)
                 return Page();
+            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
+            var customer = unitofwork.CustomersProductRepository.GetById(Discount.CustomersProductId);
+         
+            if (customer.CustomerId != customerId)
+            {
+                return BadRequest();
+            }
             if (!IsEditing)
             {
                 unitofwork.DiscountRepository.Create(Discount);

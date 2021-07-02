@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DaliFood.Utilites;
 using DaliFood.Models.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using DaliFood.Models.Identity;
 
 namespace DaliFood.AdminPanel
 {
@@ -33,7 +35,7 @@ namespace DaliFood.AdminPanel
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
@@ -49,8 +51,13 @@ namespace DaliFood.AdminPanel
            
             
             services.AddScoped<UnitOfWork, UnitOfWork>();
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(SD.CustomerPolicy, policy => { policy.RequireClaim(SD.CustomerId);    policy.RequireRole(SD.CustomerOwnerRole, SD.AdminRole); });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

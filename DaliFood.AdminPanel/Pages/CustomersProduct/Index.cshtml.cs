@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DaliFood.Utilites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DaliFood.AdminPanel.Pages.CustomersProduct
 {
+    [Authorize(Policy =SD.CustomerPolicy)]
     public class IndexModel : PageModel
     {
         readonly UnitOfWork unitofwork;
@@ -18,20 +20,11 @@ namespace DaliFood.AdminPanel.Pages.CustomersProduct
         [BindProperty]
         public IEnumerable<Models.CustomersProduct> CustomersProduct { get; set; }
 
-        public ActionResult OnGet(int? Id)
+        public ActionResult OnGet()
         {
-            if (Id == null)
-            {
-                CustomersProduct = unitofwork.CustomersProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
-            }
-            else if(unitofwork.CustomerRepository.GetById(Id)==null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                CustomersProduct = unitofwork.CustomersProductRepository.GetAll(where:p=>p.CustomerId==Id,orderby: p => p.OrderByDescending(p => p.CreateDate));
-            }
+            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
+            CustomersProduct = unitofwork.CustomersProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate),where:p=>p.CustomerId== customerId);
+            
             foreach (var item in CustomersProduct)
             {
                 item.Product = unitofwork.ProductRepository.GetById(item.ProductId);
