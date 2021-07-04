@@ -40,7 +40,11 @@ namespace DaliFood.Utilites
             if (!await roleManager.RoleExistsAsync(SD.AdminRole))
             {
                 await roleManager.CreateAsync(new IdentityRole(SD.AdminRole));
-            }  
+            }
+            if (!await roleManager.RoleExistsAsync(SD.ProductEditorRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(SD.ProductEditorRole));
+            }
             if (!await roleManager.RoleExistsAsync(SD.CustomerOwnerRole))
             {
                 await roleManager.CreateAsync(new IdentityRole(SD.CustomerOwnerRole));

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -48,6 +49,11 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
 
         public string ReturnUrl { get; set; }
 
+        [BindProperty]
+        public string SelectedRole { get; set; }
+
+        public SelectList Roles { get; set; }
+
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         public class InputModel
@@ -81,8 +87,7 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             [Display(Name = "نام خانوادگی")]
             public string Family { get; set; }
 
-            [Display(Name = "دسترسی کامل")]
-            public bool IsAdmin { get; set; }
+          
             //[MaxLength(250)]
             //public string profileImage { get; set; }
         }
@@ -91,6 +96,10 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var roles = _roleManager.Roles.Where(p => p.Name != SD.CustomerOwnerRole);
+          
+            Roles = new SelectList(roles, "Name", "Name");
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -100,7 +109,6 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
 
-                
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -112,13 +120,8 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                       if (Input.IsAdmin)
-                       {
-                           await _userManager.AddToRoleAsync(user, SD.AdminRole);
-                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, SD.AdminCustomerId));
-
-                    }
-                    _logger.LogInformation("User created a new account with password.");
+                    await _userManager.AddToRoleAsync(user, SelectedRole);
+                _logger.LogInformation("User created a new account with password.");
                       await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                        {
@@ -135,7 +138,9 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
             }
+            var roles = _roleManager.Roles.Where(p => p.Name != SD.CustomerOwnerRole);
 
+            Roles = new SelectList(roles, "Name", "Name");
             //// If we got this far, something failed, redisplay form
             return Page();
         }
