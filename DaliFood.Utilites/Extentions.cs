@@ -37,6 +37,10 @@ namespace DaliFood.Utilites
             if (PhotoFors.Count() < 3)
                 unitOfWork.PhotoForRepository.Save();
 
+            if (!await roleManager.RoleExistsAsync(SD.AdminRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(SD.AdminRole));
+            }  
             if (!await roleManager.RoleExistsAsync(SD.CustomerOwnerRole))
             {
                 await roleManager.CreateAsync(new IdentityRole(SD.CustomerOwnerRole));
@@ -57,6 +61,34 @@ namespace DaliFood.Utilites
 
             await _emailSender.SendEmailAsync(user.Email, "ایمیل فعال سازی حساب دالی فود",
                 $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
+        } 
+        public async static Task SendResetPassword(this IEmailSender _emailSender,UserManager<ApplicationUser> _userManager,ApplicationUser user,IUrlHelper Url, HttpRequest Request,string returnUrl="")
+        {
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                pageHandler: null,
+                values: new { area = "Identity", code },
+                protocol: Request.Scheme);
+
+            await _emailSender.SendEmailAsync(
+                user.Email,
+                "فراموشی رمز عبور",
+                $"برای تنظیم مجدد رمز عبور خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a>کلیک کنید.");
+        } public async static Task SendConfirmationEmailChange(this IEmailSender _emailSender,UserManager<ApplicationUser> _userManager,ApplicationUser user,IUrlHelper Url, HttpRequest Request,string NewEmail,string returnUrl="")
+        {
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateChangeEmailTokenAsync(user, NewEmail);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmailChange",
+                pageHandler: null,
+                values: new { area = "Identity", userId = userId, email = NewEmail, code = code },
+                protocol: Request.Scheme);
+            await _emailSender.SendEmailAsync(user.Email, "ایمیل فعال سازی حساب دالی فود",
+           $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
         }
+
     }
 }

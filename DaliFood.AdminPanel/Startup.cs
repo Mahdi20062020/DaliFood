@@ -53,10 +53,23 @@ namespace DaliFood.AdminPanel
             services.AddScoped<UnitOfWork, UnitOfWork>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages(options=>
+            {
+                options.Conventions.AuthorizeFolder("/CustomersProduct",SD.CustomerPolicy);
+                options.Conventions.AuthorizeFolder("/Product",SD.ProductEditorPolicy);
+                options.Conventions.AuthorizeFolder("/ProductCategorie", SD.ProductEditorPolicy);
+                options.Conventions.AuthorizePage("/Order/Index", SD.AdminPolicy);
+                options.Conventions.AuthorizeFolder("/CustomerType", SD.AdminPolicy);
+                options.Conventions.AuthorizeFolder("/Order/Item", SD.CustomerPolicy);
+                options.Conventions.AuthorizeFolder("/Customer/Account/Manage", SD.CustomerOwnerPolicy);
+            });
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(SD.CustomerPolicy, policy => { policy.RequireClaim(SD.CustomerId);    policy.RequireRole(SD.CustomerOwnerRole, SD.AdminRole); });
+                options.AddPolicy(SD.ProductEditorPolicy, policy => {policy.RequireRole(SD.ProductEditorRole, SD.AdminRole); });
+                options.AddPolicy(SD.AdminPolicy, policy => {policy.RequireRole(SD.AdminRole); });
+                options.AddPolicy(SD.CustomerOwnerPolicy, policy => {policy.RequireRole(SD.CustomerOwnerRole); });
+             
             });
         }
 

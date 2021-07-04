@@ -57,7 +57,7 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             }
 
             var userId = await _userManager.GetUserIdAsync(user);
-            await _emailSender.SendConfirmationEmail(_userManager, (Models.Identity.ApplicationUser)user, Url,Request);
+            await _emailSender.SendConfirmationEmail(_userManager,user, Url,Request);
 
 
             ModelState.AddModelError(string.Empty, "ایمیل فعالسازی به حساب شما ارسال گردید. لطفا ایمیل خود را چک نمایید");

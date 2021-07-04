@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DaliFood.Utilites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DaliFood.AdminPanel.Pages.Order.Item
 {
+    //[Authorize(Policy = SD.CustomerPolicy)]
     public class IndexModel : PageModel
     {
         readonly UnitOfWork unitofwork;
@@ -20,7 +22,10 @@ namespace DaliFood.AdminPanel.Pages.Order.Item
 
         public void OnGet()
         {
-            OrderItem = unitofwork.OrderItemRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
+
+            OrderItem = unitofwork.OrderItemRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate),where:p=>p.CustomerId==customerId);
+            
             foreach (var item in OrderItem)
             {
                 item.Customer = unitofwork.CustomerRepository.GetById(item.CustomerId);
@@ -31,6 +36,9 @@ namespace DaliFood.AdminPanel.Pages.Order.Item
         public ActionResult OnGetChangeStatus(int Id)
         {
             var orderitem = unitofwork.OrderItemRepository.GetById(Id);
+            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
+            if (orderitem.CustomerId== customerId)
+                return BadRequest();
             if (orderitem == null)
                 return NotFound();
             switch (orderitem.Status)

@@ -168,7 +168,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request, returnUrl);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return Redirect($"/Identity/Account/RegisterConfirmation?Email={Input.Email}");
                     }
                     else
                     {

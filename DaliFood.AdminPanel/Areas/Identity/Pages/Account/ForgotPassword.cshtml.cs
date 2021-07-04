@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using DaliFood.Models.Identity;
+using DaliFood.Utilites;
 
 namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
 {
@@ -36,31 +37,29 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             public string Email { get; set; }
         }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    StatusMessage = "کاربری با ایمیل وارد شده یافت نشد";
+                    return RedirectToPage();
+                }
+                if (!(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    StatusMessage = "ایمیل وارده تایید نشده است";
+                    return RedirectToPage();
                 }
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                 await _emailSender.SendResetPassword(_userManager, user, Url, Request);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DaliFood.AdminPanel.Pages.CustomersProduct
 {
-    [Authorize(Policy = SD.CustomerPolicy)]
+    //[Authorize(Policy = SD.CustomerPolicy)]
     public class UpsertModel : PageModel
     {
 
@@ -30,45 +30,51 @@ namespace DaliFood.AdminPanel.Pages.CustomersProduct
         public ActionResult OnGet(int? Id)
         {
             CustomersProduct = new Models.CustomersProduct();
-            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
-           
+
+            var customerId = User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value;
+            if (customerId == SD.AdminCustomerId)
+            {
+               ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(),"Id", "Name");          
+            }
+            else
+            {
+                ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(where: p => p.Id == int.Parse(customerId)), "Id", "Name");
+            }
+
             if (Id == null)
             {
                 ViewData["ProductId"] = new SelectList(unitofwork.ProductRepository.GetAll(),"Id", "Name");
-                ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(where:p=>p.Id==customerId),"Id", "Name");          
                 return Page();
             }
-            if (CustomersProduct.CustomerId != customerId)
-            {
-                return BadRequest();
-            }
+      
             CustomersProduct = unitofwork.CustomersProductRepository.GetById(Id);
            
             if (CustomersProduct == null)
             {
                 return NotFound();
             }
+            if (customerId != SD.AdminCustomerId)
+                if (int.Parse(customerId) != CustomersProduct.CustomerId)
+                    return BadRequest();
             ViewData["ProductId"] = new SelectList(unitofwork.ProductRepository.GetAll(), "Id", "Name", CustomersProduct.ProductId);
-            ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(where: p => p.Id == customerId), "Id", "Name",CustomersProduct.CustomerId);
             return Page();
         }
         public ActionResult OnPost()
         {
-            var customerId = int.Parse(User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value);
+            var customerId = User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value;
+            if (customerId != SD.AdminCustomerId)
+                if (int.Parse(customerId) != CustomersProduct.CustomerId)
+                    return BadRequest();
             var part = SD.GetPart(unitofwork, SD.PhotoForCustomersProducts.Name);
             if (CustomersProduct.Id == 0)
                 CustomersProduct.CreateDate = DateTime.Now;
             if (!ModelState.IsValid)
             {
                 ViewData["ProductId"] = new SelectList(unitofwork.ProductRepository.GetAll(), "Id", "Name", CustomersProduct.ProductId);
-                ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(where: p => p.Id == customerId), "Id", "Name", CustomersProduct.CustomerId);
+                ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(where: p => p.Id == int.Parse(customerId)), "Id", "Name", CustomersProduct.CustomerId);
                 return Page();
             }
-            if (CustomersProduct.CustomerId != customerId)
-            {
-                return BadRequest();
-            }
-
+         
             if (CustomersProduct.Id == 0)
             {
                 unitofwork.CustomersProductRepository.Create(CustomersProduct);

@@ -58,6 +58,11 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
+            [Phone(ErrorMessage = "{0} وارد شده نامعتبر است")]
+            [Display(Name = "شماره تلفن")]
+            public string Phone { get; set; }
+
+            [Required]
             [StringLength(100, ErrorMessage = "{0} باید کمتر از {2} و بیشتر از {1} باشد", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "رمز عبور")]
@@ -70,20 +75,14 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "نام")]
             [MaxLength(100)]
-            public string name { get; set; }
+            public string Name { get; set; }
             [Required]
             [MaxLength(100)]
             [Display(Name = "نام خانوادگی")]
-            public string family { get; set; }
+            public string Family { get; set; }
 
             [Display(Name = "دسترسی کامل")]
             public bool IsAdmin { get; set; }
-
-            [Display(Name = "دسترسی به محصولات")]
-            public bool IsProductCustomer { get; set; }
-
-            [Display(Name = "دسترسی به مقالات")]
-            public bool IsBlogCustomer { get; set; }
             //[MaxLength(250)]
             //public string profileImage { get; set; }
         }
@@ -101,83 +100,40 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
 
+                
+                var user = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Name = Input.Name,
+                    Family = Input.Family,
+                    PhoneNumber=Input.Phone,           
+                };
+                var result = await _userManager.CreateAsync(user, Input.Password);
+                if (result.Succeeded)
+                {
+                       if (Input.IsAdmin)
+                       {
+                           await _userManager.AddToRoleAsync(user, SD.AdminRole);
+                        await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, SD.AdminCustomerId));
 
-                //var user = new ApplicationUser
-                //{
-                //    UserName = Input.Email,
-                //    Email = Input.Email,
-                //    name = Input.name,
-                //    family = Input.family,
-                //    IsAdmin = Input.IsAdmin,
-                //    IsBlogCustomer = Input.IsBlogCustomer,
-                //    IsProductCustomer = Input.IsProductCustomer
-                //};
-                //var result = await _userManager.CreateAsync(user, Input.Password);
-                //if (result.Succeeded)
-                //{
-                //    if (!await _roleManager.RoleExistsAsync(SD.AdminRole))
-                //    {
-                //        await _roleManager.CreateAsync(new IdentityRole(SD.AdminRole));
-                //    }
-                //    if (!await _roleManager.RoleExistsAsync(SD.ProductCustomerRole))
-                //    {
-                //        await _roleManager.CreateAsync(new IdentityRole(SD.ProductCustomerRole));
-                //    }
-                //    if (!await _roleManager.RoleExistsAsync(SD.BlogCustomerRole))
-                //    {
-                //        await _roleManager.CreateAsync(new IdentityRole(SD.BlogCustomerRole));
-                //    }
-                //    if (!await _roleManager.RoleExistsAsync(SD.NormalUserRole))
-                //    {
-                //        await _roleManager.CreateAsync(new IdentityRole(SD.NormalUserRole));
-                //    }
-                //    if (Input.IsAdmin || Input.IsBlogCustomer || Input.IsProductCustomer)
-                //    {
-                //        if (Input.IsAdmin)
-                //        {
-                //            await _userManager.AddToRoleAsync(user, SD.AdminRole);
-                //        }
-                //        if (Input.IsBlogCustomer)
-                //        {
-                //            await _userManager.AddToRoleAsync(user, SD.BlogCustomerRole);
-                //        }
-                //        if (Input.IsProductCustomer)
-                //        {
-                //            await _userManager.AddToRoleAsync(user, SD.ProductCustomerRole);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        await _userManager.AddToRoleAsync(user, SD.NormalUserRole);
-                //    }
-
-                //    _logger.LogInformation("User created a new account with password.");
-
-                //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                //    var callbackUrl = Url.Page(
-                //        "/Account/ConfirmEmail",
-                //        pageHandler: null,
-                //        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                //        protocol: Request.Scheme);
-
-                //    await _emailSender.SendEmailAsync(Input.Email, "ایمیل فعال سازی بانوفاخر",
-                //        $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
-
-                //    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                //    {
-                //        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                //    }
-                //    else
-                //    {
-                //        await _signInManager.SignInAsync(user, isPersistent: false);
-                //        return LocalRedirect(returnUrl);
-                //    }
-                //}
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError(string.Empty, error.Description);
-                //}
+                    }
+                    _logger.LogInformation("User created a new account with password.");
+                      await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request);
+                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                       {
+                           return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                       }
+                       else
+                       {
+                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                       }
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
             }
 
             //// If we got this far, something failed, redisplay form
