@@ -22,7 +22,7 @@ namespace DaliFood.Utilites
             double _discount = (double)Discount;
             return (int)(_price - ((_price * _discount) / 100));
         }     
-        public async static Task Configure(this UnitOfWork unitOfWork,RoleManager<IdentityRole> roleManager)
+        public async static Task Configure(this UnitOfWork unitOfWork,RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             var PhotoFors = unitOfWork.PhotoForRepository.GetAll();
             if (!PhotoFors.Any(p => p.Name == SD.PhotoForProductCategories.Name))
@@ -49,6 +49,17 @@ namespace DaliFood.Utilites
             {
                 await roleManager.CreateAsync(new IdentityRole(SD.CustomerOwnerRole));
             }
+            var user = new ApplicationUser()
+            {
+                Name = "Admin",
+                UserName= "hoseinpoor2006@gmail.com",
+                Email = "hoseinpoor2006@gmail.com",
+                Family = "Admin",
+                EmailConfirmed = true,
+                PhoneNumber = "09225457958"
+            };
+          await  userManager.CreateAsync(user, "@@2021Admin@@2021Admin@@1");
+            await userManager.AddToRoleAsync(user, SD.AdminRole);
 
 
         }

@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@if (SignInManager.IsSignedIn(User))
+{
+    var user = await UserManager.GetUserAsync(User);
+    if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link  text-dark" asp-area="" asp-page="/Product/Index">مدیریت غذا ها</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/ProductCategorie/Index">مدیریت دسته بندی ها</a>
+        </li>
+    }
+
+    if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/CustomerType/Index">مدیریت انواع فروشنده ها</a>
+        </li>
+    }
+    if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/CustomersProduct/Index">مدیریت غذای فروشنده ها</a>
+        </li>
+    }
+    if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-page="/Customer/Account/Manage/Index">پروفایل</a>
+        </li>
+    }
+    if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">افزودن کاربر</a>
+        </li>
+    }
+}

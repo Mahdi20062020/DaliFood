@@ -1,4 +1,5 @@
-﻿using DaliFood.Utilites;
+﻿using DaliFood.Models.Identity;
+using DaliFood.Utilites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,10 +14,12 @@ namespace DaliFood.AdminPanel.Pages
     {
         readonly UnitOfWork unitofwork;
         readonly RoleManager<IdentityRole> roleManager;
-        public IndexModel(UnitOfWork unitofwork, RoleManager<IdentityRole> roleManager)
+        readonly UserManager<ApplicationUser> userManager;
+        public IndexModel(UnitOfWork unitofwork, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             this.unitofwork = unitofwork;
             this.roleManager = roleManager;
+            this.userManager = userManager;
         }
         [BindProperty]
         public DateTime Then { get; set; }
@@ -26,7 +29,7 @@ namespace DaliFood.AdminPanel.Pages
         public async Task OnGet()
         {
             Then = DateTime.Now;
-           await unitofwork.Configure(roleManager);
+           await unitofwork.Configure(roleManager, userManager);
             Now = DateTime.Now;
         }
     }
