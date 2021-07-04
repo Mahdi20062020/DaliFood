@@ -28,9 +28,7 @@
     }
     if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Customer/Account/Manage/Index">پروفایل</a>
-        </li>
+       
     }
     if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
     {

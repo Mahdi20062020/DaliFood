@@ -183,6 +183,8 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             }
 
             //// If we got this far, something failed, redisplay form
+            ViewData["CustomerTypeId"] = new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+
             return Page();
         }
 
