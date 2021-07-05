@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.Models", "DaliFood
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.Utilites", "DaliFood.Utilites\DaliFood.Utilites.csproj", "{DB18646E-742C-4091-9C00-07C4601660DB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.AdminPanelML.Model", "DaliFood.AdminPanelML.Model\DaliFood.AdminPanelML.Model.csproj", "{33BB5DDC-5740-411C-9043-F40462EA3628}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.AdminPanelML.ConsoleApp", "DaliFood.AdminPanelML.ConsoleApp\DaliFood.AdminPanelML.ConsoleApp.csproj", "{3D250F30-0ABB-450A-AE03-9F489AEF8F07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{DB18646E-742C-4091-9C00-07C4601660DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB18646E-742C-4091-9C00-07C4601660DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB18646E-742C-4091-9C00-07C4601660DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33BB5DDC-5740-411C-9043-F40462EA3628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33BB5DDC-5740-411C-9043-F40462EA3628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33BB5DDC-5740-411C-9043-F40462EA3628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33BB5DDC-5740-411C-9043-F40462EA3628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D250F30-0ABB-450A-AE03-9F489AEF8F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D250F30-0ABB-450A-AE03-9F489AEF8F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D250F30-0ABB-450A-AE03-9F489AEF8F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D250F30-0ABB-450A-AE03-9F489AEF8F07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
