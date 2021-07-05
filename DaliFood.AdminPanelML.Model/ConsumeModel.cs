@@ -27,7 +27,7 @@ namespace DaliFood_AdminPanelML.Model
             MLContext mlContext = new MLContext();
 
             // Load model & create prediction engine
-            string modelPath = @"C:\Users\Mahdidotnet\AppData\Local\Temp\MLVSTools\DaliFood.AdminPanelML\DaliFood.AdminPanelML.Model\MLModel.zip";
+            string modelPath = AppDomain.CurrentDomain.BaseDirectory +"MLModel.zip";
             ITransformer mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
             var predEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
 
