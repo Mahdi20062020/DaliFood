@@ -26,15 +26,6 @@ namespace DaliFood.AdminPanel.Pages.Customer
                 item.CustomerType = unitofwork.CustomerTypeRepository.GetById(item.TypeId);
             }
         }
-        public ActionResult OnGetDelete(int Id)
-        {
-            var Customer = unitofwork.CustomerRepository.GetById(Id);
-            if (Customer == null)
-                return NotFound();
-            unitofwork.CustomerRepository.Delete(Customer);
-            unitofwork.CustomerRepository.Save();
-            return RedirectToPage("Index");
-
-        }
+      
     }
 }

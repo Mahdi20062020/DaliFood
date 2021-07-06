@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DaliFood.Models.Identity;
 using DaliFood.Utilites;
+using DaliFood.Utilites.Attributes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -49,6 +50,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account.Manage
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [MaxLength(100)]
             [Display(Name = "کدملی")]
+            [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "تاریخ تولد")]

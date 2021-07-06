@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DaliFood.Models.Data;
 using DaliFood.Models.Identity;
 using DaliFood.Utilites;
+using DaliFood.Utilites.Attributes;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -68,6 +69,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [MaxLength(100)]
             [Display(Name = "کدملی")]
+            [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "تاریخ تولد")]
@@ -87,6 +89,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "آدرس فروشگاه")]
             [MaxLength(100)]
             public string CustomerAddress { get; set; }
+
 
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

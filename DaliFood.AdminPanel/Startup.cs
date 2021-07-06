@@ -60,6 +60,7 @@ namespace DaliFood.AdminPanel
                 options.Conventions.AuthorizeFolder("/ProductCategorie", SD.ProductEditorPolicy);
                 options.Conventions.AuthorizePage("/Order/Index", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/CustomerType", SD.AdminPolicy);
+                options.Conventions.AuthorizeFolder("/Customer/Index", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/Order/Item", SD.CustomerPolicy);
                 options.Conventions.AuthorizeFolder("/Customer/Account/Manage", SD.CustomerOwnerPolicy);
                 options.Conventions.AuthorizeAreaPage("Identity","/Account/register", SD.AdminRole);

@@ -15,7 +15,9 @@ namespace DaliFood.WebApi.ViewModels
         public int ProductTypeId { get; set; }
         public string Description { get; set; }
         public string CustomerName { get; set; }
+        public int CustomerId { get; set; }
         public int Price { get; set; }
+        public int SendingPrice { get; set; }
         public int PriceWithDiscount { get; set; }
         public string ImageAddress { get; set; }
 
@@ -28,6 +30,8 @@ namespace DaliFood.WebApi.ViewModels
             customersProduct.ProductTypeId = _customersproduct.Product.CategorieId;
             customersProduct.Price = _customersproduct.Price;
             customersProduct.CustomerName = _customersproduct.Customer.Name;
+            customersProduct.CustomerId = _customersproduct.Customer.Id;
+            customersProduct.SendingPrice = _customersproduct.Customer.SendingPrice;
             customersProduct.Description = _customersproduct.Description;
             if (_customersproduct.Discount!=null)
             {

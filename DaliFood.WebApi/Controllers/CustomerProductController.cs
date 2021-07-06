@@ -44,7 +44,7 @@ namespace DaliFood.WebApi.Controllers
             }
             if (CustomerId.HasValue)
             {
-                result = result.Where(p => p.ProductTypeId == TypeId);
+                result = result.Where(p => p.CustomerId== CustomerId);
             }
             if (MinPrice.HasValue)
             {
@@ -58,7 +58,7 @@ namespace DaliFood.WebApi.Controllers
             {
                 if (MaxPrice.Value<MinPrice.Value)
                 {
-                    return BadRequest();
+                    return BadRequest("Out Of the Range");
                 }
             }
             var Skipcount = (PageNum - 1) * ItemPerPage;

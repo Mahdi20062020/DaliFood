@@ -31,6 +31,8 @@ namespace DaliFood.Models
         public string Address { get; set; }
         [Display(Name = "شماره شبا")]
         public string ShabaNumber { get; set; }
+        [Display(Name = "هزینه ارسال")]
+        public int SendingPrice { get; set; }
         [Display(Name = "تاریخ ایجاد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }
