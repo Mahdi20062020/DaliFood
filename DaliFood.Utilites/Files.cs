@@ -1,5 +1,6 @@
 ﻿using DaliFood.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +50,11 @@ namespace DaliFood.Utilites
                     {
                         photoId = unitofwork.PhotoRepository.GetAll().Last().Id + 1;
                     }
-                    SavePhoto(ImageUpload, part.PhotoSavedAddress, photoId.ToString() + photo.Extention);        
+                    SavePhoto(ImageUpload, part.PhotoSavedAddress, photoId.ToString() + photo.Extention);
+                    //{
+                    //    unitofwork.PhotoRepository.Delete(photoId);
+                    //    unitofwork.PhotoRepository.Save();
+                    //}
                     unitofwork.PhotoRepository.Save();
                 }
 
@@ -64,18 +69,30 @@ namespace DaliFood.Utilites
         {
             try
             {
-                var savepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot","Images",Savepath, filename);
+                var savepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", Savepath, filename);
                 using (var Filestream = new FileStream(savepath, FileMode.Create))
                 {
                     ImageUpload.CopyTo(Filestream);
                 }
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
             
+        }
+        public static IEnumerable<string> GetPhotoPaths(UnitOfWork unitofwork,int itemId, string partname,string scheme)
+        {
+            var part = unitofwork.PhotoForRepository.GetAll(where:p=>p.Name==partname).FirstOrDefault();
+            var PhotoItems =unitofwork.PhotoRepository.GetAll(where: (p => p.ItemId == itemId && p.PartId == part.Id));
+            List<string> savepathes = new List<string>();
+            foreach (var PhotoItem in PhotoItems)
+            {
+                var savepath = Path.Combine(scheme, part.PhotoSavedAddress, PhotoItem.Id.ToString() + PhotoItem.Extention);
+                savepathes.Add(savepath);
+            }
+            return savepathes;
         }
     }
 }

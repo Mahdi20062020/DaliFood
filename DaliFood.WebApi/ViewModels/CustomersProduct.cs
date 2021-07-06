@@ -17,6 +17,7 @@ namespace DaliFood.WebApi.ViewModels
         public string CustomerName { get; set; }
         public int Price { get; set; }
         public int PriceWithDiscount { get; set; }
+        public string ImageAddress { get; set; }
 
         public static implicit operator CustomersProduct(Models.CustomersProduct _customersproduct) 
         {

@@ -86,17 +86,17 @@ namespace DaliFood.AdminPanel.Pages.CustomersProduct
  
 
             unitofwork.CustomersProductRepository.Save();
-            //if (CustomersProduct.Id != 0 && ImagesUpload.Any())
-            //{
-            //    var photos = unitofwork.PhotoRepository.GetAll(where: p => p.ItemId == CustomersProduct.Id && p.PartId == part.Id);
-            //    Files.DeletePhotos(unitofwork, photos,part);
-            //}
-            //if (ImagesUpload.Any())
-            //{
-            //    var CustomersProduct = unitofwork.CustomersProductRepository.GetAll(where: p => p.Product.Name == CustomersProduct.Product && p.CreateDate == CustomersProduct.CreateDate).Last();
-            //    Files.ImportPhotos(unitofwork, ImagesUpload, CustomersProduct, part);
-            //}
-           
+            if (CustomersProduct.Id != 0 && ImagesUpload.Any())
+            {
+                var photos = unitofwork.PhotoRepository.GetAll(where: p => p.ItemId == CustomersProduct.Id && p.PartId == part.Id);
+                Files.DeletePhotosProduct(unitofwork, photos, part);
+            }
+            if (ImagesUpload.Any())
+            {
+                var CustomerProduct = unitofwork.CustomersProductRepository.GetAll(where: p => p.ProductId == CustomersProduct.ProductId && p.CreateDate == CustomersProduct.CreateDate).Last();
+                Files.ImportPhotosProduct(unitofwork, ImagesUpload, CustomerProduct, part);
+            }
+
             return RedirectToPage("Index");
         }
     }
