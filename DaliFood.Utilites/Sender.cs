@@ -33,4 +33,11 @@ namespace DaliFood.Utilites
         }
        
     }
+    //public class SmsService
+    //{
+    //    public Task SendAsync(string token,string message,string phonenumber)
+    //    {   
+           
+    //    }
+    //}
 }

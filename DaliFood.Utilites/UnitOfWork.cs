@@ -1,5 +1,6 @@
 ﻿using DaliFood.Models;
 using DaliFood.Models.Data;
+using DaliFood.Models.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -137,6 +138,19 @@ namespace DaliFood.Utilites
                     _OrderItemRepository = new Repository<OrderItem>(context);
                 }
                 return _OrderItemRepository;
+            }
+        }
+
+        private Repository<PhoneNumbersToken> _PhoneNumbersTokenRepository;
+        public Repository<PhoneNumbersToken> PhoneNumbersTokenRepository
+        {
+            get
+            {
+                if (_PhoneNumbersTokenRepository == null)
+                {
+                    _PhoneNumbersTokenRepository = new Repository<PhoneNumbersToken>(context);
+                }
+                return _PhoneNumbersTokenRepository;
             }
         }
         public void Dispose()

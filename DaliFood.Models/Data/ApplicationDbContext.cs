@@ -32,6 +32,7 @@ namespace DaliFood.Models.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<PhoneNumbersToken> phoneNumbersTokens { get; set; }
     }
 }
 

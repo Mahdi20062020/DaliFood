@@ -105,5 +105,6 @@ namespace DaliFood.Utilites
            $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
         }
 
+
     }
 }
