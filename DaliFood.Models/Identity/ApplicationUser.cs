@@ -18,7 +18,7 @@ namespace DaliFood.Models.Identity
         [Display(Name = "نام خانوادگی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Family { get; set; }
-
+        public override string Email { get; set; }
         public virtual ApplicationUserDetail ApplicationUserDetail { get; set; }
     }
 }

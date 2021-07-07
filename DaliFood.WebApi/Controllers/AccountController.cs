@@ -5,9 +5,14 @@ using DaliFood.WebApi.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DaliFood.WebApi.Controllers
@@ -17,25 +22,40 @@ namespace DaliFood.WebApi.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signinManager;
         private readonly UnitOfWork unitofwork;
         private readonly ApplicationDbContext _db;
+        private readonly IConfiguration configuration;
+
 
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
              ApplicationDbContext db,
-             UnitOfWork _unitofwork)
+             UnitOfWork _unitofwork,
+             IConfiguration configuration)
         {
             _userManager = userManager;
             _db = db;
             unitofwork = _unitofwork;
+            this.configuration = configuration;
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string Phonenumber)
+        public async Task<IActionResult> Login(string Phonenumber,string password)
         {
-            if (_userManager.Users.Any(p=>p.PhoneNumber==Phonenumber))
+            var users = _userManager.Users;
+            if (users.Any(p=>p.PhoneNumber==Phonenumber))
             {
-                return Ok("باشه");
+                var user = _userManager.Users.Where(p => p.PhoneNumber == Phonenumber).FirstOrDefault();
+                if (user == null)
+                {
+                    return BadRequest(new { Message = "Username or password is incorrect" });
+                }
+                if (!(await _userManager.CheckPasswordAsync(user, password)))
+                    return BadRequest(new { Message = "Username or password is incorrect" });
+                var result = TokenBuilder(user);
+
+                return Ok(new { token = result }); 
             }
             else
             {
@@ -47,9 +67,39 @@ namespace DaliFood.WebApi.Controllers
             }
         }
 
+        private string TokenBuilder(ApplicationUser user)
+        {
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                new Claim(ClaimTypes.GivenName, $"{user.Name} {user.Family}"),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(configuration["Jwt:Issuer"],
+              configuration["Jwt:Issuer"],
+              claims,
+              expires: DateTime.Now.AddDays(30),
+              signingCredentials: creds);
+            var result = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return result;
+        }
+
         private string GenerateToken(string Phonenumber)
         {
-            var token = Guid.NewGuid().ToString().Substring(0, 8);
+            string token;
+            do
+            {
+
+                token = Guid.NewGuid().ToString().Substring(0, 8);
+
+            }
+            while (unitofwork.PhoneNumbersTokenRepository.GetAll(where:p=>p.TokenHash== token.GetHashCode().ToString()).Any());
+           
             //if (unitofwork.PhoneNumbersTokenRepository.GetAll().Any(p=>p.Phonenumber== Phonenumber))
             //{
             //  var Tokens=  unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber== Phonenumber);
@@ -86,7 +136,7 @@ namespace DaliFood.WebApi.Controllers
             return BadRequest("Token Is InValid");
         }
         [HttpPost("Register")]
-        public IActionResult Register( Register model, string phonenumber,int token)
+        public IActionResult Register(Register model, string phonenumber,int token)
         {
             if (ModelState.IsValid)
             {
@@ -97,9 +147,14 @@ namespace DaliFood.WebApi.Controllers
                         Name = model.Name,
                         Family = model.Family,
                         PhoneNumber = phonenumber,
-                        PhoneNumberConfirmed = true
+                        PhoneNumberConfirmed = true,
+                        UserName= model.Name + "_"+ model.Family
                     };
-                    _userManager.CreateAsync(user, model.Password);
+                   var result= _userManager.CreateAsync(user, model.Password);
+                    if (!result.Result.Succeeded)
+                    {
+                        return BadRequest(result.Result.Errors);
+                    }
                     _userManager.AddToRoleAsync(user, SD.NormalUserRole);
                     return Ok(user);
                 }     
