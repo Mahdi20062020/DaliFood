@@ -49,6 +49,10 @@ namespace DaliFood.Utilites
             {
                 await roleManager.CreateAsync(new IdentityRole(SD.CustomerOwnerRole));
             }
+            if (!await roleManager.RoleExistsAsync(SD.NormalUserRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(SD.NormalUserRole));
+            }
             var user = new ApplicationUser()
             {
                 Name = "Admin",

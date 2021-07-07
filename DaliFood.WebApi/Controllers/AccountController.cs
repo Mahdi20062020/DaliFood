@@ -1,6 +1,7 @@
 ﻿using DaliFood.Models.Data;
 using DaliFood.Models.Identity;
 using DaliFood.Utilites;
+using DaliFood.WebApi.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -71,22 +72,39 @@ namespace DaliFood.WebApi.Controllers
             return token;
         }
         [HttpPost("VerifyPhoneNumber")]
-        public IActionResult VerifyPhoneNumber(string phonenumber,string token)
+        public IActionResult VerifyPhoneNumber(string phonenumber, string token)
         {
-            var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.GetHashCode().ToString()&&p.Status==true).FirstOrDefault();
+            var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.GetHashCode().ToString() && p.Status==true).FirstOrDefault();
             if (usertoken !=null)
             {
                 usertoken.IsConfirm = true;
                 usertoken.Status = false;
                 unitofwork.PhoneNumbersTokenRepository.Modifie(usertoken);
                 unitofwork.PhoneNumbersTokenRepository.Save();
-                return Ok();
+                return Ok(usertoken);
             }
             return BadRequest("Token Is InValid");
         }
-        //public IActionResult Register()
-        //{
-
-        //}
+        [HttpPost("Register")]
+        public IActionResult Register( Register model, string phonenumber,int token)
+        {
+            if (ModelState.IsValid)
+            {
+                if (unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString() && p.Status == false && p.IsConfirm==true).Any())
+                {
+                    ApplicationUser user = new ApplicationUser()
+                    {
+                        Name = model.Name,
+                        Family = model.Family,
+                        PhoneNumber = phonenumber,
+                        PhoneNumberConfirmed = true
+                    };
+                    _userManager.CreateAsync(user, model.Password);
+                    _userManager.AddToRoleAsync(user, SD.NormalUserRole);
+                    return Ok(user);
+                }     
+            }
+            return BadRequest();
+        }
     }
 }

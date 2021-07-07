@@ -8,22 +8,22 @@ namespace DaliFood.WebApi.ViewModels
 {
     public class Register
     {
-        //[Display(Name = "شماره تلفن")]
-        //public string PhoneNumber { get; set; }
-        //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        //[StringLength(100, ErrorMessage = "{0} باید کمتر از {2} و بیشتر از {1} باشد", MinimumLength = 6)]
-        //[DataType(DataType.Password)]
-        //[Display(Name = "رمز عبور")]
-        //public string Password { get; set; }
-
-        //[DataType(DataType.Password)]
-        //[Display(Name = "تکرار رمز عبور")]
-        //[Compare("Password", ErrorMessage = "رمز عبور وارده ناهماهنگ است")]
-        public string ConfirmPassword { get; set; }
+      
+    
+        [Display(Name = "رمز عبور")]
         public string Password { get; set; }
-        public string PasswordConfrim { get; set; }
+        [Display(Name = "تکرار رمز عبور")]
+        [Compare("Password", ErrorMessage = "رمز عبور وارده ناهماهنگ است")]
+        public string ConfrimPassword { get; set; }
+        [Display(Name = "نام")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Name { get; set; }
+        [Display(Name = "نام خانوادگی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Family { get; set; }
+        [Display(Name = "شماره تلفن")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [Phone]
         public string Phonenumber { get; set; }
     }
 }
