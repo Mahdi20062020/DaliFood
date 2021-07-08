@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DaliFood.Utilites
@@ -54,5 +55,11 @@ namespace DaliFood.Utilites
             }
             return url;
         }
+        public static bool IsPhoneNumber(string number)
+        {
+            var result = Regex.Match(number, @"(^(09|\+989)[1][1-9]\d{7}$)|(^(09|9)[3][12456]\d{7}$)").Success;
+            return result;
+        }
+
     }
 }

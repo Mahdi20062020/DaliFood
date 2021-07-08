@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -41,10 +42,10 @@ namespace DaliFood.WebApi.Controllers
             this.configuration = configuration;
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string Phonenumber,string password)
+        public async Task<IActionResult> Login(string Phonenumber, string password)
         {
             var users = _userManager.Users;
-            if (users.Any(p=>p.PhoneNumber==Phonenumber))
+            if (users.Any(p => p.PhoneNumber == Phonenumber))
             {
                 var user = _userManager.Users.Where(p => p.PhoneNumber == Phonenumber).FirstOrDefault();
                 if (user == null)
@@ -55,15 +56,11 @@ namespace DaliFood.WebApi.Controllers
                     return BadRequest(new { Message = "Username or password is incorrect" });
                 var result = TokenBuilder(user);
 
-                return Ok(new { token = result }); 
+                return Ok(new { token = result });
             }
             else
             {
-               
-                //Gnerate Token
-                string token = GenerateToken(Phonenumber);
-                return Ok(token);
-
+                return NotFound();
             }
         }
 
@@ -98,8 +95,8 @@ namespace DaliFood.WebApi.Controllers
                 token = Guid.NewGuid().ToString().Substring(0, 8);
 
             }
-            while (unitofwork.PhoneNumbersTokenRepository.GetAll(where:p=>p.TokenHash== token.GetHashCode().ToString()).Any());
-           
+            while (unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.TokenHash == token.GetHashCode().ToString()).Any());
+
             //if (unitofwork.PhoneNumbersTokenRepository.GetAll().Any(p=>p.Phonenumber== Phonenumber))
             //{
             //  var Tokens=  unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber== Phonenumber);
@@ -121,11 +118,11 @@ namespace DaliFood.WebApi.Controllers
             unitofwork.PhoneNumbersTokenRepository.Save();
             return token;
         }
-        [HttpPost("VerifyPhoneNumber")]
+        [HttpPost("Register/VerifyPhoneNumber")]
         public IActionResult VerifyPhoneNumber(string phonenumber, string token)
         {
-            var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.GetHashCode().ToString() && p.Status==true).FirstOrDefault();
-            if (usertoken !=null)
+            var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.GetHashCode().ToString() && p.Status == true).FirstOrDefault();
+            if (usertoken != null)
             {
                 usertoken.IsConfirm = true;
                 usertoken.Status = false;
@@ -133,14 +130,15 @@ namespace DaliFood.WebApi.Controllers
                 unitofwork.PhoneNumbersTokenRepository.Save();
                 return Ok(usertoken);
             }
-            return BadRequest("Token Is InValid");
+            ModelState.AddModelError("Token Validation", "Token Is inValid");
+            return BadRequest(ModelState);
         }
         [HttpPost("Register")]
-        public IActionResult Register(Register model, string phonenumber,int token)
+        public async Task<IActionResult> Register(Register model, string phonenumber, int token)
         {
             if (ModelState.IsValid)
             {
-                if (unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString() && p.Status == false && p.IsConfirm==true).Any())
+                if (unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString() && p.Status == false && p.IsConfirm == true).Any())
                 {
                     ApplicationUser user = new ApplicationUser()
                     {
@@ -148,18 +146,98 @@ namespace DaliFood.WebApi.Controllers
                         Family = model.Family,
                         PhoneNumber = phonenumber,
                         PhoneNumberConfirmed = true,
-                        UserName= model.Name + "_"+ model.Family
+                        UserName = model.Name + "_" + model.Family
                     };
-                   var result= _userManager.CreateAsync(user, model.Password);
-                    if (!result.Result.Succeeded)
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (!result.Succeeded)
                     {
-                        return BadRequest(result.Result.Errors);
+                        return BadRequest(result.Errors);
                     }
-                    _userManager.AddToRoleAsync(user, SD.NormalUserRole);
+                    await _userManager.AddToRoleAsync(user, SD.NormalUserRole);
+                    var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString());
+                    if (unitofwork.PhoneNumbersTokenRepository.Delete(usertoken))
+                    {
+                        unitofwork.PhoneNumbersTokenRepository.Save();
+                    }
                     return Ok(user);
-                }     
+                }
             }
             return BadRequest();
         }
+
+        [HttpPost("Register/SetPhoneNumber")]
+        public IActionResult SetPhoneNumber(string phonenumber)
+        {
+            if (Utilites.Utilites.IsPhoneNumber(phonenumber))
+            {
+                var users = _userManager.Users;
+                if (!users.Any(p => p.PhoneNumber == phonenumber))
+                {
+                    //Gnerate Token
+                    string token = GenerateToken(phonenumber);
+                    return Ok(token);
+                }
+                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is Exist");
+            }
+            else
+            {
+                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is InCorrect");
+            }
+            return BadRequest(ModelState);
+        }
+
+        [HttpPost("Register/ForgetPassword")]
+        public IActionResult ForgetPassword(string phonenumber)
+        {
+            if (Utilites.Utilites.IsPhoneNumber(phonenumber))
+            {
+                var users = _userManager.Users;
+                if (users.Any(p => p.PhoneNumber == phonenumber))
+                {
+                    //Gnerate Token
+                    string token = GenerateToken(phonenumber);
+                    return Ok(token);
+                }
+                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is Not Exist");
+            }
+            else
+            {
+                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is InCorrect");
+            }
+            return BadRequest(ModelState);
+        }
+        [HttpPost("Register/SetPassword")]
+        public async Task<IActionResult> SetPassword(SetPassword model,[Phone(ErrorMessage ="شماره تلفن وارد شده نامعتبر است")] string phonenumber, int token)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Utilites.Utilites.IsPhoneNumber(phonenumber))
+                {
+                if (unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString() && p.Status == false && p.IsConfirm == true).Any())
+                {
+                    var user = _userManager.Users.Where(p => p.PhoneNumber == phonenumber).FirstOrDefault();
+
+                    var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var result = await _userManager.ResetPasswordAsync(user, resetToken, model.Password);
+                    if (!result.Succeeded)
+                    {
+                        return BadRequest(result.Errors);
+                    }
+                    var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString());
+                    if (unitofwork.PhoneNumbersTokenRepository.Delete(usertoken))
+                    {
+                        unitofwork.PhoneNumbersTokenRepository.Save();
+                    }
+                    return Ok(user);
+                }
+                }
+                else
+                {
+                    ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is InCorrect");
+                }
+            }
+            return BadRequest(ModelState);
+        }
+
     }
 }

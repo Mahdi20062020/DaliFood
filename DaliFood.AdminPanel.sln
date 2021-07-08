@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.AdminPanelML.Model
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.AdminPanelML.ConsoleApp", "DaliFood.AdminPanelML.ConsoleApp\DaliFood.AdminPanelML.ConsoleApp.csproj", "{3D250F30-0ABB-450A-AE03-9F489AEF8F07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaliFood.WebApi", "DaliFood.WebApi\DaliFood.WebApi.csproj", "{7ACAD6A1-46B5-44BF-942F-36B910FF0945}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaliFood.WebApi", "DaliFood.WebApi\DaliFood.WebApi.csproj", "{7ACAD6A1-46B5-44BF-942F-36B910FF0945}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
