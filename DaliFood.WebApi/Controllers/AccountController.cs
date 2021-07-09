@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace DaliFood.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class AccountController : ControllerBase
     {

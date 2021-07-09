@@ -13,7 +13,7 @@ namespace DaliFood.Models
         public int Id { get; set; }
         [Display(Name = "کاربر")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Display(Name = "وضعیت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public bool Status { get; set; }
@@ -26,7 +26,7 @@ namespace DaliFood.Models
         public virtual IEnumerable<OrderItem> OrderItem { get; set; }
         public Order()
         {
-
+            
         }
     }
 }
