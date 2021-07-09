@@ -27,8 +27,8 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
         }
         // GET: api/<OrderController>
-        [HttpGet("AddToCart")]
-        public IActionResult GetAddToCart(int CustomerProductId,int Count,int? OrderId)
+        [HttpPost("AddToCart")]
+        public IActionResult PostAddToCart(int CustomerProductId,int Count,int? OrderId)
         {
             var customerproduct = unitofwork.CustomersProductRepository.GetById(CustomerProductId);
             var discount = unitofwork.DiscountRepository.GetAll(p => p.CustomersProductId == CustomerProductId).FirstOrDefault();
@@ -38,16 +38,13 @@ namespace DaliFood.WebApi.Controllers
             }
             Models.Order order;
             if (OrderId.HasValue)
-            {
-                
+            {              
                  order = unitofwork.OrderRepository.GetAll(where: p => p.Id == OrderId && p.Status == true).FirstOrDefault();
                 if (order == null)
                     return NotFound();
-              
             }
             else
             {
-                
                 var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
                 order = new Models.Order()
                 {
@@ -55,15 +52,12 @@ namespace DaliFood.WebApi.Controllers
                     UserId = userId,
                     TotalPrice = 0,
                     CreateDate = DateTime.Now,
-
                 };
                 if (unitofwork.OrderRepository.Create(order))
                 {
                     unitofwork.OrderRepository.Save();
                 }
-               
             }
-          
             var orderitem = new Models.OrderItem()
             {
                 Count = Count,
@@ -89,20 +83,16 @@ namespace DaliFood.WebApi.Controllers
                 {
                     unitofwork.OrderRepository.Save();
                     return Ok();
-
                 }
                 else
                 {
                     return BadRequest();
                 }
-
             }
             else
             {
                 return BadRequest();
             }
-           
-
         }
         [HttpGet("Orders")]
         public  IActionResult GetOrders(int ItemPerPage, int PageNum)
