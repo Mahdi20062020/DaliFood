@@ -14,6 +14,9 @@ namespace DaliFood.Models
         [Display(Name = "کاربر")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string UserId { get; set; }
+        [Display(Name = "آدرس")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public int AddressId { get; set; }
         [Display(Name = "وضعیت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public bool Status { get; set; }

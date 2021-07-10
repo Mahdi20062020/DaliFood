@@ -153,6 +153,19 @@ namespace DaliFood.Utilites
                 return _PhoneNumbersTokenRepository;
             }
         }
+
+        private Repository<Address> _AddressRepository;
+        public Repository<Address> AddressRepository
+        {
+            get
+            {
+                if (_AddressRepository == null)
+                {
+                    _AddressRepository = new Repository<Address>(context);
+                }
+                return _AddressRepository;
+            }
+        }
         public void Dispose()
         {
             Dispose(true);
