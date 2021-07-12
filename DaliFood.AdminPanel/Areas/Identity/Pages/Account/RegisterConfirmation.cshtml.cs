@@ -45,7 +45,6 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
             Email = email;
             // Once you add a real email sender, you should remove this code that lets you confirm the account
            
-            await _sender.SendConfirmationEmail(_userManager, user, Url, Request);
 
 
 
