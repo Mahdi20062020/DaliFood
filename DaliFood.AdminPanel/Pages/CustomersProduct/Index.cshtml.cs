@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DaliFood.AdminPanel.Pages.CustomersProduct
 {
-    //[Authorize(Policy =SD.CustomerPolicy)]
     public class IndexModel : PageModel
     {
         readonly UnitOfWork unitofwork;

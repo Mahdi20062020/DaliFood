@@ -71,7 +71,6 @@ namespace DaliFood.AdminPanel
                 options.AddPolicy(SD.ProductEditorPolicy, policy => {policy.RequireRole(SD.ProductEditorRole, SD.AdminRole); });
                 options.AddPolicy(SD.AdminPolicy, policy => {policy.RequireRole(SD.AdminRole); });
                 options.AddPolicy(SD.CustomerOwnerPolicy, policy => {policy.RequireRole(SD.CustomerOwnerRole); });
-             
             });
         }
 
