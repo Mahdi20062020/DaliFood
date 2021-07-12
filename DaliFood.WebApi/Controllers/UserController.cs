@@ -45,8 +45,7 @@ namespace DaliFood.WebApi.Controllers
                 unitofwork.AddressRepository.Create(Address);
                 unitofwork.AddressRepository.Save();
             }
-            return View();
+            return Ok();
         }
-        
     }
 }

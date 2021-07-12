@@ -53,6 +53,14 @@ namespace DaliFood.WebApi.Controllers
                     TotalPrice = 0,
                     CreateDate = DateTime.Now,
                 };
+                if (unitofwork.OrderRepository.GetAll(p=>p.UserId==userId).Any())
+                {
+                    order.AddressId = unitofwork.OrderRepository.GetAll(p => p.UserId == userId).Last().AddressId;
+                }
+                else
+                {
+                    order.AddressId = unitofwork.AddressRepository.GetAll(p => p.UserId == userId).First().Id;
+                }
                 if (unitofwork.OrderRepository.Create(order))
                 {
                     unitofwork.OrderRepository.Save();
@@ -114,5 +122,55 @@ namespace DaliFood.WebApi.Controllers
             }
             return Ok(ordersforshow);
         }
+        [HttpGet("Orders/{Id}")]
+        public IActionResult GetOrder(int Id)
+        {
+            var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+            var order = unitofwork.OrderRepository.GetAll(where: p => p.UserId == userId &&p.Id==Id).FirstOrDefault();
+            foreach (var orderitem in order.OrderItem)
+            {
+                orderitem.CustomersProduct = unitofwork.CustomersProductRepository.GetById(orderitem.CustomerProductId);
+                orderitem.CustomersProduct.Product = unitofwork.ProductRepository.GetById(orderitem.CustomersProduct.ProductId);
+            }
+            ViewModels.Order orderforshow = order;
+            return Ok(orderforshow);
+        }
+        [HttpGet("Orders/{Id}/ChangeAddress")]
+        public IActionResult PutOrderAddress(Address model,int Id)
+        {
+            var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+            var order = unitofwork.OrderRepository.GetAll(where: p => p.UserId == userId && p.Id == Id).FirstOrDefault();
+            var Address = unitofwork.AddressRepository.GetAll(where: p => p.Latitude == model.Latitude && p.Longitude == model.Longitude).FirstOrDefault();
+            if (Address==null)
+            { 
+                if (ModelState.IsValid)
+                {
+                    if (model.Latitude == 0.ToString())
+                    {
+                        model.Latitude = null;
+                    }
+                    if (model.Longitude == 0.ToString())
+                    {
+                        model.Longitude = null;
+                    }           
+                    var address = new Models.Identity.Address()
+                    {
+                        TextAddress = model.TextAddress,
+                        Latitude = model.Latitude,
+                        Longitude = model.Longitude,
+                        UserId = userId
+                    };
+                    unitofwork.AddressRepository.Create(Address);
+                    unitofwork.AddressRepository.Save();
+                }
+                Address = unitofwork.AddressRepository.GetAll(where: p => p.Latitude == model.Latitude && p.Longitude == model.Longitude).FirstOrDefault();
+            }
+            order.AddressId = Address.Id;
+            unitofwork.OrderRepository.Modifie(order);
+            unitofwork.OrderRepository.Save();
+            return Ok();
+        }
+
     }
+    
 }
