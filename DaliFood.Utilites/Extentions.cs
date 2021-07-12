@@ -33,7 +33,6 @@ namespace DaliFood.Utilites
 
             if (!PhotoFors.Any(p => p.Name == SD.PhotoForCustomersProducts.Name))
                 unitOfWork.PhotoForRepository.Create(SD.PhotoForCustomersProducts);
-
             if (PhotoFors.Count() < 3)
                 unitOfWork.PhotoForRepository.Save();
 
@@ -53,17 +52,20 @@ namespace DaliFood.Utilites
             {
                 await roleManager.CreateAsync(new IdentityRole(SD.NormalUserRole));
             }
-            var user = new ApplicationUser()
+            if (!userManager.Users.Any())
             {
-                Name = "Admin",
-                UserName= "hoseinpoor2006@gmail.com",
-                Email = "hoseinpoor2006@gmail.com",
-                Family = "Admin",
-                EmailConfirmed = true,
-                PhoneNumber = "09225457958"
-            };
-          await  userManager.CreateAsync(user, "@@2021Admin@@2021Admin@@1");
-            await userManager.AddToRoleAsync(user, SD.AdminRole);
+                var user = new ApplicationUser()
+                {
+                    Name = "Admin",
+                    UserName = "hoseinpoor2006@gmail.com",
+                    Email = "hoseinpoor2006@gmail.com",
+                    Family = "Admin",
+                    EmailConfirmed = true,
+                    PhoneNumber = "09225457958"
+                };
+                await userManager.CreateAsync(user, "@@2021Admin@@2021Admin@@1");
+                await userManager.AddToRoleAsync(user, SD.AdminRole);
+            }
 
 
         }

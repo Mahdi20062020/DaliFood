@@ -29,7 +29,7 @@ namespace DaliFood.AdminPanel.Pages
         public async Task OnGet()
         {
             Then = DateTime.Now;
-           await unitofwork.Configure(roleManager, userManager);
+            await unitofwork.Configure(roleManager, userManager);
             Now = DateTime.Now;
         }
     }
