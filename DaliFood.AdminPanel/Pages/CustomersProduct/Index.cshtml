@@ -1,43 +1,67 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.CustomersProduct.IndexModel
 @{
-}
-<div class="container">
-<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن غذا جدید</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">نام</th>
-                <th scope="col">رستوران</th>
-            
-                <th scope="col">قیمت</th>
-                <th scope="col">قیمت با اعمال تخفیف</th>
-                <th scope="col">#</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.CustomersProduct)
-            {
-            <tr>
-                <td>@item.Product.Name</td>
-                <td>@item.Customer.Name</td>
 
-                <td>@item.Price</td>
-                @if (item.Discount != null)
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت غذای مشتریان";
+
+}
+
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست رستوران ها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <input class="form-control" type="search" id="GridSearch" placeholder="جست و جو" />
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">نام</th>
+                    <th scope="col">رستوران</th>
+
+                    <th scope="col">قیمت</th>
+                    <th scope="col">قیمت با اعمال تخفیف</th>
+                    <th scope="col">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CustomersProduct)
                 {
-                    <td>@item.Price.UseDiscount(item.Discount.DiscountRate)</td>
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Customer.Name</td>
+
+                        <td>@item.Price</td>
+                        @if (item.Discount != null)
+                        {
+                            <td>@item.Price.UseDiscount(item.Discount.DiscountRate)</td>
+                        }
+                        else
+                        {
+                            <td>@item.Price</td>
+                        }
+                        <td>
+                            <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                            <a asp-page="discount/upsert" asp-route-Id="@item.Id" class="btn btn-primary">تخفیف</a>
+                            <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                        </td>
+                    </tr>
                 }
-                else
-                {
-                    <td>@item.Price</td>
-                }
-                <td>
-                    <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
-                    <a asp-page="discount/upsert" asp-route-Id="@item.Id" class="btn btn-primary">تخفیف</a>
-                    <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
+
+            </tbody>
+        </table>
+    </div>
 </div>
+
+
+

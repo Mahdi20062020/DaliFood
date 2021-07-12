@@ -1,20 +1,14 @@
+using DaliFood.Models.Data;
+using DaliFood.Models.Identity;
+using DaliFood.Utilites;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DaliFood.Utilites;
-using DaliFood.Models.Data;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using DaliFood.Models.Identity;
 
 namespace DaliFood.AdminPanel
 {
@@ -48,29 +42,30 @@ namespace DaliFood.AdminPanel
 
 
              });
-           
-            
+
+
             services.AddScoped<UnitOfWork, UnitOfWork>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddControllersWithViews();
-            services.AddRazorPages(options=>
+            services.AddRazorPages(options =>
             {
-                options.Conventions.AuthorizeFolder("/CustomersProduct",SD.CustomerPolicy);
-                options.Conventions.AuthorizeFolder("/Product",SD.ProductEditorPolicy);
+                options.Conventions.AuthorizeFolder("/CustomersProduct", SD.CustomerPolicy);
+                options.Conventions.AuthorizeFolder("/Product", SD.ProductEditorPolicy);
                 options.Conventions.AuthorizeFolder("/ProductCategorie", SD.ProductEditorPolicy);
                 options.Conventions.AuthorizePage("/Order/Index", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/CustomerType", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/Customer/Index", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/Order/Item", SD.CustomerPolicy);
                 options.Conventions.AuthorizeFolder("/Customer/Account/Manage", SD.CustomerOwnerPolicy);
-                options.Conventions.AuthorizeAreaPage("Identity","/Account/register", SD.AdminRole);
+                options.Conventions.AuthorizeAreaPage("Identity", "/Account/register", SD.AdminRole);
             });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(SD.CustomerPolicy, policy => { policy.RequireClaim(SD.CustomerId);    policy.RequireRole(SD.CustomerOwnerRole, SD.AdminRole); });
-                options.AddPolicy(SD.ProductEditorPolicy, policy => {policy.RequireRole(SD.ProductEditorRole, SD.AdminRole); });
-                options.AddPolicy(SD.AdminPolicy, policy => {policy.RequireRole(SD.AdminRole); });
-                options.AddPolicy(SD.CustomerOwnerPolicy, policy => {policy.RequireRole(SD.CustomerOwnerRole); });
+                options.AddPolicy(SD.CustomerPolicy, policy => { policy.RequireClaim(SD.CustomerId); policy.RequireRole(SD.CustomerOwnerRole, SD.AdminRole); });
+                options.AddPolicy(SD.ProductEditorPolicy, policy => { policy.RequireRole(SD.ProductEditorRole, SD.AdminRole); });
+                options.AddPolicy(SD.AdminPolicy, policy => { policy.RequireRole(SD.AdminRole); });
+                options.AddPolicy(SD.CustomerOwnerPolicy, policy => { policy.RequireRole(SD.CustomerOwnerRole); });
+
             });
         }
 
@@ -85,8 +80,8 @@ namespace DaliFood.AdminPanel
             else
             {
                 app.UseExceptionHandler("/Error/Er400");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
             app.UseStatusCodePagesWithReExecute("/Error/Er{0}");
             app.UseHttpsRedirection();

@@ -3,94 +3,119 @@
 @{
     var Product = (SelectList)ViewData["ProductId"];
     var Customer = (SelectList)ViewData["CustomerId"];
+    ViewData["Title"] = "مدیریت غذای فروشنده ها";
+    ViewData["Section"] = "خانه";
 }
-<br />
-<h2 class="text-info">
-    @if (Model.CustomersProduct.Id == 0)
-    {
-        <span>افزودن غذا جدید</span>
-    }
-    else
-    {
-        <span>ویرایش غذا</span>
-    }
 
-
-</h2>
-<hr />
-<form method="post" enctype="multipart/form-data">
-    <div class="border p-3">
-        @if (Model.CustomersProduct.Id != 0)
+<div class="card">
+    <div class="card-header header-elements-inline">
+        @if (Model.CustomersProduct.Id == 0)
         {
-            <input type="hidden" asp-for="CustomersProduct.Id" />
-            <input type="hidden" asp-for="CustomersProduct.CreateDate" />
-
+            <h5 class="card-title">افزودن غذا جدید</h5>
         }
-          <div class="form-group row">
-            <div class="col-2 text-right">
-                غذا :
-            </div>
-            <div class="col-5">
-        <select asp-for="CustomersProduct.ProductId" class="m-t-10 form-control Koodak " asp-items="Product"></select>
-                <span asp-validation-for="CustomersProduct.ProductId"></span>
-            </div>
-
-        </div>
-          <div class="form-group row">
-            <div class="col-2 text-right">
-                فروشنده :
-            </div>
-            <div class="col-5">
-        <select asp-for="CustomersProduct.CustomerId" class="m-t-10 form-control Koodak " asp-items="Customer"></select>
-                <span asp-validation-for="CustomersProduct.CustomerId"></span>
-            </div>
-
-        </div>
-      
-        <div class="form-group row">
-            <div class="col-2 text-right">
-                توضیحات:
-            </div>
-            <div class="col-5">
-                <input asp-for="CustomersProduct.Description" class="form-control" />
-                <span asp-validation-for="CustomersProduct.Description"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-2 text-right">
-                قیمت:
-            </div>
-            <div class="col-5">
-                <input type="number" asp-for="CustomersProduct.Price" class="form-control" />
-                <span asp-validation-for="CustomersProduct.Price"></span>
-            </div>
-        </div>
-         <div class="form-group row">
-            <div class="col-2 text-right">
-                عکس ها :
-            </div>
-            <div class="col-5">
-                <input asp-for="ImagesUpload" class="form-control" />
-                <span asp-validation-for="ImagesUpload"></span>
-            </div>
-
-        </div>
-        <div class="form-group row">
-            <div class="col-5 offset-2">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="submit" class="btn btn-info form-control" value="ثبت" />
-                    </div>
-                    <div class="col-6">
-                        <a asp-page="Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
-                    </div>
-                </div>
+        else
+        {
+            <h5 class="card-title">ویرایش غذا</h5>
+        }
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
             </div>
         </div>
     </div>
-</form>
 
-@section Scripts
-{
-<partial name="_ValidationScriptsPartial" />
-}
+    <div class="card-body">
+        <form role="form" method="post">
+            @if (Model.CustomersProduct.Id != 0)
+            {
+                <input type="hidden" asp-for="CustomersProduct.Id" />
+                <input type="hidden" asp-for="CustomersProduct.CreateDate" />
+
+            }
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i>غذا ها</legend>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">عنوان غذا:</label>
+                            <div class="col-lg-9">
+                                <select class="form-control" asp-for="CustomersProduct.ProductId" asp-items="Product"></select>
+                                <span asp-validation-for="CustomersProduct.ProductId" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">فروشنده:</label>
+                            <div class="col-lg-9">
+                                <select class="form-control" asp-for="CustomersProduct.CustomerId" asp-items="Customer"></select>
+                                <span asp-validation-for="CustomersProduct.CustomerId" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">توضیحات</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" placeholder="توضیحات را اینجا وارد کنید" asp-for="CustomersProduct.Description">
+                                <span asp-validation-for="CustomersProduct.Description" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">قیمت</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control numbersOnly" placeholder="قیمت را اینجا وارد کنید" asp-for="CustomersProduct.Price">
+                                <span asp-validation-for="CustomersProduct.Price" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row" style="padding-bottom:20px">
+                            <div class="col-md-6">
+                                <label class="col-lg-3 col-form-label">تصویر :</label>
+                                <div class="col-lg-3">
+                                    @Html.EditorFor(x => x.ImagesUpload, new { @class = "form-input-styled" })
+                                    <span asp-validation-for="ImagesUpload" class="field-validation-error text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <input type="submit" class="btn btn-success" value="تایید"><i class="icon-paperplane ml-2"></i>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/PanelTheme/global_assets/js/plugins/forms/selects/select2.min.js"></script>
+<script src="~/PanelTheme/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+<script src="~/PanelTheme/global_assets/js/demo_pages/form_layouts.js"></script>
+<script src="~/PanelTheme/global_assets/js/plugins/editors/summernote/summernote.min.js"></script>
+<script src="~/PanelTheme/global_assets/js/demo_pages/editor_summernote.js"></script>
+
+<script>
+    jQuery(document).ready(function () {
+        $(".persiandate").persianDatepicker();
+    });
+
+    $('.numbersOnly').keyup(function () {
+        if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+            this.value = this.value.replace(/[^0-9\.]/g, '');
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

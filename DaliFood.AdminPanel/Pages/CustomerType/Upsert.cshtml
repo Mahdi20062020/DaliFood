@@ -2,55 +2,82 @@
 @model DaliFood.AdminPanel.Pages.CustomerType.UpsertModel
 @{
     string Title = "نوع";
+    ViewData["Title"] = "مدیریت گروهبندی مشتریان";
+    ViewData["Section"] = "خانه";
 }
-<br />
-<h2 class="text-info">
-    @if (Model.CustomerType.Id == 0)
-    {
-    <span>افزودن @Title جدید</span>
-    }
-    else
-    {
-<span>ویرایش @Title</span>
-    }
 
 
-</h2>
-<hr />
-<form method="post">
-    <div class="border p-3">
-        <div class="form-group row">
+<div class="card">
+    <div class="card-header header-elements-inline">
+        @if (Model.CustomerType.Id == 0)
+        {
+            <h5 class="card-title">افزودن گروه جدید</h5>
+        }
+        else
+        {
+            <h5 class="card-title">ویرایش گروه</h5>
+        }
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <form role="form" method="post">
             @if (Model.CustomerType.Id != 0)
             {
                 <input type="hidden" asp-for="CustomerType.Id" />
                 <input type="hidden" asp-for="CustomerType.CreateDate" />
 
             }
-            <div class="col-2 text-right">
-                نام :
-            </div>
-            <div class="col-5">
-                <input asp-for="CustomerType.Name" class="form-control" />
-                <span asp-validation-for="CustomerType.Name"></span>
-            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i>ایجاد/ویرایش گروه مشتریان </legend>
 
-        </div>
-        <div class="form-group row">
-            <div class="col-5 offset-2">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="submit" class="btn btn-info form-control" value="ثبت" />
-                    </div>
-                    <div class="col-6">
-                        <a asp-page="Index" class="btn btn-outline-success form-control">بازگشت به لیست</a>
-                    </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">عنوان گروه</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" placeholder="عنوان گروه را اینجا وارد کنید" asp-for="CustomerType.Name">
+                                <span asp-validation-for="CustomerType.Name" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+
+                    </fieldset>
                 </div>
             </div>
-        </div>
+
+            <div class="text-right">
+                <input type="submit" class="btn btn-success" value="تایید"><i class="icon-paperplane ml-2"></i>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/PanelTheme/global_assets/js/plugins/forms/selects/select2.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/demo_pages/form_layouts.js"></script>
+    <script src="~/PanelTheme/global_assets/js/plugins/editors/summernote/summernote.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/demo_pages/editor_summernote.js"></script>
+
+    <script>
+        jQuery(document).ready(function () {
+            $(".persiandate").persianDatepicker();
+        });
+
+        $('.numbersOnly').keyup(function () {
+            if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
+            }
+        });
+    </script>
 }
+

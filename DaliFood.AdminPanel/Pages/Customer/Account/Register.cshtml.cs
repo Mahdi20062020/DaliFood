@@ -99,7 +99,6 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
 
             [Display(Name = "شماره تلفن")]
-            [Phone]
             public string PhoneNumber { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [StringLength(100, ErrorMessage = "{0} باید کمتر از {2} و بیشتر از {1} باشد", MinimumLength = 6)]

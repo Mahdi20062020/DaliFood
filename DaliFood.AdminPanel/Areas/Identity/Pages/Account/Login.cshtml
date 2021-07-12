@@ -1,11 +1,131 @@
 ﻿@page
 @model LoginModel
 
+@{Layout = null; }
+
 @{
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
+
+<!DOCTYPE html>
+
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>ورود به حساب کاربری</title>
+
+    <!-- Global stylesheets -->
+    <link href="~/FarsiFont/FarsiFonts.css" rel="stylesheet" />
+    <link href="~/PanelTheme/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" />
+    <link href="~/PanelTheme/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/PanelTheme/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="~/PanelTheme/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+    <link href="~/PanelTheme/assets/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="~/PanelTheme/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+    <style>
+        .bg-blured {
+            background-image: url("/PanelTheme/global_assets/images/backgrounds/LoginBack.jpg") !important;
+            background-size: cover;
+        }
+    </style>
+
+    <!-- Core JS files -->
+    <script src="~/PanelTheme/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/plugins/loaders/blockui.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/plugins/ui/ripple.min.js"></script>
+    <script src="~/PanelTheme/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+    <script src="~/PanelTheme/assets/js/app.js"></script>
+    <script src="~/PanelTheme/global_assets/js/demo_pages/login.js"></script>
+    <script src="~/PanelTheme/global_assets/js/demo_pages/login_validation.js"></script>
+    <!-- /core JS files -->
+</head>
+<body class="bg-blured">
+
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Content area -->
+            <div class="content d-flex justify-content-center align-items-center" style="position:relative">
+
+                <!-- Login card -->
+                <form id="account" method="post">
+                    <div class="card mb-0" style="width: 700px; position: absolute; right: 50%; top: 50%; transform: translate(50%, -50%);">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="icon-people icon-2x text-warning-400 border-warning-400 border-3 rounded-round p-3 mb-3 mt-1"></i>
+                                <h5 class="mb-0">ورود به حساب کاربری</h5>
+                                <span class="d-block text-muted">اطلاعات شما</span>
+                            </div>
+
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="text" class="form-control" placeholder="ایمیل" asp-for="Input.UserName">
+                                <span asp-validation-for="Input.UserName" class="field-validation-error text-danger"></span>
+                                <div class="form-control-feedback">
+                                    <i class="icon-user text-muted"></i>
+                                </div>
+                            </div>
+                            <label></label>
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="password" asp-for="Input.Password" class="form-control" placeholder="گذرواژه">
+                                <span asp-validation-for="Input.Password" class="field-validation-error text-danger"></span>
+                                <div class="form-control-feedback">
+                                    <i class="icon-lock2 text-muted"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group d-flex align-items-center">
+                                <div class="form-check mb-0">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" asp-for="Input.RememberMe" class="form-input-styled" checked data-fouc>
+                                        به خاطر بسپار
+                                    </label>
+                                </div>
+                                <a href="login_password_recover.html" class="ml-auto">گذرواژه را فراموش کردم</a>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block">ورود <i class="icon-circle-left2 ml-2"></i></button>
+                            </div>
+                            <span class="text-danger">@ViewBag.Error</span>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            @*<div class="form-group text-center text-muted content-divider">
+            <span class="px-2">Don't have an account?</span>
+        </div>
+
+        <div class="form-group">
+            <a href="#" class="btn btn-light btn-block">Sign up</a>
+        </div>*@
+
+                            <span class="form-text text-center text-muted">
+                                با ادامه روند شما با قوانین و مقررات سایت موافقت نموده اید
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <!-- /login card -->
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+    <!-- /page content -->
+</body>
+</html>
+
+
+
+@*<h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-4">
         <section>
@@ -78,7 +198,7 @@
             }
         </section>
     </div>
-</div>
+</div>*@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

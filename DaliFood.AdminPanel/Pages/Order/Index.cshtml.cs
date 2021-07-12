@@ -20,7 +20,8 @@ namespace DaliFood.AdminPanel.Pages.Order
 
         public void OnGet()
         {
-            Order = unitofwork.OrderRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            Order = unitofwork
+                .OrderRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
             
         }
     }
