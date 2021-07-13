@@ -34,6 +34,9 @@ namespace DaliFood.Models.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<PhoneNumbersToken> phoneNumbersTokens { get; set; }
         public DbSet<Address> Address { get; set; }
+        public DbSet<Deposit> Deposit { get; set; }
+        public DbSet<Withdraw> Withdraw { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
     }
 }
 

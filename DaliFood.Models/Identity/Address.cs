@@ -20,7 +20,7 @@ namespace DaliFood.Models.Identity
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string TextAddress { get; set; }
 
-        [Display(Name = "عرص جغرافیایی")]
+        [Display(Name = "عرض جغرافیایی")]
         public string Latitude { get; set; }
 
         [Display(Name = "طول جغرافیایی")]

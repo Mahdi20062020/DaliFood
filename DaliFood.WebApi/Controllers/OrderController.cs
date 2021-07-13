@@ -50,7 +50,7 @@ namespace DaliFood.WebApi.Controllers
                 {
                     Status = true,
                     UserId = userId,
-                    TotalPrice = 0,
+                    Amount = 0,
                     CreateDate = DateTime.Now,
                 };
                 if (unitofwork.OrderRepository.GetAll(p=>p.UserId==userId).Any())
@@ -86,7 +86,7 @@ namespace DaliFood.WebApi.Controllers
             if (unitofwork.OrderItemRepository.Create(orderitem))
             {
                 unitofwork.OrderItemRepository.Save();
-                order.TotalPrice += orderitem.Price*Count;
+                order.Amount += orderitem.Price*Count;
                 if (unitofwork.OrderRepository.Modifie(order))
                 {
                     unitofwork.OrderRepository.Save();
