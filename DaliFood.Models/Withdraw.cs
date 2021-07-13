@@ -23,7 +23,8 @@ namespace DaliFood.Models
         public int Status { get; set; }
         [Display(Name = "تاریخ برداشت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public DateTime DepositDate { get; set; }    
+        public DateTime DepositDate { get; set; }
+        public virtual Transaction Transaction { get; set; }
         public Withdraw()
         {
 

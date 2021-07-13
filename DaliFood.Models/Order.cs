@@ -19,6 +19,8 @@ namespace DaliFood.Models
         public bool Status { get; set; }
 
         public virtual IEnumerable<OrderItem> OrderItem { get; set; }
+        public virtual Transaction Transaction { get; set; }
+      
         public Order()
         {
             
