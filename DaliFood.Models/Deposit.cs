@@ -31,6 +31,7 @@ namespace DaliFood.Models
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime DepositDate { get; set; }
 
+        public virtual Transaction Transaction { get; set; }
         public Deposit()
         {
 
