@@ -31,7 +31,7 @@ namespace DaliFood.WebApi.ViewModels
             order.Id = _order.Id;
             order.UserId = _order.UserId;
             order.Status = _order.Status;
-            order.TotalPrice = _order.TotalPrice;
+            order.TotalPrice = _order.Amount;
             order.CreateDate = _order.CreateDate;
             foreach (var item in _order.OrderItem)
             {

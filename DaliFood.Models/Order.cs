@@ -7,25 +7,17 @@ using System.Threading.Tasks;
 
 namespace DaliFood.Models
 {
-    public class Order
+    public class Order:TransactionItem
     {
-        [Key]
-        public int Id { get; set; }
-        [Display(Name = "کاربر")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string UserId { get; set; }
+      
         [Display(Name = "آدرس")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int AddressId { get; set; }
+
         [Display(Name = "وضعیت")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public bool Status { get; set; }
-        [Display(Name = "قیمت کل")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public int TotalPrice { get; set; }
-        [Display(Name = "تاریخ ایجاد")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public DateTime CreateDate { get; set; }
+
         public virtual IEnumerable<OrderItem> OrderItem { get; set; }
         public Order()
         {

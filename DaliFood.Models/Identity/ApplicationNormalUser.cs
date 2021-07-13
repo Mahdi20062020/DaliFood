@@ -13,5 +13,9 @@ namespace DaliFood.Models.Identity
         [Display(Name = "آدرس")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Address { get; set; }
+
+        [Display(Name = "کیف پول")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string Wallet { get; set; }
     }
 }
