@@ -39,14 +39,18 @@ namespace DaliFood.AdminPanel.Pages.Financial
             }
 
         }
-        public ActionResult OnGetConfirm(int Id)
+        public ActionResult OnGetConfirm(int Id, int Status)
         {
             var Deposit = unitofwork.DepositRepository.GetById(Id);
-            Deposit.Status = 1;
-            unitofwork.DepositRepository.Modifie(Deposit);
-            unitofwork.DepositRepository.Save();
-            return RedirectToPage("Deposit");
-
+            Deposit.Status = Status;
+            if (unitofwork.DepositRepository.Modifie(Deposit))
+            {
+                if (unitofwork.DepositRepository.Save())
+                {
+                    return RedirectToPage("Deposit");
+                }
+            }
+            return BadRequest();
         }
     }
 }

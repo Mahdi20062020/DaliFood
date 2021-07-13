@@ -26,5 +26,11 @@ namespace DaliFood.Models
         [Display(Name = "تاریخ ایجاد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime CreateDate { get; set; }
+
+        public virtual Transaction Transaction { get; set; }
+        public TransactionItem()
+        {
+
+        }
     }
 }

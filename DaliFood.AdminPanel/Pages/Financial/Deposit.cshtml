@@ -1,30 +1,28 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.Financial.DepositModel
 @{
-}
-@{
 
     ViewData["Title"] = "لیست";
     ViewData["Section"] = "مدیریت غذای مشتریان";
-
 }
 
 <div class="card">
     <div class="card-header header-elements-inline">
-        <h5 class="card-title">لیست رستوران ها</h5>
+        <h5 class="card-title">لیست واریزی ها</h5>
         <div class="header-elements">
             <div class="list-icons">
                 <a class="list-icons-item" data-action="collapse"></a>
                 <a class="list-icons-item" data-action="reload"></a>
                 <a class="list-icons-item" data-action="remove"></a>
                 <form method="get">
-                    <input  type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
-                    <input  type="checkbox" name="SearchStatus" value="0"  placeholder="در حال بررسی" />
-                    <input  type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
-                    <input  type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
+                    <input type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
+                    <input type="checkbox" name="SearchStatus" id="SearchStatus" value="0" />
+                    <label for="SearchStatus">در حال بررسی</label>
+                    <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
+                    <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
                     @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
-                    <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
-                    <input type="submit" class="btn btn-warning" value="بیـاب!"/>
+        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+                    <input type="submit" class="btn btn-success" value="بیـاب!" />
                 </form>
             </div>
         </div>
@@ -59,13 +57,30 @@
                         case 1:
                             <td>تایید شده</td>
                             break;
+                        case 2:
+                            <td>رد شده</td>
+                            break;
                         default:
                             <td>-</td>
                             break;
                     }
-                    <td>
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" onclick="return confirm('آیا از تایید این برداشت مطمئن هستید؟');" class="btn btn-secondary">تایید</a>
-                    </td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <a class="btn btn-secondary text-white">تاییـد شده ✔</a>
+                    }
+                    else if (item.Status == 2)
+                    {
+                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                        <a class="btn btn-secondary text-white">رد شده ❌</a>
+
+                    }
+                    else
+                    {
+                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="2" onclick="return confirm('آیا از رد این واریزی مطمئن هستید؟');" class="btn btn-danger">رد ❌</a>
+                    }
+                </td>
                 </tr>
                 }
 
