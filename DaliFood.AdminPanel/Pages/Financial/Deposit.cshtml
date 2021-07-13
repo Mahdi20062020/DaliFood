@@ -1,0 +1,76 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Financial.DepositModel
+@{
+}
+@{
+
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت غذای مشتریان";
+
+}
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست رستوران ها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <form method="get">
+                    <input  type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
+                    <input  type="checkbox" name="SearchStatus" value="0"  placeholder="در حال بررسی" />
+                    <input  type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
+                    <input  type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
+                    @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
+                    <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+                    <input type="submit" class="btn btn-warning" value="بیـاب!"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">شناسه کاربر</th>
+                    <th scope="col">تاریخ واریز</th>
+
+                    <th scope="col">میزان</th>
+                    <th scope="col">توضیحات</th>
+                    <th scope="col">وضعیت</th>
+                    <th scope="col">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Deposits)
+                {
+                <tr>
+                    <td>@item.UserId</td>
+                    <td>@item.DepositDate</td>
+                    <td>@item.Amount</td>
+                    <td>@item.Description</td>
+                    @switch (item.Status)
+                    {
+                        case 0:
+                            <td>درحال بررسی</td>
+                            break;
+                        case 1:
+                            <td>تایید شده</td>
+                            break;
+                        default:
+                            <td>-</td>
+                            break;
+                    }
+                    <td>
+                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" onclick="return confirm('آیا از تایید این برداشت مطمئن هستید؟');" class="btn btn-secondary">تایید</a>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

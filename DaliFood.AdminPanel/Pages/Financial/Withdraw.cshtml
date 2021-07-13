@@ -1,0 +1,57 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Financial.WithdrawModel
+@{
+
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت غذای مشتریان";
+
+}
+
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست رستوران ها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <input class="form-control" type="search" id="GridSearch" placeholder="جست و جو" />
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">شناسه کاربر</th>
+                    <th scope="col">تاریخ برداشت</th>
+
+                    <th scope="col">میزان</th>
+                    <th scope="col">توضیحات</th>
+                    <th scope="col">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Withdraws)
+                {
+                <tr>
+                    <td>@item.UserId</td>
+                    <td>@item.DepositDate</td>
+
+                    <td>@item.Amount</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" onclick="return confirm('آیا از تایید این برداشت مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
