@@ -62,12 +62,14 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "نام")]
             [MaxLength(100)]
             public string Name { get; set; }
+            
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [MaxLength(100)]
             [Display(Name = "نام خانوادگی")]
             public string Family { get; set; }
+            
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [MaxLength(100)]
+            [MaxLength(10, ErrorMessage = "کد ملی باید حداکثر 10 رقم باشد.")]
+            [MinLength(10, ErrorMessage = "کد ملی باید حداقل 10 رقم باشد.")]
             [Display(Name = "کدملی")]
             [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
@@ -97,7 +99,6 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "ایمیل")]
             public string Email { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-
             [Display(Name = "شماره تلفن")]
             public string PhoneNumber { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -117,7 +118,8 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ViewData["CustomerTypeId"] = new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+            ViewData["CustomerTypeId"] = new 
+                SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
 
         }
 

@@ -20,12 +20,17 @@ namespace DaliFood.AdminPanel.Pages.Product
 
         public void OnGet()
         {
-            Product = unitofwork.ProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            Product = unitofwork.ProductRepository
+                .GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            
             foreach (var item in Product)
             {
-                item.ProductCategorie = unitofwork.ProductCategorieRepository.GetById(item.CategorieId);
+                item.ProductCategorie =
+                    unitofwork.ProductCategorieRepository.GetById(item.CategorieId);
             }
         }
+
+
         public ActionResult OnGetDelete(int Id)
         {
             //var part = SD.GetPart(unitofwork, SD.PhotoForProducts.Name);

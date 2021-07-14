@@ -7,6 +7,9 @@
 
 }
 
+@ViewData["ShowPartial"]
+@*<script src="~/js/sweetalert2.all.min.js"></script>*@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="card">
     <div class="card-header header-elements-inline">
@@ -23,33 +26,67 @@
     <div class="card-body">
         <hr />
         <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">نام</th>
-                    <th scope="col">دسته بندی</th>
-                    <th scope="col">#</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Product)
-                {
+
+        @(Html.Grid(Model.Product)
+        .Build(c=> {
+            c.Add(item => item.Name).Titled("نام");
+            c.Add(item => item.ProductCategorie.Name).Titled("گروه");
+            c.Add(m => Html.Raw($"<div style='display:flex;'><a href='/Product/Upsert?id={m.Id}'><i class='icon-pencil6 mr-3 text-info'></i></a>&nbsp;<a href='#' onclick='Delete({m.Id})'><i class='icon-eraser2 mr-3 text-danger'></i></button><div><span></span>")).Titled("عملیات");
+        })
+        .Using(GridFilterMode.Header)
+        .Empty("No data found")
+        .Filterable()
+        .Sortable()
+        .Pageable()
+        )
+        @*<button class="show-example-btn" onclick="x('warningConfirm')">
+            Try me!
+        </button>*@
+        @*<table class="table">
+                <thead>
                     <tr>
-                        <td>@item.Name</td>
-
-
-                        <td>@item.ProductCategorie.Name</td>
-
-                        <td>
-                            <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
-                            <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
-                        </td>
+                        <th scope="col">نام</th>
+                        <th scope="col">دسته بندی</th>
+                        <th scope="col">#</th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Product)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
 
-            </tbody>
-        </table>
+
+                            <td>@item.ProductCategorie.Name</td>
+
+                            <td>
+                                <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                                <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>*@
     </div>
 </div>
 
-
+@*<script>
+    function x() {
+        Swal.fire({
+            title: 'از حذف این داده مطمئنید',
+            text: "امکان بازگشت این رکورد دیگر موجود نیست",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'حذف!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'رکورد حذف گردید',
+                )
+            }
+        })
+    };
+</script>*@

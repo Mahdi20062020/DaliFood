@@ -21,6 +21,10 @@
     <link href="~/persianDatepicker-master/css/persianDatepicker-default.css" rel="stylesheet" />
     <link href="~/persianDatepicker-master/css/fontawesome/css/font-awesome.css" rel="stylesheet" />
     <link href="~/css/toastr.min.css" rel="stylesheet" />
+
+    <!--Mvc Grid stylesheets-->
+    <link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet" />
+
     <!-- /global stylesheets -->
     <!-- Core JS files -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -83,14 +87,14 @@
     <script src="~/PanelTheme/global_assets/js/plugins/ui/ripple.min.js"></script>
     <script src="~/persianDatepicker-master/js/persianDatepicker.js"></script>
     <!-- /theme JS files -->
+    
+    
     <!--Grid js-->
     <script src="~/js/mvc-grid/mvc-grid.js"></script>
     <script>
-        [].forEach.call(document.getElementsByClassName('mvc-grid'), function (element) {
-            new MvcGrid(element);
-        });
+        document.querySelectorAll(".mvc-grid")
+            .forEach(element => new MvcGrid(element));
     </script>
-
     @RenderSection("Scripts", required: false)
 </body>
 

@@ -1,104 +1,166 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.Customer.Account.RegisterModel
 
+@{Layout = null; }
 @{
     ViewData["Title"] = "Register";
     var CustomerType = (SelectList)ViewData["CustomerTypeId"];
 }
 
-<h1>@ViewData["Title"]</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form by Colorlib</title>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>ثبت نام فروشگاه</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <h3>اطلاعات مالک فروشگاه</h3>
-            <hr/>
-            <div class="form-group">
-                <label asp-for="Input.Name"></label>
-                <input asp-for="Input.Name" class="form-control" />
-                <span asp-validation-for="Input.Name" class="text-danger"></span>
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="~/Customer-Reg/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link href="~/FarsiFont/FarsiFonts.css" rel="stylesheet" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="~/Customer-Reg/css/style.css">
+    <link href="~/PanelTheme/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    
+    <link href="~/PersianDateTimePicker/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/PersianDateTimePicker/Content/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+    
+    <script src="~/PersianDateTimePicker/Scripts/jquery-2.1.4.js"></script>
+    <script src="~/PersianDateTimePicker/Scripts/bootstrap.min.js"></script>
+    <script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.min.js"></script>
+    <style>
+        .custom-label {
+            font-size: larger !important;
+            font-weight: bolder !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+        <div class="container">
+            <div class="signup-content">
+                @*<div class="signup-img">
+                        <img src="~/Customer-Reg/images/signup-img.jpg" alt="">
+                    </div>*@
+                <div class="signup-form" dir="rtl">
+                    <h6>&nbsp;</h6>
+                    <h2>ثبت فروشگاه جدید</h2>
+                    <hr style="width:97%" />
+                    <form method="POST" class="register-form" id="register-form" asp-route-returnUrl="@Model.ReturnUrl">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="custom-label" for="name">نام :</label>
+                                <input type="text" asp-for="Input.Name" />
+                                <span asp-validation-for="Input.Name" class="field-validation-error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="father_name">نام خانوادگی :</label>
+                                <input type="text" asp-for="Input.Family" />
+                                <span asp-validation-for="Input.Family" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="custom-label" for="name">کدملی :</label>
+                                <input type="text" asp-for="Input.NationalId" class="numbersOnly"/>
+                                <span asp-validation-for="Input.NationalId" class="field-validation-error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="father_name">تاریخ تولد :</label>
+                                <input type="date"  asp-for="Input.Birthday"/>
+                                <div data-mdpersiandatetimepickershowing="false" title="" data-original-title="" data-mdpersiandatetimepickerselecteddatetime="{&quot;Year&quot;:1393,&quot;Month&quot;:10,&quot;Day&quot;:10,&quot;Hour&quot;:0,&quot;Minute&quot;:0,&quot;Second&quot;:0}" data-enabletimepicker="false" data-mdpersiandatetimepicker="" style="cursor: pointer;" class="input-group-addon" data-mddatetimepicker="true" data-trigger="click" data-targetselector="#exampleInput3">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </div>
+                                <span asp-validation-for="Input.Birthday" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="custom-label" for="name">نام فروشگاه :</label>
+                                <input type="text" asp-for="Input.CustomerName" />
+                                <span asp-validation-for="Input.CustomerName" class="field-validation-error text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="state">گروه فروشگاه :</label>
+                                <div class="form-select">
+                                    <select asp-for="Input.CustomerType" asp-items="CustomerType">
+                                    </select>
+                                    <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
+                                </div>
+                                <span asp-validation-for="Input.CustomerType" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">آدرس فروشگاه :</label>
+                            <input type="text" asp-for="Input.CustomerAddress" />
+                            <span asp-validation-for="Input.CustomerAddress" class="field-validation-error text-danger"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">ایمیل :</label>
+                                <input type="email" asp-for="Input.Email" />
+                                <span asp-validation-for="Input.Email" class="field-validation-error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">تلفن :</label>
+                                <input type="tel" asp-for="Input.PhoneNumber" class="numbersOnly"/>
+                                <span asp-validation-for="Input.PhoneNumber" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">گذرواژه :</label>
+                                <input type="password" asp-for="Input.Password" />
+                                <span asp-validation-for="Input.Password" class="field-validation-error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">تکرار گذرواژه :</label>
+                                <input type="password" asp-for="Input.ConfirmPassword" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-warning btn-block">ثبت فروشگاه <i class="icon-circle-left2 ml-2"></i></button>
+                            </div>
+                            <div class="form-group">
+                                <a class="btn btn-light btn-block" style="color:cornflowerblue;" href="/Identity/Account/Login">حساب کاربری دارم</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.Family"></label>
-                <input asp-for="Input.Family" class="form-control" />
-                <span asp-validation-for="Input.Family" class="text-danger"></span>
-            </div>
-             <div class="form-group">
-                <label asp-for="Input.NationalId"></label>
-                <input asp-for="Input.NationalId" class="form-control" />
-                <span asp-validation-for="Input.NationalId" class="text-danger"></span>
-            </div>
-              <div class="form-group">
-                <label asp-for="Input.Birthday"></label>
-                <input asp-for="Input.Birthday" class="form-control" />
-                <span asp-validation-for="Input.Birthday" class="text-danger"></span>
-            </div>
-            <hr />
-           <h3>اطلاعات فروشگاه</h3>  
-            <div class="form-group">
-                <label asp-for="Input.CustomerName"></label>
-                <input asp-for="Input.CustomerName" class="form-control" />
-                <span asp-validation-for="Input.CustomerName" class="text-danger"></span>
-            </div>
-            <div class="form-group row">
-            <label asp-for="Input.CustomerType"></label>
-          
-        <select asp-for="Input.CustomerType" class="m-t-10 form-control Koodak " asp-items="CustomerType"></select>
-                <span asp-validation-for="Input.CustomerType"></span>
-           </div>
-            <div class="form-group">
-                <label asp-for="Input.CustomerAddress"></label>
-                <input asp-for="Input.CustomerAddress" class="form-control" />
-                <span asp-validation-for="Input.CustomerAddress" class="text-danger"></span>
-            </div>
-            <hr />
-             <h3>اطلاعات حساب</h3>  
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-           <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div> 
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+        </div>
+
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                @*if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }*@
-                
+    <!-- JS -->
+    <script src="~/Customer-Reg/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Customer-Reg/js/main.js"></script>
+    
+    <script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/calendar.js"></script>
+    <script>
+        $('.numbersOnly').keyup(function () {
+            if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
+                this.value = this.value.replace(/[^0-9\.]/g, '');
             }
-        </section>
-    </div>
-</div>
+        });
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+        $('#birthday').MdPersianDateTimePicker({
+            Placement: 'bottom', // default is 'bottom'
+            Trigger: 'focus', // default is 'focus',
+            EnableTimePicker: true, // default is true,
+            TargetSelector: '', // default is empty,
+            GroupId: '', // default is empty,
+            ToDate: false, // default is false,
+            FromDate: false, // default is false,
+        });
+    </script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
