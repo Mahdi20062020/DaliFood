@@ -21,13 +21,13 @@
     <!-- Main css -->
     <link rel="stylesheet" href="~/Customer-Reg/css/style.css">
     <link href="~/PanelTheme/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    
+
     <link href="~/PersianDateTimePicker/Content/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/PersianDateTimePicker/Content/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
-    
+
     <script src="~/PersianDateTimePicker/Scripts/jquery-2.1.4.js"></script>
     <script src="~/PersianDateTimePicker/Scripts/bootstrap.min.js"></script>
-    <script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.min.js"></script>
+    @*<script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.min.js"></script>*@
     <style>
         .custom-label {
             font-size: larger !important;
@@ -48,6 +48,7 @@
                     <h2>ثبت فروشگاه جدید</h2>
                     <hr style="width:97%" />
                     <form method="POST" class="register-form" id="register-form" asp-route-returnUrl="@Model.ReturnUrl">
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="custom-label" for="name">نام :</label>
@@ -64,17 +65,10 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="custom-label" for="name">کدملی :</label>
-                                <input type="text" asp-for="Input.NationalId" class="numbersOnly"/>
+                                <input type="text" asp-for="Input.NationalId" class="numbersOnly" />
                                 <span asp-validation-for="Input.NationalId" class="field-validation-error text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label for="father_name">تاریخ تولد :</label>
-                                <input type="date"  asp-for="Input.Birthday"/>
-                                <div data-mdpersiandatetimepickershowing="false" title="" data-original-title="" data-mdpersiandatetimepickerselecteddatetime="{&quot;Year&quot;:1393,&quot;Month&quot;:10,&quot;Day&quot;:10,&quot;Hour&quot;:0,&quot;Minute&quot;:0,&quot;Second&quot;:0}" data-enabletimepicker="false" data-mdpersiandatetimepicker="" style="cursor: pointer;" class="input-group-addon" data-mddatetimepicker="true" data-trigger="click" data-targetselector="#exampleInput3">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                                <span asp-validation-for="Input.Birthday" class="field-validation-error text-danger"></span>
-                            </div>
+                
                         </div>
 
 
@@ -109,7 +103,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">تلفن :</label>
-                                <input type="tel" asp-for="Input.PhoneNumber" class="numbersOnly"/>
+                                <input type="tel" asp-for="Input.PhoneNumber" class="numbersOnly" />
                                 <span asp-validation-for="Input.PhoneNumber" class="field-validation-error text-danger"></span>
                             </div>
                         </div>
@@ -141,26 +135,19 @@
 
     </div>
     <!-- JS -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <script src="~/Customer-Reg/vendor/jquery/jquery.min.js"></script>
     <script src="~/Customer-Reg/js/main.js"></script>
-    
-    <script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/calendar.js"></script>
+
     <script>
         $('.numbersOnly').keyup(function () {
             if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
                 this.value = this.value.replace(/[^0-9\.]/g, '');
             }
         });
-
-        $('#birthday').MdPersianDateTimePicker({
-            Placement: 'bottom', // default is 'bottom'
-            Trigger: 'focus', // default is 'focus',
-            EnableTimePicker: true, // default is true,
-            TargetSelector: '', // default is empty,
-            GroupId: '', // default is empty,
-            ToDate: false, // default is false,
-            FromDate: false, // default is false,
-        });
+      
     </script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

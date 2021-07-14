@@ -52,35 +52,35 @@
                     @switch (item.Status)
                     {
                         case 0:
-                            <td>درحال بررسی</td>
+                            <td><span class="badge bg-blue">درحال بررسی</span></td>
                             break;
                         case 1:
-                            <td>تایید شده</td>
+                            <td><span class="badge bg-success">تایید شده</span></td>
                             break;
                         case 2:
-                            <td>رد شده</td>
+                            <td><span class="badge bg-danger">رد شده</span></td>
                             break;
                         default:
                             <td>-</td>
                             break;
                     }
-                <td>
-                    @if (item.Status == 1)
-                    {
-                        <a class="btn btn-secondary text-white">تاییـد شده ✔</a>
-                    }
-                    else if (item.Status == 2)
-                    {
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
-                        <a class="btn btn-secondary text-white">رد شده ❌</a>
+                    <td>
+                        @if (item.Status == 1)
+                        {
+                            <a class="btn btn-secondary text-white">تاییـد شده ✔</a>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                            <a class="btn btn-secondary text-white">رد شده ❌</a>
 
-                    }
-                    else
-                    {
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="2" onclick="return confirm('آیا از رد این واریزی مطمئن هستید؟');" class="btn btn-danger">رد ❌</a>
-                    }
-                </td>
+                        }
+                        else
+                        {
+                            <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                            <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="2" onclick="return confirm('آیا از رد این واریزی مطمئن هستید؟');" class="btn btn-danger">رد ❌</a>
+                        }
+                    </td>
                 </tr>
                 }
 

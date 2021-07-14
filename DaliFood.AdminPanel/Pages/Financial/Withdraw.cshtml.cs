@@ -35,7 +35,7 @@ namespace DaliFood.AdminPanel.Pages.Financial
             }
             if (SearchQ != null)
             {
-                Withdraws = Withdraws.Where(p => p.Description.Contains(SearchQ) || p.Id.ToString().Contains(SearchQ));
+                Withdraws = Withdraws.Where(p => p.Description.Contains(SearchQ) || p.Id.ToString().Contains(SearchQ) || p.UserId.Contains(SearchQ)).Distinct();
             }
 
         }

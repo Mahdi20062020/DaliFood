@@ -18,10 +18,18 @@
                     <input type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
                     <input type="checkbox" name="SearchStatus" id="SearchStatus" value="0" />
                     <label for="SearchStatus">در حال بررسی</label>
+                    <label for="SearchStatus">وضعیت:</label>
+
+                    <select name="SearchStatus" id="SearchStatus">
+                        <option value="0">درحال بررسی</option>
+                        <option value="1">تایید شده</option>
+                        <option value="2">رد شده</option>
+                       
+                    </select>
                     <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
                     <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
                     @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
-                        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
                     <input type="submit" class="btn btn-success" value="بیـاب!" />
                 </form>
             </div>
@@ -37,9 +45,11 @@
 
                     <th scope="col">میزان</th>
                     <th scope="col">توضیحات</th>
-                    <th scope="col">وضعیت</th>
+
                     <th scope="col">شماره کارت</th>
                     <th scope="col">شماره شبا</th>
+                    <th scope="col">کدرهگیری</th>
+                    <th scope="col">وضعیت</th>
                     <th scope="col">#</th>
                 </tr>
             </thead>
@@ -53,22 +63,26 @@
                     <td>@item.Description</td>
                     <td>@item.Cardnumber</td>
                     <td>@item.Shabanumber</td>
+                    <td>@item.TrackingCode</td>
+
+
+
                     @switch (item.Status)
                     {
                         case 0:
-                            <td>درحال بررسی</td>
+                            <td><span class="badge bg-blue">درحال بررسی</span></td>
                             break;
                         case 1:
-                            <td>تایید شده</td>
+                            <td><span class="badge bg-success">تایید شده</span></td>
                             break;
                         case 2:
-                            <td>رد شده</td>
+                            <td><span class="badge bg-danger">رد شده</span></td>
                             break;
                         default:
                             <td>-</td>
                             break;
                     }
-                <td>
+                    <td>
                         @if (item.Status == 1)
                         {
                             <a class="btn btn-secondary text-white">تاییـد شده ✔</a>

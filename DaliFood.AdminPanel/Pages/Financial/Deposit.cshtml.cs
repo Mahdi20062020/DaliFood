@@ -35,7 +35,7 @@ namespace DaliFood.AdminPanel.Pages.Financial
             }
             if (SearchQ !=null)
             {
-                Deposits = Deposits.Where(p=>p.Description.Contains(SearchQ));
+                Deposits = Deposits.Where(p => p.Description.Contains(SearchQ) || p.Id.ToString().Contains(SearchQ) || p.UserId.Contains(SearchQ)).Distinct();
             }
 
         }

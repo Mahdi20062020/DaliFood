@@ -73,7 +73,6 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account.Manage
                 Name=user.Name,
                 Family=user.Family,
                 NationalId= UserDetail.NationalId,
-                Birthday=UserDetail.BirthDate
             };
         }
 

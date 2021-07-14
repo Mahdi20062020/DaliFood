@@ -32,7 +32,7 @@ namespace DaliFood.AdminPanel.Pages.Financial
             }
             if (SearchQ != null)
             {
-                Transactions = Transactions.Where(p => p.Description.Contains(SearchQ) ||p.ItemId.ToString().Contains(SearchQ)||p.Id.ToString().Contains(SearchQ));
+                Transactions = Transactions.Where(p => p.Description.Contains(SearchQ) ||p.ItemId.ToString().Contains(SearchQ)||p.Id.ToString().Contains(SearchQ)).Distinct();
             }
 
         }
