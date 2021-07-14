@@ -106,7 +106,32 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="nav-item nav-item-submenu">
+                    <a href="#" class="nav-link">
+                        <i class="icon-price-tags"></i><span>حسابـداری</span>
+                    </a>
+                    <ul class="nav nav-group-sub">
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Financial/Deposit" class="nav-link">
+                                <i class="icon-price-tag"></i>
+                                واریزی ها
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Financial/Withdraw" class="nav-link">
+                                <i class="icon-price-tag3"></i>
+                                برداشت ها
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Financial/Transaction" class="nav-link">
+                                <i class="icon-price-tag2"></i>
+                                تراکنش ها
+                            </a>
+                        </li>
+                       
+                    </ul>
+                </li>
                 @if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
                 {
                     <li class="nav-item">

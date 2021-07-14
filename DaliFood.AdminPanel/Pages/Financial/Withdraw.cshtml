@@ -1,0 +1,95 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Financial.WithdrawModel
+@{
+
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت غذای مشتریان";
+}
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست برداشتی ها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <form method="get">
+                    <input type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
+                    <input type="checkbox" name="SearchStatus" id="SearchStatus" value="0" />
+                    <label for="SearchStatus">در حال بررسی</label>
+                    <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
+                    <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
+                    @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
+                        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+                    <input type="submit" class="btn btn-success" value="بیـاب!" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">شناسه کاربر</th>
+                    <th scope="col">تاریخ برداشت</th>
+
+                    <th scope="col">میزان</th>
+                    <th scope="col">توضیحات</th>
+                    <th scope="col">وضعیت</th>
+                    <th scope="col">شماره کارت</th>
+                    <th scope="col">شماره شبا</th>
+                    <th scope="col">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Withdraws)
+                {
+                <tr>
+                    <td>@item.UserId</td>
+                    <td>@item.DepositDate</td>
+                    <td>@item.Amount</td>
+                    <td>@item.Description</td>
+                    <td>@item.Cardnumber</td>
+                    <td>@item.Shabanumber</td>
+                    @switch (item.Status)
+                    {
+                        case 0:
+                            <td>درحال بررسی</td>
+                            break;
+                        case 1:
+                            <td>تایید شده</td>
+                            break;
+                        case 2:
+                            <td>رد شده</td>
+                            break;
+                        default:
+                            <td>-</td>
+                            break;
+                    }
+                <td>
+                        @if (item.Status == 1)
+                        {
+                            <a class="btn btn-secondary text-white">تاییـد شده ✔</a>
+                        }
+                        else if (item.Status == 2)
+                        {
+                            <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این برداشت مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                            <a class="btn btn-secondary text-white">رد شده ❌</a>
+
+                        }
+                        else
+                        {
+                            <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این برداشت مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                            <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="2" onclick="return confirm('آیا از رد این برداشت مطمئن هستید؟');" class="btn btn-danger">رد ❌</a>
+                        }
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

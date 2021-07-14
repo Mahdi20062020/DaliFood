@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DaliFood.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210708122614_edit")]
-    partial class edit
+    [Migration("20210713174014_initial_DB")]
+    partial class initial_DB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -144,6 +144,32 @@ namespace DaliFood.Models.Migrations
                     b.ToTable("Discount");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.Identity.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TextAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Identity.ApplicationUserDetail", b =>
                 {
                     b.Property<string>("UserId")
@@ -190,31 +216,6 @@ namespace DaliFood.Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("phoneNumbersTokens");
-                });
-
-            modelBuilder.Entity("DaliFood.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("TotalPrice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("DaliFood.Models.OrderItem", b =>
@@ -366,6 +367,78 @@ namespace DaliFood.Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductCategorie");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NewAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OldAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId")
+                        .IsUnique();
+
+                    b.ToTable("Transaction");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.TransactionItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionItem");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("TransactionItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -581,8 +654,17 @@ namespace DaliFood.Models.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdentityCardAddress")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalCardSaveAddress")
@@ -593,7 +675,92 @@ namespace DaliFood.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnerFamily")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phonenumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelePhonenumber1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelePhonenumber2")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("ApplicationCustomerUser");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Deposit", b =>
+                {
+                    b.HasBaseType("DaliFood.Models.TransactionItem");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Cardnumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DepositDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RefId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SaleReferenceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Deposit_Status");
+
+                    b.HasDiscriminator().HasValue("Deposit");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Order", b =>
+                {
+                    b.HasBaseType("DaliFood.Models.TransactionItem");
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("Order");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Withdraw", b =>
+                {
+                    b.HasBaseType("DaliFood.Models.TransactionItem");
+
+                    b.Property<string>("Cardnumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Withdraw_Cardnumber");
+
+                    b.Property<DateTime>("DepositDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Withdraw_DepositDate");
+
+                    b.Property<string>("Shabanumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Withdraw_Status");
+
+                    b.Property<string>("TrackingCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Withdraw");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Identity.ApplicationUser", b =>
@@ -718,6 +885,17 @@ namespace DaliFood.Models.Migrations
                     b.Navigation("ProductCategorie");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.Transaction", b =>
+                {
+                    b.HasOne("DaliFood.Models.TransactionItem", "TransactionItem")
+                        .WithOne("Transaction")
+                        .HasForeignKey("DaliFood.Models.Transaction", "ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TransactionItem");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -788,11 +966,6 @@ namespace DaliFood.Models.Migrations
                     b.Navigation("OrderItem");
                 });
 
-            modelBuilder.Entity("DaliFood.Models.Order", b =>
-                {
-                    b.Navigation("OrderItem");
-                });
-
             modelBuilder.Entity("DaliFood.Models.PhotoFor", b =>
                 {
                     b.Navigation("Photo");
@@ -801,6 +974,16 @@ namespace DaliFood.Models.Migrations
             modelBuilder.Entity("DaliFood.Models.ProductCategorie", b =>
                 {
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.TransactionItem", b =>
+                {
+                    b.Navigation("Transaction");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Order", b =>
+                {
+                    b.Navigation("OrderItem");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Identity.ApplicationUser", b =>

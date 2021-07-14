@@ -166,6 +166,45 @@ namespace DaliFood.Utilites
                 return _AddressRepository;
             }
         }
+
+        private Repository<Deposit> _DepositRepository;
+        public Repository<Deposit> DepositRepository
+        {
+            get
+            {
+                if (_DepositRepository == null)
+                {
+                    _DepositRepository = new Repository<Deposit>(context);
+                }
+                return _DepositRepository;
+            }
+        }
+
+        private Repository<Withdraw> _WithdrawRepository;
+        public Repository<Withdraw> WithdrawRepository
+        {
+            get
+            {
+                if (_WithdrawRepository == null)
+                {
+                    _WithdrawRepository = new Repository<Withdraw>(context);
+                }
+                return _WithdrawRepository;
+            }
+        }
+        private Repository<Transaction> _TransactionRepository;
+        public Repository<Transaction> TransactionRepository
+        {
+            get
+            {
+                if (_TransactionRepository == null)
+                {
+                    _TransactionRepository = new Repository<Transaction>(context);
+                }
+                return _TransactionRepository;
+            }
+        }
+
         public void Dispose()
         {
             Dispose(true);

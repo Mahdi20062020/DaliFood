@@ -85,14 +85,17 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             public string CustomerName { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نوع فروشگاه")]
-
             public int CustomerType { get; set; }
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "آدرس فروشگاه")]
             [MaxLength(100)]
             public string CustomerAddress { get; set; }
-
-
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "نام مالک فروشگاه")]
+            public string CustomerOwnerName { get; set; }
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "نام خانوادگی مالک فروشگاه")]
+            public string CustomerOwnerFamily { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [EmailAddress(ErrorMessage = "{0} وارد شده نامعتبر است")]
@@ -134,7 +137,9 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     CustomerName = Input.CustomerName,
                     BirthDate = Input.Birthday,
                     NationalId = Input.NationalId,
-                    CreateDate = DateTime.Now
+                    CreateDate = DateTime.Now,
+                    OwnerName=Input.CustomerOwnerName,
+
                 };
 
                 var user = new ApplicationUser

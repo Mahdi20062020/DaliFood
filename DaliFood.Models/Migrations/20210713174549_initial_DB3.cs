@@ -2,7 +2,7 @@
 
 namespace DaliFood.Models.Migrations
 {
-    public partial class fixsomebugs : Migration
+    public partial class initial_DB3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

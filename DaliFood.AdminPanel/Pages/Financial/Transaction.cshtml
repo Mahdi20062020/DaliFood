@@ -1,0 +1,75 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Financial.TransactionModel
+@{
+
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت غذای مشتریان";
+}
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست تراکنش ها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <form method="get">
+                    <input type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
+                    <input type="checkbox" name="SearchStatus" id="SearchStatus" value="0" />
+                    <label for="SearchStatus">در حال بررسی</label>
+                    <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
+                    <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
+                    @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
+                        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+                    <input type="submit" class="btn btn-success" value="بیـاب!" />
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">شناسه کاربر</th>
+                    <th scope="col">نوع تراکنش</th>
+                    <th scope="col">تاریخ تراکنش</th>
+
+                    <th scope="col">میزان</th>
+                    <th scope="col">توضیحات</th>
+                  
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Transactions)
+                {
+                <tr>
+                    <td>@item.UserId</td>
+                    @switch (item.TypeId)
+                    {
+                        case 0:
+                            <td>واریزی</td>
+                            break;
+                        case 1:
+                            <td>برداشت</td>
+                            break;
+                        case 2:
+                            <td>سفارش</td>
+                            break;
+                        default:
+                            <td>-</td>
+                            break;
+                    }
+                    <td>@item.CreateDate</td>
+                    <td>@item.Amount</td>
+                    <td>@item.Description</td>
+
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+

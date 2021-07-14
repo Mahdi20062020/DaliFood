@@ -29,11 +29,11 @@ namespace DaliFood.AdminPanel.Pages
         {
             if (User.Identity.IsAuthenticated is false)
             {
+                await unitofwork.Configure(roleManager, userManager);
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
 
             Then = DateTime.Now;
-            await unitofwork.Configure(roleManager, userManager);
             Now = DateTime.Now;
             return Page();
         }
