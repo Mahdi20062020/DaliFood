@@ -1,7 +1,7 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.Financial.DepositModel
 @{
-
+   
     ViewData["Title"] = "لیست";
     ViewData["Section"] = "مدیریت غذای مشتریان";
 }
@@ -16,12 +16,36 @@
                 <a class="list-icons-item" data-action="remove"></a>
                 <form method="get">
                     <input type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
-                    <input type="checkbox" name="SearchStatus" id="SearchStatus" value="0" />
-                    <label for="SearchStatus">در حال بررسی</label>
+                    <label for="SearchStatus">وضعیت:</label>
+                    <select name="SearchStatus" id="SearchStatus">
+                        <option value="">همه</option>
+                        <option value="0">درحال بررسی</option>
+                        <option value="1">تایید شده</option>
+                        <option value="2">رد شده</option>
+
+                    </select>
                     <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
                     <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
-                    @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
-        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer" id="enter_date">از تاریخ</span>
+                    </div>
+                    <input type="text" id="enter_date_1"
+                           aria-label="enter_date" aria-describedby="enter_date" />
+                    <input type="hidden" name="SearchStartDate" id="enter_date_2"
+                           aria-label="enter_date" aria-describedby="enter_date" />
+
+
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer" id="exit_date">تا تاریخ</span>
+                    </div>
+                    <input type="text" name="exit_date_1" id="exit_date_1" aria-label="exit_date"
+                           aria-describedby="exit_date" />
+                    <input type="hidden" name="SearchEndDate" id="exit_date_2"
+                           aria-label="exit_date" aria-describedby="exit_date" />
+
+
                     <input type="submit" class="btn btn-success" value="بیـاب!" />
                 </form>
             </div>
@@ -44,44 +68,44 @@
             <tbody>
                 @foreach (var item in Model.Deposits)
                 {
-                <tr>
-                    <td>@item.UserId</td>
-                    <td>@item.DepositDate</td>
-                    <td>@item.Amount</td>
-                    <td>@item.Description</td>
-                    @switch (item.Status)
-                    {
-                        case 0:
-                            <td>درحال بررسی</td>
-                            break;
-                        case 1:
-                            <td>تایید شده</td>
-                            break;
-                        case 2:
-                            <td>رد شده</td>
-                            break;
-                        default:
-                            <td>-</td>
-                            break;
-                    }
-                <td>
-                    @if (item.Status == 1)
-                    {
-                        <a class="btn btn-secondary text-white">تاییـد شده ✔</a>
-                    }
-                    else if (item.Status == 2)
-                    {
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
-                        <a class="btn btn-secondary text-white">رد شده ❌</a>
+                    <tr>
+                        <td>@item.UserId</td>
+                        <td>@item.DepositDate.ToShamsi()</td>
+                        <td>@item.Amount</td>
+                        <td>@item.Description</td>
+                        @switch (item.Status)
+                        {
+                            case 0:
+                                <td><span class="badge bg-blue">درحال بررسی</span></td>
+                                break;
+                            case 1:
+                                <td><span class="badge bg-success">تایید شده</span></td>
+                                break;
+                            case 2:
+                                <td><span class="badge bg-danger">رد شده</span></td>
+                                break;
+                            default:
+                                <td>-</td>
+                                break;
+                        }
+                        <td>
+                            @if (item.Status == 1)
+                            {
+                                <a class="btn btn-secondary text-white">تاییـد شده ✔</a>
+                            }
+                            else if (item.Status == 2)
+                            {
+                                <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                                <a class="btn btn-secondary text-white">رد شده ❌</a>
 
-                    }
-                    else
-                    {
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
-                        <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="2" onclick="return confirm('آیا از رد این واریزی مطمئن هستید؟');" class="btn btn-danger">رد ❌</a>
-                    }
-                </td>
-                </tr>
+                            }
+                            else
+                            {
+                                <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="1" onclick="return confirm('آیا از تایید این واریزی مطمئن هستید؟');" class="btn btn-success">تاییـد ✔</a>
+                                <a asp-page-handler="Confirm" asp-route-Id="@item.Id" asp-route-Status="2" onclick="return confirm('آیا از رد این واریزی مطمئن هستید؟');" class="btn btn-danger">رد ❌</a>
+                            }
+                        </td>
+                    </tr>
                 }
 
             </tbody>
@@ -89,3 +113,22 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        $('#enter_date').MdPersianDateTimePicker({
+            targetTextSelector: '#enter_date_1',
+            targetDateSelector: '#enter_date_2',
+            fromDate: true,
+            groupId: 'enter_date',
+           
+        });
+
+        $('#exit_date').MdPersianDateTimePicker({
+            targetTextSelector: '#exit_date_1',
+            targetDateSelector: '#exit_date_2',
+            toDate: true,
+            groupId: 'enter_date',
+           
+        });
+    </script>
+}

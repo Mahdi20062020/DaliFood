@@ -73,7 +73,6 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account.Manage
                 Name=user.Name,
                 Family=user.Family,
                 NationalId= UserDetail.NationalId,
-                Birthday=UserDetail.BirthDate
             };
         }
 
@@ -107,7 +106,6 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account.Manage
             user.Family = Input.Family;
             user.PhoneNumber = Input.PhoneNumber;
             var UserDetail = (ApplicationCustomerUser)user.ApplicationUserDetail;
-            UserDetail.BirthDate = Input.Birthday;
             UserDetail.NationalId = Input.NationalId;
             user.ApplicationUserDetail = UserDetail;
           

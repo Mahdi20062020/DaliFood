@@ -20,7 +20,6 @@ namespace DaliFood.Models
         public int Amount { get; set; }
 
         [Display(Name = "توضیحات")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Description { get; set; }
 
         [Display(Name = "تاریخ ایجاد")]

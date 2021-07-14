@@ -32,9 +32,26 @@ namespace DaliFood.AdminPanel.Pages.Financial
             }
             if (SearchQ != null)
             {
-                Transactions = Transactions.Where(p => p.Description.Contains(SearchQ) ||p.ItemId.ToString().Contains(SearchQ)||p.Id.ToString().Contains(SearchQ));
+                Transactions = Transactions.Where(p => p.Description.Contains(SearchQ) ||p.ItemId.ToString().Contains(SearchQ)||p.Id.ToString().Contains(SearchQ)).Distinct();
             }
-
+            if (SearchStartDate != null)
+            {
+                var date = SearchStartDate.Split('/');
+                int year = int.Parse(date[0]);
+                int month = int.Parse(date[1]);
+                int day = int.Parse(date[2]);
+                var Startdate = new DateTime(year, month, day);
+                Transactions = Transactions.Where(p => p.CreateDate >= Startdate);
+            }
+            if (SearchEndDate != null)
+            {
+                var date = SearchEndDate.Split('/');
+                int year = int.Parse(date[0]);
+                int month = int.Parse(date[1]);
+                int day = int.Parse(date[2]);
+                var Startdate = new DateTime(year, month, day);
+                Transactions = Transactions.Where(p => p.CreateDate <= Startdate);
+            }
         }
       
       

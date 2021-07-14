@@ -18,8 +18,9 @@
     <link href="~/PanelTheme/assets/css/layout.min.css" rel="stylesheet" type="text/css">
     <link href="~/PanelTheme/assets/css/components.min.css" rel="stylesheet" type="text/css">
     <link href="~/PanelTheme/assets/css/colors.min.css" rel="stylesheet" type="text/css">
-    <link href="~/persianDatepicker-master/css/persianDatepicker-default.css" rel="stylesheet" />
-    <link href="~/persianDatepicker-master/css/fontawesome/css/font-awesome.css" rel="stylesheet" />
+    @*<link href="~/persianDatepicker-master/css/persianDatepicker-default.css" rel="stylesheet" />
+        <link href="~/persianDatepicker-master/css/fontawesome/css/font-awesome.css" rel="stylesheet" />*@
+    <link href="~/PersianDatepicker/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
     <link href="~/css/toastr.min.css" rel="stylesheet" />
 
     <!--Mvc Grid stylesheets-->
@@ -87,10 +88,9 @@
     <script src="~/PanelTheme/global_assets/js/plugins/ui/ripple.min.js"></script>
     <script src="~/persianDatepicker-master/js/persianDatepicker.js"></script>
     <!-- /theme JS files -->
-    
-    
     <!--Grid js-->
     <script src="~/js/mvc-grid/mvc-grid.js"></script>
+    <script src="~/PersianDatepicker/jquery.md.bootstrap.datetimepicker.js"></script>
     <script>
         document.querySelectorAll(".mvc-grid")
             .forEach(element => new MvcGrid(element));
