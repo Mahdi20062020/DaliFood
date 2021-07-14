@@ -121,7 +121,7 @@ namespace DaliFood.WebApi.Controllers
         [HttpPost("Register/VerifyPhoneNumber")]
         public IActionResult VerifyPhoneNumber(string phonenumber, string token)
         {
-            var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.GetHashCode().ToString() && p.Status == true).FirstOrDefault();
+            var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.GetHashCode().ToString()).FirstOrDefault();
             if (usertoken != null)
             {
                 usertoken.IsConfirm = true;
@@ -151,7 +151,8 @@ namespace DaliFood.WebApi.Controllers
                         Family = model.Family,
                         PhoneNumber = phonenumber,
                         PhoneNumberConfirmed = true,
-                        UserName = model.Name + "_" + model.Family
+                        UserName = model.Name + "_" + model.Family,
+                        ApplicationUserDetail = userDetail
                     };
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (!result.Succeeded)

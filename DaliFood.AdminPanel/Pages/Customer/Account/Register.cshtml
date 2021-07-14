@@ -68,9 +68,21 @@
                                 <input type="text" asp-for="Input.NationalId" class="numbersOnly" />
                                 <span asp-validation-for="Input.NationalId" class="field-validation-error text-danger"></span>
                             </div>
-                
-                        </div>
 
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="father_name">نام  صاحب فروشگاه :</label>
+                                <input type="text" asp-for="Input.CustomerOwnerName" />
+                                <span asp-validation-for="Input.CustomerOwnerName" class="field-validation-error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="father_name">نام خانوادگی صاحب فروشگاه :</label>
+                                <input type="text" asp-for="Input.CustomerOwnerFamily" />
+                                <span asp-validation-for="Input.CustomerOwnerFamily" class="field-validation-error text-danger"></span>
+                            </div>
+
+                        </div>
 
                         <div class="form-row">
                             <div class="form-group">
@@ -147,7 +159,7 @@
                 this.value = this.value.replace(/[^0-9\.]/g, '');
             }
         });
-      
+
     </script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
