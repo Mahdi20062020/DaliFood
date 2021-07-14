@@ -33,17 +33,43 @@ namespace DaliFood.Models.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LicenseSaveAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnerFamily")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phonenumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SendingPrice")
                         .HasColumnType("int");
 
                     b.Property<string>("ShabaNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelePhonenumber1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelePhonenumber2")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TypeId")
@@ -136,7 +162,6 @@ namespace DaliFood.Models.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RefId")
@@ -283,7 +308,6 @@ namespace DaliFood.Models.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -512,7 +536,6 @@ namespace DaliFood.Models.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Shabanumber")
@@ -746,24 +769,12 @@ namespace DaliFood.Models.Migrations
                 {
                     b.HasBaseType("DaliFood.Models.Identity.ApplicationUserDetail");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CustomerName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("IdentityCardAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalCardSaveAddress")
@@ -774,24 +785,23 @@ namespace DaliFood.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerFamily")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phonenumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelePhonenumber1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelePhonenumber2")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasDiscriminator().HasValue("ApplicationCustomerUser");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Identity.ApplicationNormalUser", b =>
+                {
+                    b.HasBaseType("DaliFood.Models.Identity.ApplicationUserDetail");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Wallet")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("ApplicationNormalUser");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Identity.ApplicationUser", b =>

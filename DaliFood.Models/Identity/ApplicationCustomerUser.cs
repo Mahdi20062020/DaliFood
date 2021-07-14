@@ -21,9 +21,5 @@ namespace DaliFood.Models.Identity
         [Display(Name = "کدملی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string NationalId { get; set; }
-
- 
-
-    
     }
 }

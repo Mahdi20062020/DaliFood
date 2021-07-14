@@ -16,5 +16,9 @@ namespace DaliFood.Models.Identity
         public DateTime CreateDate { get; set; }
         
         public virtual ApplicationUser ApplicationUser { get; set; }
+        public ApplicationUserDetail()
+        {
+
+        }
     }
 }

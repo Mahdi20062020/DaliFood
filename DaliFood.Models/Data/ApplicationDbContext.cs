@@ -19,6 +19,9 @@ namespace DaliFood.Models.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ApplicationCustomerUser>().HasBaseType<ApplicationUserDetail>();
+            builder.Entity<ApplicationNormalUser>().HasBaseType<ApplicationUserDetail>();
+            
             builder.Ignore<object>();
             base.OnModelCreating(builder);
         }
@@ -32,6 +35,7 @@ namespace DaliFood.Models.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUserDetail> ApplicationUserDetail { get; set; }
         public DbSet<PhoneNumbersToken> phoneNumbersTokens { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<Deposit> Deposit { get; set; }

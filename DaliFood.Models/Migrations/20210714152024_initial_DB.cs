@@ -127,33 +127,23 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TransactionItem",
+                name: "Transaction",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OldAmount = table.Column<int>(type: "int", nullable: false),
+                    NewAmount = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BankId = table.Column<int>(type: "int", nullable: true),
-                    SaleReferenceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deposit_Status = table.Column<int>(type: "int", nullable: true),
-                    Cardnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DepositDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AddressId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true),
-                    Withdraw_Cardnumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Shabanumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrackingCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Withdraw_Status = table.Column<int>(type: "int", nullable: true),
-                    Withdraw_DepositDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TransactionItem", x => x.Id);
+                    table.PrimaryKey("PK_Transaction", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,15 +178,8 @@ namespace DaliFood.Models.Migrations
                     NationalCardSaveAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentityCardAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TelePhonenumber1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TelePhonenumber2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerFamily = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Address = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Wallet = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -318,29 +301,85 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transaction",
+                name: "Deposit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeId = table.Column<int>(type: "int", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    BankId = table.Column<int>(type: "int", nullable: false),
+                    SaleReferenceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Cardnumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepositDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TransactionId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OldAmount = table.Column<int>(type: "int", nullable: false),
-                    NewAmount = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transaction", x => x.Id);
+                    table.PrimaryKey("PK_Deposit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transaction_TransactionItem_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "TransactionItem",
+                        name: "FK_Deposit_Transaction_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transaction",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    TransactionId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_Transaction_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transaction",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Withdraw",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cardnumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Shabanumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TrackingCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    DepositDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TransactionId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Withdraw", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Withdraw_Transaction_TransactionId",
+                        column: x => x.TransactionId,
+                        principalTable: "Transaction",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -356,6 +395,14 @@ namespace DaliFood.Models.Migrations
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShabaNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SendingPrice = table.Column<int>(type: "int", nullable: false),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelePhonenumber1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelePhonenumber2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OwnerFamily = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -487,9 +534,9 @@ namespace DaliFood.Models.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderItem_TransactionItem_OrderId",
+                        name: "FK_OrderItem_Order_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "TransactionItem",
+                        principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -554,10 +601,20 @@ namespace DaliFood.Models.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deposit_TransactionId",
+                table: "Deposit",
+                column: "TransactionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Discount_CustomersProductId",
                 table: "Discount",
                 column: "CustomersProductId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_TransactionId",
+                table: "Order",
+                column: "TransactionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_CustomerId",
@@ -590,10 +647,9 @@ namespace DaliFood.Models.Migrations
                 column: "ProductCategorieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transaction_ItemId",
-                table: "Transaction",
-                column: "ItemId",
-                unique: true);
+                name: "IX_Withdraw_TransactionId",
+                table: "Withdraw",
+                column: "TransactionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -617,6 +673,9 @@ namespace DaliFood.Models.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Deposit");
+
+            migrationBuilder.DropTable(
                 name: "Discount");
 
             migrationBuilder.DropTable(
@@ -629,7 +688,7 @@ namespace DaliFood.Models.Migrations
                 name: "Photo");
 
             migrationBuilder.DropTable(
-                name: "Transaction");
+                name: "Withdraw");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -638,13 +697,16 @@ namespace DaliFood.Models.Migrations
                 name: "CustomersProduct");
 
             migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
                 name: "PhotoFor");
 
             migrationBuilder.DropTable(
-                name: "TransactionItem");
+                name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Transaction");
 
             migrationBuilder.DropTable(
                 name: "Customer");

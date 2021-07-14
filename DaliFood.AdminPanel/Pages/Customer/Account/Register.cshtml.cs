@@ -133,8 +133,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                 {
                     CustomerName = Input.CustomerName,
                     NationalId = Input.NationalId,
-                    CreateDate = DateTime.Now,
-
+                    CreateDate = DateTime.Now
                 };
 
                 var user = new ApplicationUser
