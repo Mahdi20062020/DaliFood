@@ -25,5 +25,10 @@ namespace DaliFood.Models.Identity
 
         [Display(Name = "طول جغرافیایی")]
         public string Longitude { get; set; }
+        public virtual ApplicationNormalUser ApplicationNormalUser { get; set; }
+        public Address()
+        {
+
+        }
     }
 }

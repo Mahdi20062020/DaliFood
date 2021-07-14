@@ -9,13 +9,11 @@ namespace DaliFood.Models.Identity
 {
     public class ApplicationNormalUser:ApplicationUserDetail
     {
-        [StringLength(300)]
-        [Display(Name = "آدرس")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Address { get; set; }
-
+   
         [Display(Name = "کیف پول")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        public string Wallet { get; set; }
+        public int Wallet { get; set; }
+        public virtual IEnumerable<Address> Addresses { get; set; }
+
     }
 }

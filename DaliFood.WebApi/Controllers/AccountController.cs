@@ -140,6 +140,11 @@ namespace DaliFood.WebApi.Controllers
             {
                 if (unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString() && p.Status == false && p.IsConfirm == true).Any())
                 {
+                    ApplicationUserDetail userDetail = new ApplicationNormalUser()
+                    {
+                        Wallet = 0,
+                        CreateDate = DateTime.Now
+                    };
                     ApplicationUser user = new ApplicationUser()
                     {
                         Name = model.Name,
