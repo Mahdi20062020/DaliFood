@@ -20,7 +20,7 @@
     </div>
     <div class="card-body">
         <hr />
-        <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
+        <a class="btn btn-success" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
         <table class="table">
             <thead>
                 <tr>
@@ -49,7 +49,7 @@
                             <td class="text-danger">غیر فعال</td>
                         }
                         <td>
-                            <a asp-page="Update" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                            <a asp-page="Update" asp-route-Id="@item.Id" class="btn btn-info">ویرایش</a>
                             <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
                         </td>
                     </tr>
