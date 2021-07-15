@@ -53,10 +53,6 @@ namespace DaliFood.AdminPanel.Pages.Customer
 
         public class InputModel
         {
-            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "نام")]
-            [MaxLength(100)]
-            public string Name { get; set; }
 
             [Display(Name = "عرض جغرافیایی")]
             public string Latitude { get; set; }
@@ -64,9 +60,6 @@ namespace DaliFood.AdminPanel.Pages.Customer
             [Display(Name = "طول جغرافیایی")]
             public string Longitude { get; set; }
 
-            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "نام خانوادگی")]
-            public string Family { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [MaxLength(10, ErrorMessage = "کد ملی باید حداکثر 10 رقم باشد.")]
@@ -93,16 +86,18 @@ namespace DaliFood.AdminPanel.Pages.Customer
 
             public int CustomerId { get; set; }
 
-            //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            //[Display(Name = "نام مالک فروشگاه")]
-            //public string CustomerOwnerName { get; set; }
-            //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            //[Display(Name = "نام خانوادگی مالک فروشگاه")]
-            //public string CustomerOwnerFamily { get; set; }
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "نام مالک فروشگاه")]
+            public string CustomerOwnerName { get; set; }
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "نام خانوادگی مالک فروشگاه")]
+            public string CustomerOwnerFamily { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "شماره تلفن")]
             public string PhoneNumber { get; set; }
+
+            public bool Status { get; set; }
             //[MaxLength(250)]
             //public string profileImage { get; set; }
         }
@@ -112,22 +107,20 @@ namespace DaliFood.AdminPanel.Pages.Customer
 
             var Shop = unitofwork.CustomerRepository.GetById(id);
 
-            var user = await _userManager
-                .FindByIdAsync(Shop.UserId);
-
             Input = new InputModel();
 
             Input.CustomerId = id;
             Input.CustomerName = Shop.Name;
-            Input.Name = Shop.OwnerName;
-            Input.Family = Shop.OwnerFamily;
+            Input.CustomerOwnerFamily = Shop.OwnerFamily;
+            Input.CustomerOwnerName = Shop.OwnerName;
+            Input.Status = Shop.Status;
             Input.CustomerAddress = Shop.Address;
             Input.City = Shop.City.Id;
             Input.Latitude = Shop.Latitude;
             Input.Longitude = Shop.Longitude;
-            Input.PhoneNumber = user.PhoneNumber;
             Input.NationalId = Shop.ApplicationCustomerUser.NationalId;
             Input.CustomerType = Shop.CustomerType.Id;
+            Input.PhoneNumber = Shop.Phonenumber;
 
             ViewData["CustomerTypeId"] = new
                     SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
@@ -143,9 +136,28 @@ namespace DaliFood.AdminPanel.Pages.Customer
 
             if (ModelState.IsValid)
             {
-                var Shop = unitofwork.CustomerRepository.GetById(Input.CustomerId);
-                    
+                var Shop = unitofwork
+                    .CustomerRepository.GetById(Input.CustomerId);
 
+
+                Shop.Name = Input.CustomerName;
+                Shop.OwnerName = Input.CustomerOwnerName;
+                Shop.OwnerFamily = Input.CustomerOwnerFamily;
+                Shop.Longitude = Input.Longitude;
+                Shop.Latitude = Input.Latitude;
+                Shop.Status = Input.Status;
+                Shop.Phonenumber = Input.PhoneNumber;
+                Shop.Address = Input.CustomerAddress;
+                Shop.ApplicationCustomerUser.NationalId = Input.NationalId;
+                Shop.CityId = Input.City;
+                Shop.TypeId = Input.CustomerType;
+
+
+                unitofwork.CustomerRepository.Modifie(Shop);
+                await unitofwork
+                        .CustomerRepository.SaveAsync();
+
+                return Redirect("/Customer/Index");
             }
 
             ViewData["CustomerTypeId"] = new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");

@@ -2,8 +2,8 @@
 @model DaliFood.AdminPanel.Pages.Financial.WithdrawModel
 @{
 
-    ViewData["Title"] = "لیست";
-    ViewData["Section"] = "مدیریت غذای مشتریان";
+    ViewData["Title"] = "برداشت ها";
+    ViewData["Section"] = "مدیریت حسابداری";
 }
 
 <div class="card">
@@ -14,44 +14,88 @@
                 <a class="list-icons-item" data-action="collapse"></a>
                 <a class="list-icons-item" data-action="reload"></a>
                 <a class="list-icons-item" data-action="remove"></a>
-                <form method="get">
-                    <input type="search" name="SearchQ" id="GridSearch" placeholder="جست و جو" />
-            
-                    <label for="SearchStatus">وضعیت:</label>
 
-                    <select name="SearchStatus" id="SearchStatus">
-                        <option value="">همه</option>
-                        <option value="0">درحال بررسی</option>
-                        <option value="1">تایید شده</option>
-                        <option value="2">رد شده</option>
-
-                    </select>
-                    <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
-                    <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
-                    <div class="input-group-prepend">
-                        <span class="input-group-text cursor-pointer" id="enter_date">از تاریخ</span>
-                    </div>
-                    <input type="text" id="enter_date_1"
-                           aria-label="enter_date" aria-describedby="enter_date" />
-                    <input type="hidden" name="SearchStartDate" id="enter_date_2"
-                           aria-label="enter_date" aria-describedby="enter_date" />
-
-
-
-                    <div class="input-group-prepend">
-                        <span class="input-group-text cursor-pointer" id="exit_date">تا تاریخ</span>
-                    </div>
-                    <input type="text" name="exit_date_1" id="exit_date_1" aria-label="exit_date"
-                           aria-describedby="exit_date" />
-                    <input type="hidden" name="SearchEndDate" id="exit_date_2"
-                           aria-label="exit_date" aria-describedby="exit_date" />
-                    <input type="submit" class="btn btn-success" value="بیـاب!" />
-                </form>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <hr />
+
+        <form method="get">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i>فیلتر ها </legend>
+                        <div class="form-group row">
+                            <div class="col-lg-2">
+                                <input class="form-control" type="search" name="SearchQ" id="GridSearch" placeholder="متن جست جو" />
+
+                            </div>
+                            <div class="col-lg-2">
+                                <select class="form-control" name="SearchStatus" id="SearchStatus">
+                                    <option value="">وضعیت ها</option>
+                                    <option value="0">درحال بررسی</option>
+                                    <option value="1">تایید شده</option>
+                                    <option value="2">رد شده</option>
+
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <input class="form-control" type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
+                            </div>
+                            <div class="col-lg-2">
+                                <input class="form-control" type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
+                            </div>
+
+                            <div class="col-lg-2">
+                                <input class="form-control  cursor-pointer" id="enter_date" placeholder="از تاریخ">
+                                <input type="text" id="enter_date_1"
+                                       aria-label="enter_date" aria-describedby="enter_date" hidden="hidden" />
+                                <input class="form-control" type="hidden" name="SearchStartDate" id="enter_date_2"
+                                       aria-label="enter_date" aria-describedby="enter_date" />
+                            </div>
+                            <div class="col-lg-2">
+                                <input class="form-control  cursor-pointer" id="exit_date" placeholder="تا تاریخ">
+                                <input type="text" name="exit_date_1" id="exit_date_1" aria-label="exit_date"
+                                       aria-describedby="exit_date" hidden="hidden" />
+                                <input type="hidden" name="SearchEndDate" id="exit_date_2"
+                                       aria-label="exit_date" aria-describedby="exit_date" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="submit" class="btn btn-default text-info" style="float:left;" value="جستجو!" />
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+            @*<label for="SearchStatus">وضعیت:</label>*@
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">&nbsp;</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
         <table class="table">
             <thead>
                 <tr>

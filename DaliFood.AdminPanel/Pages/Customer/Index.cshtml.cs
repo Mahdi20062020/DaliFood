@@ -33,7 +33,19 @@ namespace DaliFood.AdminPanel.Pages.Customer
 
         }
 
-
+        public ActionResult OnGetDelete(int Id)
+        {
+            var Customer = unitofwork.CustomerRepository
+                .GetById(Id);
+            if (Customer == null)
+                return NotFound();
+            unitofwork.CustomerRepository.Delete(Customer);
+            
+            var Customers = unitofwork.CustomerRepository
+                .GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            unitofwork.CustomerRepository.Save();
+            return RedirectToPage("Index");
+        }
 
     }
 }
