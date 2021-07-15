@@ -44,6 +44,7 @@ namespace DaliFood.Models.Data
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Providence> Providence { get; set; }
         public DbSet<City> City { get; set; }
+        public DbSet<CustomerComment> CustomerComment { get; set; }
     }
 }
 
