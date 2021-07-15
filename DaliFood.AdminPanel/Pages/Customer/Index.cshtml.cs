@@ -16,21 +16,8 @@ namespace DaliFood.AdminPanel.Pages.Customer
             this.unitofwork = unitofwork;
         }
 
-
-
-        public class GridModel {
-
-            public string Name { get; set; }
-            public string OwnerName { get; set; }
-            public string CityName { get; set; }
-            public string Status { get; set; }
-            public string Type { get; set; }
-
-        };
         
         [BindProperty]
-        public IEnumerable<GridModel> grid { get; set; }
-
         public IEnumerable<Models.Customer> Customer { get; set; }
 
 
@@ -43,19 +30,6 @@ namespace DaliFood.AdminPanel.Pages.Customer
                 item.CustomerType = unitofwork
                     .CustomerTypeRepository.GetById(item.TypeId);
             }
-
-            foreach (var item in Customer)
-            {
-                var model = new GridModel();
-                model.Name = item.Name;
-                model.OwnerName = item.Name;
-
-
-
-            }
-
-
-
 
         }
 
