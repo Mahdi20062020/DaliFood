@@ -1,28 +1,51 @@
 ﻿@page
 @model DaliFood.AdminPanel.Pages.Customer.IndexModel
 @{
-    string Title = "فروشنده";
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت فروشگاه ها";
 }
-<div class="container">
-<a class="btn btn-outline-primary m-2" asp-page="upsert">افزودن @Title جدید</a>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">نام</th>
-                <th scope="col">نوع</th>
-                <th scope="col">#</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Customer)
-            {
+
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست دسته بندی غذاها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <input class="form-control" type="search" id="GridSearch" placeholder="جست و جو" />
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.Name</td>
-                    <td>@item.CustomerType.Name</td>
-                    <td>       
-                </td>
+                    <th scope="col">نام</th>
+                    <th scope="col">نام مالک</th>
+                    <th scope="col">نوع</th>
+                    <th scope="col">شهر</th>
+                    <th scope="col">وضعیت</th>
+                    <th scope="col">عملیات</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Customer)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.CustomerType.Name</td>
+                        <td>
+                            <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                            <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+

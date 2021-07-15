@@ -106,6 +106,16 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="nav-item">
+                    <a asp-area="" asp-page="/Customer/Index" class="nav-link">
+                        <i class="icon-location3"></i>
+                        <span>
+                            مدیریت فروشگاه ها
+                        </span>
+                    </a>
+                </li>
+
                 <li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link">
                         <i class="icon-price-tags"></i><span>حسابـداری</span>
@@ -129,7 +139,7 @@
                                 تراکنش ها
                             </a>
                         </li>
-                       
+
                     </ul>
                 </li>
                 @if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))

@@ -1,22 +1,26 @@
-﻿using DaliFood.Models.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using DaliFood.AdminPanel.Areas.Identity.Pages.Account;
+using DaliFood.Models.Data;
 using DaliFood.Models.Identity;
 using DaliFood.Utilites;
 using DaliFood.Utilites.Attributes;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DaliFood.AdminPanel.Pages.Customer.Account
+namespace DaliFood.AdminPanel.Pages.Customer
 {
-    public class RegisterModel : PageModel
+    public class UpsertModel : PageModel
     {
+        #region Lazy loading
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UnitOfWork unitofwork;
@@ -24,22 +28,23 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
 
-            
-        public RegisterModel(
+        public UpsertModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-             IEmailSender emailSender,
-             ApplicationDbContext db,
-             UnitOfWork _unitofwork)
+            IEmailSender emailSender,
+            ApplicationDbContext db,
+            UnitOfWork unitofwork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _db = db;
-            unitofwork = _unitofwork;
+            this.unitofwork = unitofwork;
         }
+        #endregion
+
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -49,13 +54,16 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 
         public class InputModel
         {
-
-
-
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام")]
             [MaxLength(100)]
             public string Name { get; set; }
+
+            [Display(Name = "عرض جغرافیایی")]
+            public string Latitude { get; set; }
+
+            [Display(Name = "طول جغرافیایی")]
+            public string Longitude { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام خانوادگی")]
@@ -67,11 +75,10 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "کدملی")]
             [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
+
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "تاریخ تولد")]
-
-            public DateTime Birthday { get; set; }
-
+            [Display(Name = "شهر")]
+            public int City { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام فروشگاه")]
@@ -84,12 +91,13 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "آدرس فروشگاه")]
             [MaxLength(100)]
             public string CustomerAddress { get; set; }
-            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "نام مالک فروشگاه")]
-            public string CustomerOwnerName { get; set; }
-            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "نام خانوادگی مالک فروشگاه")]
-            public string CustomerOwnerFamily { get; set; }
+            
+            //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            //[Display(Name = "نام مالک فروشگاه")]
+            //public string CustomerOwnerName { get; set; }
+            //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            //[Display(Name = "نام خانوادگی مالک فروشگاه")]
+            //public string CustomerOwnerFamily { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [EmailAddress(ErrorMessage = "{0} وارد شده نامعتبر است")]
@@ -112,11 +120,16 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             //public string profileImage { get; set; }
         }
 
+
+
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ViewData["CustomerTypeId"] = new
                 SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+
+            ViewData["City"] =
+                new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
 
         }
 
@@ -125,13 +138,13 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
+
                 ApplicationCustomerUser userDetail = new ApplicationCustomerUser()
                 {
                     CustomerName = Input.CustomerName,
-                    BirthDate = Input.Birthday,
                     NationalId = Input.NationalId,
                     CreateDate = DateTime.Now,
-                    OwnerName = Input.CustomerOwnerName,
+                    OwnerName = Input.Name,
 
                 };
 
@@ -151,19 +164,28 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-
+                    Longitude = Input.Longitude,
+                    Latitude = Input.Latitude,
+                    CityId = Input.City,
                     ApplicationCustomerUser = userDetail
                 };
 
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await 
+                    _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
 
                     string UserId = await _userManager.GetUserIdAsync(user);
+                    
                     customer.UserId = UserId;
-                    unitofwork.CustomerRepository.Create(customer);
-                    await unitofwork.CustomerRepository.SaveAsync();
-                    string CustomerId = unitofwork.CustomerRepository.GetAll(where: p => p.UserId == UserId).FirstOrDefault().Id.ToString();
+                    unitofwork.CustomerRepository
+                        .Create(customer);
+                    await unitofwork
+                        .CustomerRepository.SaveAsync();
+
+                    string CustomerId = 
+                        unitofwork.CustomerRepository.GetAll(where: p => p.UserId == UserId).FirstOrDefault().Id.ToString();
                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, CustomerId));
                     await _userManager.AddToRoleAsync(user, SD.CustomerOwnerRole);
                     _logger.LogInformation("User created a new account with password.");
@@ -187,9 +209,10 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 
             //// If we got this far, something failed, redisplay form
             ViewData["CustomerTypeId"] = new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+            ViewData["City"] =
+                new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
 
             return Page();
         }
-
     }
 }

@@ -15,7 +15,8 @@ namespace DaliFood.Models.Data
         { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder
+                .UseLazyLoadingProxies();
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +38,8 @@ namespace DaliFood.Models.Data
         public DbSet<Deposit> Deposit { get; set; }
         public DbSet<Withdraw> Withdraw { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
+        public DbSet<Providence> providences { get; set; }
+        public DbSet<City> Cities { get; set; }
     }
 }
 

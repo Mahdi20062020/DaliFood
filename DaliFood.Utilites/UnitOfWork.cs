@@ -16,6 +16,7 @@ namespace DaliFood.Utilites
         {
             this.context = context;
         }
+
         private Repository<CustomersProduct> _CustomersProductRepository;
         public Repository<CustomersProduct> CustomersProductRepository
         {
@@ -28,6 +29,8 @@ namespace DaliFood.Utilites
                 return _CustomersProductRepository;
             }
         }
+        
+        
         private Repository<Product> _ProductRepository;
         public Repository<Product> ProductRepository
         {
@@ -40,6 +43,8 @@ namespace DaliFood.Utilites
                 return _ProductRepository;
             }
         }
+        
+        
         private Repository<ProductCategorie> _ProductCategorieRepository;
         public Repository<ProductCategorie> ProductCategorieRepository
         {
@@ -52,6 +57,8 @@ namespace DaliFood.Utilites
                 return _ProductCategorieRepository;
             }
         }
+        
+        
         private Repository<CustomerType> _CustomerTypeRepository;
         public Repository<CustomerType> CustomerTypeRepository
         {
@@ -64,6 +71,9 @@ namespace DaliFood.Utilites
                 return _CustomerTypeRepository;
             }
         }
+        
+        
+        
         private Repository<Customer> _CustomerRepository;
         public Repository<Customer> CustomerRepository
         {
@@ -76,6 +86,9 @@ namespace DaliFood.Utilites
                 return _CustomerRepository;
             }
         }
+        
+        
+        
         private Repository<Discount> _DiscountRepository;
         public Repository<Discount> DiscountRepository
         {
@@ -88,6 +101,8 @@ namespace DaliFood.Utilites
                 return _DiscountRepository;
             }
         }
+        
+        
         private Repository<PhotoFor> _PhotoForRepository;
         public Repository<PhotoFor> PhotoForRepository
         {
@@ -115,6 +130,7 @@ namespace DaliFood.Utilites
             }
         }
 
+        
         private Repository<Order> _OrderRepository;
         public Repository<Order> OrderRepository
         {
@@ -128,6 +144,7 @@ namespace DaliFood.Utilites
             }
         }
 
+        
         private Repository<OrderItem> _OrderItemRepository;
         public Repository<OrderItem> OrderItemRepository
         {
@@ -140,6 +157,7 @@ namespace DaliFood.Utilites
                 return _OrderItemRepository;
             }
         }
+
 
         private Repository<PhoneNumbersToken> _PhoneNumbersTokenRepository;
         public Repository<PhoneNumbersToken> PhoneNumbersTokenRepository
@@ -154,6 +172,7 @@ namespace DaliFood.Utilites
             }
         }
 
+
         private Repository<Address> _AddressRepository;
         public Repository<Address> AddressRepository
         {
@@ -166,6 +185,7 @@ namespace DaliFood.Utilites
                 return _AddressRepository;
             }
         }
+
 
         private Repository<Deposit> _DepositRepository;
         public Repository<Deposit> DepositRepository
@@ -180,6 +200,7 @@ namespace DaliFood.Utilites
             }
         }
 
+
         private Repository<Withdraw> _WithdrawRepository;
         public Repository<Withdraw> WithdrawRepository
         {
@@ -192,6 +213,8 @@ namespace DaliFood.Utilites
                 return _WithdrawRepository;
             }
         }
+
+
         private Repository<Transaction> _TransactionRepository;
         public Repository<Transaction> TransactionRepository
         {
@@ -204,6 +227,36 @@ namespace DaliFood.Utilites
                 return _TransactionRepository;
             }
         }
+
+
+        private Repository<Providence> _ProvidenceRepository;
+        public Repository<Providence> ProvidenceRepository
+        {
+            get
+            {
+                if (ProvidenceRepository == null)
+                {
+                    _ProvidenceRepository = new Repository<Providence>(context);
+                }
+                return _ProvidenceRepository;
+            }
+        }
+
+
+        private Repository<City> _CityRepository;
+        public Repository<City> CityRepository
+        {
+            get
+            {
+                if (_CityRepository == null)
+                {
+                    _CityRepository = new Repository<City>(context);
+                }
+                return _CityRepository;
+            }
+        }
+
+
 
         public void Dispose()
         {

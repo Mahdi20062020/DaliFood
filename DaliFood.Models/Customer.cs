@@ -3,15 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DaliFood.Models
 {
     public class Customer
     {
-
         [Key]
         public int Id { get; set; }
         [ForeignKey(nameof(ApplicationCustomerUser))]
@@ -24,8 +20,18 @@ namespace DaliFood.Models
         [ForeignKey(nameof(CustomerType))]
         public int TypeId { get; set; }
         [Display(Name = "جواز کسب")]
-     
         public string LicenseSaveAddress { get; set; }
+
+        [Display(Name = "عرض جغرافیایی")]
+        public string Latitude { get; set; }
+
+        [Display(Name = "طول جغرافیایی")]
+        public string Longitude { get; set; }
+
+        public int CityId { get; set; }
+        public virtual City City { get; set; }
+
+
         [Display(Name = "آدرس")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Address { get; set; }

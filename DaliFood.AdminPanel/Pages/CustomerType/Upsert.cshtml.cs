@@ -15,6 +15,7 @@ namespace DaliFood.AdminPanel.Pages.CustomerType
         {
             this.unitofwork = unitofwork;
         }
+        
         [BindProperty]
         public Models.CustomerType CustomerType { get; set; }
 
