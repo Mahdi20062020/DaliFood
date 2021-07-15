@@ -186,16 +186,25 @@
                             </span>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a asp-area="" asp-page="/Comment/Index" class="nav-link">
+                            <i class="icon-cart-add"></i>
+                            <span>
+                                مدیریت نظر ها
+                            </span>
+                        </a>
+                    </li>
                 }
 
 
                 @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
                 {
                     <li class="nav-item">
-                        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link">
+                        <a asp-area="" asp-page="/Users/Index" class="nav-link">
                             <i class="icon-user"></i>
                             <span>
-                                افزودن کاربر جدید
+                                مدیریت کاربران
                             </span>
                         </a>
                     </li>

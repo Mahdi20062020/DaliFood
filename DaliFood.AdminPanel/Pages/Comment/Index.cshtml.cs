@@ -18,10 +18,50 @@ namespace DaliFood.AdminPanel.Pages.Comment
         [BindProperty]
         public IEnumerable<Models.CustomerComment> CustomerComment { get; set; }
 
-        public void OnGet()
+        public void OnGet(int? SearchStatus,int? CustomerId, string SearchQ = null, string SearchStartDate = null, string SearchEndDate = null)
         {
-            CustomerComment = unitofwork.CustomerCommentRepository
+            var customerId = User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value;
+            if (customerId == SD.AdminCustomerId)
+            {
+                CustomerComment = unitofwork.CustomerCommentRepository
                 .GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+                if (CustomerId.HasValue)
+                {
+                    CustomerComment = unitofwork.CustomerCommentRepository
+                   .GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate), where: p => p.CustomerId == CustomerId);
+                }
+            }
+            else
+            {
+                CustomerComment = unitofwork.CustomerCommentRepository
+               .GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate),where:p=>p.CustomerId == int.Parse(customerId));
+            }
+            if (SearchStatus.HasValue)
+            {
+                CustomerComment = CustomerComment.Where(p => p.Status == SearchStatus);
+            }     
+            if (SearchQ != null)
+            {
+                //CustomerComment = CustomerComment.Where();
+            }
+            if (SearchStartDate != null)
+            {
+                var date = SearchStartDate.Split('/');
+                int year = int.Parse(date[0]);
+                int month = int.Parse(date[1]);
+                int day = int.Parse(date[2]);
+                var Startdate = new DateTime(year, month, day);
+                CustomerComment = CustomerComment.Where(p => p.CreateDate >= Startdate);
+            }
+            if (SearchEndDate != null)
+            {
+                var date = SearchEndDate.Split('/');
+                int year = int.Parse(date[0]);
+                int month = int.Parse(date[1]);
+                int day = int.Parse(date[2]);
+                var Startdate = new DateTime(year, month, day);
+                CustomerComment = CustomerComment.Where(p => p.CreateDate <= Startdate);
+            }
         }
         public ActionResult OnPostStatus(int Id,int Status)
         {
