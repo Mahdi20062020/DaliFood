@@ -1,0 +1,81 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Comment.IndexModel
+@{
+
+    ViewData["Title"] = "لیست";
+    ViewData["Section"] = "مدیریت نظر ها";
+
+}
+
+@ViewData["ShowPartial"]
+@*<script src="~/js/sweetalert2.all.min.js"></script>*@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">لیست نظر ها</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+                <input class="form-control" type="search" id="GridSearch" placeholder="جست و جو" />
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <hr />
+        <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
+       
+        @(Html.Grid(Model.CustomerComment)
+        .Build(c=> {
+            c.Add(item => item.Name).Titled("نام");
+            c.Add(item => item.Family).Titled("نام خانوادگی");
+            c.Add(item => item.Customer.Name).Titled("نام رستوران");
+            c.Add(item => item.Status).Titled("وضعیت");
+            c.Add(m => Html.Raw($"<div style='display:flex;'><button type=\"button\" class=\"btn btn-warning\" data-toggle=\"modal\" data-target=\"#Modal{m.Id}\">بیشتر...</button>")).Titled("عملیات");
+        })
+        .Using(GridFilterMode.Header)
+        .Empty("No data found")
+        .Filterable()
+        .Sortable()
+        .Pageable()
+        )
+        @*<button class="show-example-btn" onclick="x('warningConfirm')">
+                Try me!
+            </button>*@
+        @*<table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">نام</th>
+                        <th scope="col">دسته بندی</th>
+                        <th scope="col">#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Product)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+
+
+                            <td>@item.ProductCategorie.Name</td>
+
+                            <td>
+                                <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
+                                <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>*@
+    </div>
+</div>
+@foreach (var item in Model.CustomerComment)
+{
+    <div class="modal fade" id="@($"Modal{item.Id}")" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+
+        @await Component.InvokeAsync("CommentDetail", new { CommentId = item.Id })
+    </div>
+}

@@ -255,6 +255,18 @@ namespace DaliFood.Utilites
                 return _CityRepository;
             }
         }
+        private Repository<CustomerComment> _CustomerCommentRepository;
+        public Repository<CustomerComment> CustomerCommentRepository
+        {
+            get
+            {
+                if (_CustomerCommentRepository == null)
+                {
+                    _CustomerCommentRepository = new Repository<CustomerComment>(context);
+                }
+                return _CustomerCommentRepository;
+            }
+        }
 
 
 
