@@ -3,26 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DaliFood.Models.Migrations
 {
-    public partial class initial_DB : Migration
+    public partial class Initial_DB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Address",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TextAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Address", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -45,9 +29,9 @@ namespace DaliFood.Models.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Family = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -127,6 +111,22 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Providence",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PreNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Providence", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transaction",
                 columns: table => new
                 {
@@ -178,8 +178,16 @@ namespace DaliFood.Models.Migrations
                     NationalCardSaveAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentityCardAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    Wallet = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelePhonenumber1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelePhonenumber2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerFamily = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Wallet = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -301,6 +309,28 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "City",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProvidenceId = table.Column<int>(type: "int", nullable: false),
+                    CreateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdateDateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_City", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_City_Providence_ProvidenceId",
+                        column: x => x.ProvidenceId,
+                        principalTable: "Providence",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Deposit",
                 columns: table => new
                 {
@@ -383,6 +413,29 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TextAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationNormalUserUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_ApplicationUserDetail_ApplicationNormalUserUserId",
+                        column: x => x.ApplicationNormalUserUserId,
+                        principalTable: "ApplicationUserDetail",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
@@ -392,11 +445,12 @@ namespace DaliFood.Models.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TypeId = table.Column<int>(type: "int", nullable: false),
                     LicenseSaveAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CityId = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ShabaNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SendingPrice = table.Column<int>(type: "int", nullable: false),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TelePhonenumber1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TelePhonenumber2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -414,6 +468,12 @@ namespace DaliFood.Models.Migrations
                         principalTable: "ApplicationUserDetail",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Customer_City_CityId",
+                        column: x => x.CityId,
+                        principalTable: "City",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Customer_CustomerType_TypeId",
                         column: x => x.TypeId,
@@ -542,6 +602,11 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Address_ApplicationNormalUserUserId",
+                table: "Address",
+                column: "ApplicationNormalUserUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -579,6 +644,16 @@ namespace DaliFood.Models.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_City_ProvidenceId",
+                table: "City",
+                column: "ProvidenceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customer_CityId",
+                table: "Customer",
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_TypeId",
@@ -718,10 +793,16 @@ namespace DaliFood.Models.Migrations
                 name: "ApplicationUserDetail");
 
             migrationBuilder.DropTable(
+                name: "City");
+
+            migrationBuilder.DropTable(
                 name: "CustomerType");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Providence");
         }
     }
 }

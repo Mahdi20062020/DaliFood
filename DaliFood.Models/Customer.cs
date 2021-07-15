@@ -29,6 +29,7 @@ namespace DaliFood.Models
         public string Longitude { get; set; }
 
         public int CityId { get; set; }
+        [ForeignKey(nameof(CityId))]
         public virtual City City { get; set; }
 
 
@@ -40,11 +41,7 @@ namespace DaliFood.Models
         [Display(Name = "هزینه ارسال")]
         public int SendingPrice { get; set; }
 
-        [Display(Name = "عرض جغرافیایی")]
-        public string Latitude { get; set; }
-
-        [Display(Name = "طول جغرافیایی")]
-        public string Longitude { get; set; }
+     
 
         [Display(Name = "شماره تلفن ثابت 1")]
         public string TelePhonenumber1 { get; set; }

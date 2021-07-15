@@ -15,7 +15,6 @@ namespace DaliFood.Models
         public DateTime? UpdateDateTime { get; set; }
 
         // Navigation Properties
-        public virtual List<City> Cities { get; set; } =
-            new List<City>();
+        public virtual IEnumerable<City> Cities { get; set; }
     }
 }

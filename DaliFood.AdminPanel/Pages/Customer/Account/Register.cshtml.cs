@@ -105,6 +105,13 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "تکرار رمز عبور")]
             [Compare("Password", ErrorMessage = "رمز عبور وارده ناهماهنگ است")]
             public string ConfirmPassword { get; set; }
+
+
+            [Display(Name = "عرض جغرافیایی")]
+            public string Latitude { get; set; }
+
+            [Display(Name = "طول جغرافیایی")]
+            public string Longitude { get; set; }
             //[MaxLength(250)]
             //public string profileImage { get; set; }
         }
@@ -145,7 +152,8 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-                   
+                    Latitude=Input.Latitude,
+                    Longitude=Input.Longitude,
                     ApplicationCustomerUser = userDetail
                 };
 

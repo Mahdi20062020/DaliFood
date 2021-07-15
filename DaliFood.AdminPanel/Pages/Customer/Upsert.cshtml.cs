@@ -91,13 +91,13 @@ namespace DaliFood.AdminPanel.Pages.Customer
             [Display(Name = "آدرس فروشگاه")]
             [MaxLength(100)]
             public string CustomerAddress { get; set; }
-            
-            //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            //[Display(Name = "نام مالک فروشگاه")]
-            //public string CustomerOwnerName { get; set; }
-            //[Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            //[Display(Name = "نام خانوادگی مالک فروشگاه")]
-            //public string CustomerOwnerFamily { get; set; }
+
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "نام مالک فروشگاه")]
+            public string CustomerOwnerName { get; set; }
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "نام خانوادگی مالک فروشگاه")]
+            public string CustomerOwnerFamily { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [EmailAddress(ErrorMessage = "{0} وارد شده نامعتبر است")]
@@ -164,11 +164,12 @@ namespace DaliFood.AdminPanel.Pages.Customer
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-                    Longitude = Input.Longitude,
-                    Latitude = Input.Latitude,
-                    CityId = Input.City,
+                    CityId = Input.City,              
+                    OwnerName=Input.CustomerOwnerName,
+                    OwnerFamily=Input.CustomerOwnerFamily,
                     ApplicationCustomerUser = userDetail
                 };
+                customer.Latitude = Input.Latitude;
 
                 var result = await 
                     _userManager.CreateAsync(user, Input.Password);

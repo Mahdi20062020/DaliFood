@@ -36,6 +36,8 @@
         <form role="form" method="post">
             <div class="row">
                 <div class="col-md-12">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
                     <fieldset>
                         <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i>اطلاعات مالک رستوران</legend>
                         <div class="form-group row">
@@ -108,7 +110,7 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">نام رستوران:</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" placeholder="نام کاربر را اینجا وارد کنید" asp-for="Input.CustomerName">
+                                <input type="text" class="form-control" placeholder="نام رستوران را اینجا وارد کنید" asp-for="Input.CustomerName">
                                 <span asp-validation-for="Input.CustomerName" class="field-validation-error text-danger"></span>
                             </div>
                         </div>
@@ -132,11 +134,24 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-form-label">آدرس رستوران:</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control" placeholder="نام کاربر را اینجا وارد کنید" asp-for="Input.CustomerAddress">
+                                <input type="text" class="form-control" placeholder="آدرس رستوران را اینجا وارد کنید" asp-for="Input.CustomerAddress">
                                 <span asp-validation-for="Input.CustomerAddress" class="field-validation-error text-danger"></span>
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">نام مالک رستوران:</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" placeholder="نام مالک رستوران را اینجا وارد کنید" asp-for="Input.CustomerOwnerName">
+                                <span asp-validation-for="Input.CustomerOwnerName" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-form-label">نام خانوادگی مالک رستوران:</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" placeholder="نام خانوادگی مالک رستوران را اینجا وارد کنید" asp-for="Input.CustomerOwnerFamily">
+                                <span asp-validation-for="Input.CustomerOwnerFamily" class="field-validation-error text-danger"></span>
+                            </div>
+                        </div>
                         <input type="hidden" id="Longitude" asp-for="Input.Longitude" />
                         <input type="hidden" id="latitude" asp-for="Input.Latitude" />
                         <div class="form-group row">

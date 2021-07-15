@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DaliFood.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210714152024_initial_DB")]
-    partial class initial_DB
+    [Migration("20210715063145_Initial_DB")]
+    partial class Initial_DB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,32 @@ namespace DaliFood.Models.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DaliFood.Models.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProvidenceId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProvidenceId");
+
+                    b.ToTable("City");
+                });
 
             modelBuilder.Entity("DaliFood.Models.Customer", b =>
                 {
@@ -31,6 +57,9 @@ namespace DaliFood.Models.Migrations
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -81,6 +110,8 @@ namespace DaliFood.Models.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("TypeId");
 
@@ -226,6 +257,9 @@ namespace DaliFood.Models.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationNormalUserUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Latitude")
                         .HasColumnType("nvarchar(max)");
 
@@ -241,6 +275,8 @@ namespace DaliFood.Models.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationNormalUserUserId");
 
                     b.ToTable("Address");
                 });
@@ -478,6 +514,30 @@ namespace DaliFood.Models.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductCategorie");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Providence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Providence");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Transaction", b =>
@@ -771,20 +831,48 @@ namespace DaliFood.Models.Migrations
                 {
                     b.HasBaseType("DaliFood.Models.Identity.ApplicationUserDetail");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("CustomerName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityCardAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NationalCardSaveAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerFamily")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phonenumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelePhonenumber1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelePhonenumber2")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationCustomerUser");
@@ -794,14 +882,8 @@ namespace DaliFood.Models.Migrations
                 {
                     b.HasBaseType("DaliFood.Models.Identity.ApplicationUserDetail");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<string>("Wallet")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Wallet")
+                        .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("ApplicationNormalUser");
                 });
@@ -823,8 +905,25 @@ namespace DaliFood.Models.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.City", b =>
+                {
+                    b.HasOne("DaliFood.Models.Providence", "Providence")
+                        .WithMany("Cities")
+                        .HasForeignKey("ProvidenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Providence");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Customer", b =>
                 {
+                    b.HasOne("DaliFood.Models.City", "City")
+                        .WithMany("Customers")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DaliFood.Models.CustomerType", "CustomerType")
                         .WithMany("Customer")
                         .HasForeignKey("TypeId")
@@ -836,6 +935,8 @@ namespace DaliFood.Models.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("ApplicationCustomerUser");
+
+                    b.Navigation("City");
 
                     b.Navigation("CustomerType");
                 });
@@ -877,6 +978,15 @@ namespace DaliFood.Models.Migrations
                         .IsRequired();
 
                     b.Navigation("CustomersProduct");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Identity.Address", b =>
+                {
+                    b.HasOne("DaliFood.Models.Identity.ApplicationNormalUser", "ApplicationNormalUser")
+                        .WithMany("Addresses")
+                        .HasForeignKey("ApplicationNormalUserUserId");
+
+                    b.Navigation("ApplicationNormalUser");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Identity.ApplicationUserDetail", b =>
@@ -1006,6 +1116,11 @@ namespace DaliFood.Models.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DaliFood.Models.City", b =>
+                {
+                    b.Navigation("Customers");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Customer", b =>
                 {
                     b.Navigation("OrderItem");
@@ -1038,6 +1153,16 @@ namespace DaliFood.Models.Migrations
             modelBuilder.Entity("DaliFood.Models.ProductCategorie", b =>
                 {
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Providence", b =>
+                {
+                    b.Navigation("Cities");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.Identity.ApplicationNormalUser", b =>
+                {
+                    b.Navigation("Addresses");
                 });
 
             modelBuilder.Entity("DaliFood.Models.Identity.ApplicationUser", b =>

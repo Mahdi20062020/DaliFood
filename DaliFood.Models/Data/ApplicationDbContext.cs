@@ -42,8 +42,8 @@ namespace DaliFood.Models.Data
         public DbSet<Deposit> Deposit { get; set; }
         public DbSet<Withdraw> Withdraw { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
-        public DbSet<Providence> providences { get; set; }
-        public DbSet<City> Cities { get; set; }
+        public DbSet<Providence> Providence { get; set; }
+        public DbSet<City> City { get; set; }
     }
 }
 
