@@ -27,7 +27,7 @@
 
     <script src="~/PersianDateTimePicker/Scripts/jquery-2.1.4.js"></script>
     <script src="~/PersianDateTimePicker/Scripts/bootstrap.min.js"></script>
-    <script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.min.js"></script>
+    @*<script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/jquery.Bootstrap-PersianDateTimePicker.min.js"></script>*@
     <style>
         .custom-label {
             font-size: larger !important;
@@ -50,6 +50,7 @@
                     <h2>ثبت فروشگاه جدید</h2>
                     <hr style="width:97%" />
                     <form method="POST" class="register-form" id="register-form" asp-route-returnUrl="@Model.ReturnUrl">
+                        <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="custom-label" for="name">نام :</label>
@@ -69,16 +70,21 @@
                                 <input type="text" asp-for="Input.NationalId" class="numbersOnly" />
                                 <span asp-validation-for="Input.NationalId" class="field-validation-error text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label for="father_name">تاریخ تولد :</label>
-                                <input type="date" asp-for="Input.Birthday" />
-                                <div data-mdpersiandatetimepickershowing="false" title="" data-original-title="" data-mdpersiandatetimepickerselecteddatetime="{&quot;Year&quot;:1393,&quot;Month&quot;:10,&quot;Day&quot;:10,&quot;Hour&quot;:0,&quot;Minute&quot;:0,&quot;Second&quot;:0}" data-enabletimepicker="false" data-mdpersiandatetimepicker="" style="cursor: pointer;" class="input-group-addon" data-mddatetimepicker="true" data-trigger="click" data-targetselector="#exampleInput3">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </div>
-                                <span asp-validation-for="Input.Birthday" class="field-validation-error text-danger"></span>
-                            </div>
-                        </div>
 
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="father_name">نام  صاحب فروشگاه :</label>
+                                <input type="text" asp-for="Input.CustomerOwnerName" />
+                                <span asp-validation-for="Input.CustomerOwnerName" class="field-validation-error text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="father_name">نام خانوادگی صاحب فروشگاه :</label>
+                                <input type="text" asp-for="Input.CustomerOwnerFamily" />
+                                <span asp-validation-for="Input.CustomerOwnerFamily" class="field-validation-error text-danger"></span>
+                            </div>
+
+                        </div>
 
                         <div class="form-row">
                             <div class="form-group">
@@ -143,79 +149,13 @@
 
     </div>
     <!-- JS -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <script src="~/Customer-Reg/vendor/jquery/jquery.min.js"></script>
     <script src="~/Customer-Reg/js/main.js"></script>
-
+    
     <script src="~/PersianDateTimePicker/Scripts/MdBootstrapPersianDateTimePicker/calendar.js"></script>
-
-
-    <!--Map Script-->
-    <script>
-        LeafletMap('', '', 'En', '', '')
-
-        function LeafletMap(lat, lng, status, url, dis) {
-            var map, newMarker, markerLocation;
-
-            if (dis == null) { dis = ''; }
-            if (dis == null) { dis = ''; }
-
-            if (lat == null) { lat = '36.32356134189473'; }
-            if (lat == '') { lat = '36.32356134189473'; }
-
-            if (lng == null) { lng = '59.57780599594117'; }
-            if (lng == '') { lng = '59.57780599594117'; }
-
-            if (url == null) { url = ''; }
-            if (url == '') { url = '../Content/File/Template/ICO/MapPins/FL_New.png'; }
-
-            $(function () {
-                var map = L.map('map').setView([36.32356134189473, 59.57780599594117], 15);
-                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '<a href="http://openstreetmap.org"></a><a href="http://creativecommons.org/licenses/by-sa/2.0/"></a>',
-                    maxZoom: 18
-                }).addTo(map);
-
-                var greenIcon = L.icon({
-                    iconUrl: url,
-                    iconSize: [35, 35]
-                })
-
-                newMarkerGroup = new L.LayerGroup();
-                var theMarker = {};
-                theMarker = L.marker([lat, lng]).addTo(map);
-                if (status == 'En') {
-                    map.on('click', function (e) {
-                        if (theMarker != undefined) {
-                            map.removeLayer(theMarker);
-                        };
-                        if (dis != '') {
-                            console.log(dis)
-                            for (var i = 0; i < dis.length; i++) {
-                                var dis_name = dis[i].Name;
-                                var dis_border = dis[i].Border;
-                                if (dis_border.length > 0) {
-                                    var pt = turf.point([parseFloat(e.latlng.lat), parseFloat(e.latlng.lng)]);
-                                    var pt_all_list = turf.polygon([dis_border]);
-                                    var ch__ = turf.booleanPointInPolygon(pt, pt_all_list);
-                                    if (ch__) {
-                                        AutoClose_Swal2('<a style="color:green;font-weight:bold">' + 'نام منطقه: ' + dis_name + '</a>')
-                                        document.getElementById("LocationDistrict").value = dis_name;
-                                    }
-                                }
-                            }
-                        }
-
-                        map.setView([e.latlng.lat, e.latlng.lng], 13);
-                        theMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-
-                        document.getElementById("latitude").value = e.latlng.lat;
-                        document.getElementById("Longitude").value = e.latlng.lng;
-                    });
-                }
-            });
-        }
-
-    </script>
     <script>
         $('.numbersOnly').keyup(function () {
             if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
@@ -223,15 +163,6 @@
             }
         });
 
-        $('#birthday').MdPersianDateTimePicker({
-            Placement: 'bottom', // default is 'bottom'
-            Trigger: 'focus', // default is 'focus',
-            EnableTimePicker: true, // default is true,
-            TargetSelector: '', // default is empty,
-            GroupId: '', // default is empty,
-            ToDate: false, // default is false,
-            FromDate: false, // default is false,
-        });
     </script>
 
 

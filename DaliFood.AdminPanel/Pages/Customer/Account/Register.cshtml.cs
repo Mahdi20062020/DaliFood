@@ -67,10 +67,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "کدملی")]
             [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
-            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "تاریخ تولد")]
-
-            public DateTime Birthday { get; set; }
+          
 
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -128,11 +125,8 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                 ApplicationCustomerUser userDetail = new ApplicationCustomerUser()
                 {
                     CustomerName = Input.CustomerName,
-                    BirthDate = Input.Birthday,
                     NationalId = Input.NationalId,
-                    CreateDate = DateTime.Now,
-                    OwnerName = Input.CustomerOwnerName,
-
+                    CreateDate = DateTime.Now
                 };
 
                 ApplicationUser user = new ApplicationUser
@@ -151,7 +145,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-
+                   
                     ApplicationCustomerUser = userDetail
                 };
 
@@ -187,7 +181,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 
             //// If we got this far, something failed, redisplay form
             ViewData["CustomerTypeId"] = new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
-
+           
             return Page();
         }
 

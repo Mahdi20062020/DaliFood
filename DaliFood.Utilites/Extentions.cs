@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -98,7 +99,8 @@ namespace DaliFood.Utilites
                 user.Email,
                 "فراموشی رمز عبور",
                 $"برای تنظیم مجدد رمز عبور خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a>کلیک کنید.");
-        } public async static Task SendConfirmationEmailChange(this IEmailSender _emailSender,UserManager<ApplicationUser> _userManager,ApplicationUser user,IUrlHelper Url, HttpRequest Request,string NewEmail,string returnUrl="")
+        } 
+        public async static Task SendConfirmationEmailChange(this IEmailSender _emailSender,UserManager<ApplicationUser> _userManager,ApplicationUser user,IUrlHelper Url, HttpRequest Request,string NewEmail,string returnUrl="")
         {
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateChangeEmailTokenAsync(user, NewEmail);
@@ -110,6 +112,11 @@ namespace DaliFood.Utilites
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(user.Email, "ایمیل فعال سازی حساب دالی فود",
            $"برای فعال سازی حساب خود <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>اینجا</a> کلیک کنید.");
+        }
+        public static string ToShamsi(this DateTime dateTime)
+        {
+            PersianCalendar persianCalendar = new PersianCalendar();
+            return persianCalendar.GetYear(dateTime) + "/" + persianCalendar.GetMonth(dateTime) + "/" + persianCalendar.GetDayOfMonth(dateTime);
         }
 
 

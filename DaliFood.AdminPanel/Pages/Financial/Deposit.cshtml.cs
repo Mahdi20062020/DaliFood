@@ -35,7 +35,25 @@ namespace DaliFood.AdminPanel.Pages.Financial
             }
             if (SearchQ !=null)
             {
-                Deposits = Deposits.Where(p=>p.Description.Contains(SearchQ));
+                Deposits = Deposits.Where(p => p.Description.Contains(SearchQ) || p.Id.ToString().Contains(SearchQ) || p.UserId.Contains(SearchQ)).Distinct();
+            }
+            if (SearchStartDate!=null)
+            {     
+                var date= SearchStartDate.Split('/');
+                int year = int.Parse(date[0]);
+                int month = int.Parse(date[1]);
+                int day = int.Parse(date[2]);
+                var Startdate = new DateTime(year,month,day);
+                Deposits = Deposits.Where(p => p.DepositDate >= Startdate);
+            }
+            if (SearchEndDate != null)
+            {
+                var date = SearchEndDate.Split('/');
+                int year = int.Parse(date[0]);
+                int month = int.Parse(date[1]);
+                int day = int.Parse(date[2]);
+                var Startdate = new DateTime(year, month, day);
+                Deposits = Deposits.Where(p => p.DepositDate <= Startdate);
             }
 
         }

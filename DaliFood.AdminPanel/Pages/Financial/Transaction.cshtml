@@ -20,8 +20,23 @@
                     <label for="SearchStatus">در حال بررسی</label>
                     <input type="number" name="SearchMinPrice" placeholder="حداقل قیمت" />
                     <input type="number" name="SearchMaxPrice" placeholder="حداکثر قیمت" />
-                    @*<input  type="datetime" name="SearchStartDate" placeholder="تاریخ شروع" />
-                        <input  type="datetime" name="SearchEndDate" placeholder="تاریخ پایان" />*@
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer" id="enter_date">از تاریخ</span>
+                    </div>
+                    <input type="text" id="enter_date_1"
+                           aria-label="enter_date" aria-describedby="enter_date" />
+                    <input type="hidden" name="SearchStartDate" id="enter_date_2"
+                           aria-label="enter_date" aria-describedby="enter_date" />
+
+
+
+                    <div class="input-group-prepend">
+                        <span class="input-group-text cursor-pointer" id="exit_date">تا تاریخ</span>
+                    </div>
+                    <input type="text" name="exit_date_1" id="exit_date_1" aria-label="exit_date"
+                           aria-describedby="exit_date" />
+                    <input type="hidden" name="SearchEndDate" id="exit_date_2"
+                           aria-label="exit_date" aria-describedby="exit_date" />
                     <input type="submit" class="btn btn-success" value="بیـاب!" />
                 </form>
             </div>
@@ -38,34 +53,38 @@
 
                     <th scope="col">میزان</th>
                     <th scope="col">توضیحات</th>
-                  
+                    <th scope="col">اعتبار قبلی</th>
+                    <th scope="col">اعتبار جدید</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Transactions)
                 {
-                <tr>
-                    <td>@item.UserId</td>
-                    @switch (item.TypeId)
-                    {
-                        case 0:
-                            <td>واریزی</td>
-                            break;
-                        case 1:
-                            <td>برداشت</td>
-                            break;
-                        case 2:
-                            <td>سفارش</td>
-                            break;
-                        default:
-                            <td>-</td>
-                            break;
-                    }
-                    <td>@item.CreateDate</td>
-                    <td>@item.Amount</td>
-                    <td>@item.Description</td>
+                    <tr>
+                        <td>@item.UserId</td>
+                        @switch (item.TypeId)
+                        {
+                            case 0:
+                                <td>واریزی</td>
+                                break;
+                            case 1:
+                                <td>برداشت</td>
+                                break;
+                            case 2:
+                                <td>سفارش</td>
+                                break;
+                            default:
+                                <td>-</td>
+                                break;
+                        }
+                        <td>@item.CreateDate.ToShamsi()</td>
+                        <td>@item.Amount</td>
+                        <td>@item.Description</td>
+                        <td>@item.OldAmount</td>
+                        <td>@item.NewAmount</td>
 
-                </tr>
+
+                    </tr>
                 }
 
             </tbody>
@@ -73,3 +92,22 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        $('#enter_date').MdPersianDateTimePicker({
+            targetTextSelector: '#enter_date_1',
+            targetDateSelector: '#enter_date_2',
+            fromDate: true,
+            groupId: 'enter_date',
+
+        });
+
+        $('#exit_date').MdPersianDateTimePicker({
+            targetTextSelector: '#exit_date_1',
+            targetDateSelector: '#exit_date_2',
+            toDate: true,
+            groupId: 'enter_date',
+
+        });
+    </script>
+}
