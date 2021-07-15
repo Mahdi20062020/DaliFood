@@ -167,6 +167,8 @@ namespace DaliFood.AdminPanel.Pages.Customer
                     CityId = Input.City,              
                     OwnerName=Input.CustomerOwnerName,
                     OwnerFamily=Input.CustomerOwnerFamily,
+                    Longitude = Input.Longitude,
+                    Latitude = Input.Latitude,
                     ApplicationCustomerUser = userDetail
                 };
                 customer.Latitude = Input.Latitude;

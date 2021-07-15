@@ -41,7 +41,7 @@ namespace DaliFood.Models
         [Display(Name = "هزینه ارسال")]
         public int SendingPrice { get; set; }
 
-     
+        public bool Status { get; set; }
 
         [Display(Name = "شماره تلفن ثابت 1")]
         public string TelePhonenumber1 { get; set; }
