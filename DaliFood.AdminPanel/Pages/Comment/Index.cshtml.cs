@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DaliFood.Utilites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DaliFood.AdminPanel.Pages.Comment
 {
@@ -20,6 +21,7 @@ namespace DaliFood.AdminPanel.Pages.Comment
 
         public void OnGet(int? SearchStatus,int? CustomerId, string SearchQ = null, string SearchStartDate = null, string SearchEndDate = null)
         {
+            ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(), "Id", "Name");
             var customerId = User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value;
             if (customerId == SD.AdminCustomerId)
             {
