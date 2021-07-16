@@ -4,74 +4,162 @@
 
     ViewData["Title"] = "لیست";
     ViewData["Section"] = "مدیریت نظر ها";
-
+    var Customer = (SelectList)ViewData["CustomerId"];
 }
-
-@ViewData["ShowPartial"]
-@*<script src="~/js/sweetalert2.all.min.js"></script>*@
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <div class="card">
     <div class="card-header header-elements-inline">
-        <h5 class="card-title">لیست نظر ها</h5>
+        <h5 class="card-title">لیست واریزی ها</h5>
         <div class="header-elements">
             <div class="list-icons">
                 <a class="list-icons-item" data-action="collapse"></a>
                 <a class="list-icons-item" data-action="reload"></a>
                 <a class="list-icons-item" data-action="remove"></a>
-                <input class="form-control" type="search" id="GridSearch" placeholder="جست و جو" />
+
             </div>
         </div>
     </div>
     <div class="card-body">
-        <hr />
-        <a class="btn btn-warning" asp-page="upsert" style="margin-bottom:20px;">افزودن</a>
-       
-        @(Html.Grid(Model.CustomerComment)
-        .Build(c=> {
-            c.Add(item => item.Name).Titled("نام");
-            c.Add(item => item.Family).Titled("نام خانوادگی");
-            c.Add(item => item.Customer.Name).Titled("نام رستوران");
-            c.Add(item => item.Status).Titled("وضعیت");
-            c.Add(m => Html.Raw($"<div style='display:flex;'><button type=\"button\" class=\"btn btn-warning\" data-toggle=\"modal\" data-target=\"#Modal{m.Id}\">بیشتر...</button>")).Titled("عملیات");
-        })
-        .Using(GridFilterMode.Header)
-        .Empty("No data found")
-        .Filterable()
-        .Sortable()
-        .Pageable()
-        )
-        @*<button class="show-example-btn" onclick="x('warningConfirm')">
-                Try me!
-            </button>*@
-        @*<table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">نام</th>
-                        <th scope="col">دسته بندی</th>
-                        <th scope="col">#</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Product)
-                    {
-                        <tr>
-                            <td>@item.Name</td>
 
+        <form method="get">
 
-                            <td>@item.ProductCategorie.Name</td>
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset>
+                        <legend class="font-weight-semibold"><i class="icon-reading mr-2"></i>فیلتر ها </legend>
+                        <div class="form-group row">
+                            <div class="col-lg-2">
+                                <input class="form-control" type="search" name="SearchQ" id="GridSearch" placeholder="متن جست جو" />
 
-                            <td>
-                                <a asp-page="upsert" asp-route-Id="@item.Id" class="btn btn-warning">ویرایش</a>
-                                <a asp-page-handler="Delete" asp-route-Id="@item.Id" onclick="return confirm('آیا از حذف این دسته بندی مطمئن هستید؟');" class="btn btn-danger">حذف</a>
-                            </td>
-                        </tr>
-                    }
+                            </div>
+                            <div class="col-lg-2">
+                                <select class="form-control" name="SearchStatus" id="SearchStatus">
+                                    <option value="">وضعیت ها</option>
+                                    <option value="0">درحال بررسی</option>
+                                    <option value="1">تایید شده</option>
+                                    <option value="2">رد شده</option>
 
-                </tbody>
-            </table>*@
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <select class="form-control"  name="CustomerId"  asp-items="Customer">
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <input class="form-control  cursor-pointer" id="enter_date" placeholder="از تاریخ">
+                                <input type="text" id="enter_date_1"
+                                       aria-label="enter_date" aria-describedby="enter_date" hidden="hidden" />
+                                <input class="form-control" type="hidden" name="SearchStartDate" id="enter_date_2"
+                                       aria-label="enter_date" aria-describedby="enter_date" />
+                            </div>
+                            <div class="col-lg-2">
+                                <input class="form-control  cursor-pointer" id="exit_date" placeholder="تا تاریخ">
+                                <input type="text" name="exit_date_1" id="exit_date_1" aria-label="exit_date"
+                                       aria-describedby="exit_date" hidden="hidden" />
+                                <input type="hidden" name="SearchEndDate" id="exit_date_2"
+                                       aria-label="exit_date" aria-describedby="exit_date" />
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="submit" class="btn btn-default text-info" style="float:left;" value="جستجو!" />
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            </div>
+            @*<label for="SearchStatus">وضعیت:</label>*@
+        </form>
     </div>
 </div>
+
+<div class="card">
+    <div class="card-header header-elements-inline">
+        <h5 class="card-title">&nbsp;</h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+   
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">نام</th>
+                    <th scope="col">نام خانوادگی</th>
+                    <th scope="col">تاریخ ارسال</th>
+                    <th scope="col">وضعیت</th>
+
+                    <th scope="col">عملیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CustomerComment)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Family</td>
+                        <td>@item.CreateDate.ToShamsi()</td>
+                        @switch (item.Status)
+                        {
+                            case 0:
+                                <td><span class="badge bg-blue">درحال بررسی</span></td>
+                                break;
+                            case 1:
+                                <td><span class="badge bg-success">تایید شده</span></td>
+                                break;
+                            case 2:
+                                <td><span class="badge bg-danger">رد شده</span></td>
+                                break;
+                            default:
+                                <td>-</td>
+                                break;
+                        }
+                        <td>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="@("#Modal"+item.Id)">بیشتر...</button>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#enter_date').MdPersianDateTimePicker({
+            targetTextSelector: '#enter_date_1',
+            targetDateSelector: '#enter_date_2',
+            fromDate: true,
+            groupId: 'enter_date',
+
+        });
+
+        $('#exit_date').MdPersianDateTimePicker({
+            targetTextSelector: '#exit_date_1',
+            targetDateSelector: '#exit_date_2',
+            toDate: true,
+            groupId: 'enter_date',
+
+        });
+    </script>
+}
+
+
 @foreach (var item in Model.CustomerComment)
 {
     <div class="modal fade" id="@($"Modal{item.Id}")" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">

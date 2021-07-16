@@ -25,7 +25,7 @@ namespace DaliFood.AdminPanel.Pages.Users
         }
         [BindProperty]
         public IEnumerable<ApplicationUser> Users { get; set; }
-        public async Task OnGet()
+        public async Task OnGet(bool? SearchStatus, string SearchName = null, string SearchFamily = null, string SearchQ = null,string SearchEmail=null)
         {
             var users = new List<ApplicationUser>();
             foreach (var user in userManager.Users)
@@ -36,6 +36,37 @@ namespace DaliFood.AdminPanel.Pages.Users
                 }
             }
             Users = users;
+            if (SearchStatus.HasValue)
+            {
+                Users = Users.Where(p => p.EmailConfirmed == SearchStatus);
+            }
+            if (SearchName != null)
+            {
+                Users = Users.Where(p => p.Name.ToLower().Contains(SearchName.ToLower()));
+            }
+            if (SearchFamily != null)
+            {
+                Users = Users.Where(p => p.Family.ToLower().Contains(SearchFamily.ToLower()));
+            } 
+            if (SearchEmail != null)
+            {
+                Users = Users.Where(p => p.Email == SearchEmail);
+            }
+            if (SearchQ != null)
+            {
+                Users = Users.Where(p => p.Name.ToLower().Contains(SearchQ.ToLower()) ||
+                p.Family.ToLower().Contains(SearchQ.ToLower()) ||
+                p.Id.ToLower().Contains(SearchQ.ToLower()));
+            }
+          
+        }
+        public async Task<ActionResult> OnGetDelete(string Id)
+        {
+           
+            var user = userManager.Users.Where(p => p.Id == Id).FirstOrDefault();
+            await userManager.DeleteAsync(user);
+         
+            return RedirectToPage("Index");
         }
     }
 }

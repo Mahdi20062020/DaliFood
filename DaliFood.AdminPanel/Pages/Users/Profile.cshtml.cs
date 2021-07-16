@@ -72,7 +72,8 @@ namespace DaliFood.AdminPanel.Pages.Users
                 Family= user.Family
             };
             var roles = _roleManager.Roles.Where(p => p.Name != SD.CustomerOwnerRole);
-            Roles = new SelectList(roles, "Name", "Name");
+            var currentrole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            Roles = new SelectList(roles.Where(p=>p.Name!=SD.NormalUserRole), "Name", "Name",(await _userManager.GetRolesAsync(user)).FirstOrDefault());
         }
 
         public async Task<IActionResult> OnGetAsync(string Id)
@@ -110,7 +111,7 @@ namespace DaliFood.AdminPanel.Pages.Users
             await _userManager.UpdateAsync(user);
             if (!await _userManager.IsInRoleAsync(user,SelectedRole))
             {
-                await _userManager.RemoveFromRoleAsync(user, SelectedRole);
+                await _userManager.RemoveFromRolesAsync(user, (await _userManager.GetRolesAsync(user)));
                 await _userManager.AddToRoleAsync(user, SelectedRole);
             }
             await _signInManager.RefreshSignInAsync(user);
