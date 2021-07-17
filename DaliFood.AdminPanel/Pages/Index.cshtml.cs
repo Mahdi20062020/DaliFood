@@ -19,23 +19,10 @@ namespace DaliFood.AdminPanel.Pages
             this.roleManager = roleManager;
             this.userManager = userManager;
         }
-        [BindProperty]
-        public DateTime Then { get; set; }
-        [BindProperty]
 
-        public DateTime Now { get; set; }
-
-        public async Task<IActionResult> OnGet()
+        public void OnGet()
         {
-            if (User.Identity.IsAuthenticated is false)
-            {
-                await unitofwork.Configure(roleManager, userManager);
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
-            }
 
-            Then = DateTime.Now;
-            Now = DateTime.Now;
-            return Page();
         }
     }
 }

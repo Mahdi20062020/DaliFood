@@ -114,6 +114,17 @@
     <None Include="wwwroot\Customer-Reg\scss\style.scss" />
     <None Include="wwwroot\Customer-Reg\vendor\jquery\jquery-ui.min.js" />
     <None Include="wwwroot\Customer-Reg\vendor\jquery\jquery.min.js" />
+    <None Include="wwwroot\Index-Theme\font\B_Yekan\Fontyab.com.url" />
+    <None Include="wwwroot\Index-Theme\font\B_Yekan\Fontyab.ir.url" />
+    <None Include="wwwroot\Index-Theme\js\bootstrap.min.js" />
+    <None Include="wwwroot\Index-Theme\js\isotope.pkgd.min.js" />
+    <None Include="wwwroot\Index-Theme\js\jquery-2.1.4.min.js" />
+    <None Include="wwwroot\Index-Theme\js\jquery.magnific-popup.min.js" />
+    <None Include="wwwroot\Index-Theme\js\jquery.superslides.min.js" />
+    <None Include="wwwroot\Index-Theme\js\main.js" />
+    <None Include="wwwroot\Index-Theme\js\owl.carousel.min.js" />
+    <None Include="wwwroot\Index-Theme\js\typed.js" />
+    <None Include="wwwroot\Index-Theme\js\wow.min.js" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,204 @@
+@font-face {
+  font-family: iransans;
+  src: url(/myfont/irsans.ttf);
+}
+@font-face {
+  font-family: iransansBold;
+  src: url(/myfont/irsansb.ttf);
+}
+@font-face {
+  font-family: byekan;
+  src: url(/myfont/BYekan+.ttf);
+}
+@font-face {
+  font-family: byekanBold;
+  src: url(/myfont/BYekan+\ Bold.ttf);
+}
+/* 
+* {
+  font-family: iransans, byekan;
+} */
+
+.byekan {
+  font-family: byekan;
+}
+
+.byekanBold {
+  font-family: byekanBold;
+}
+
+.iransans {
+  font-family: iransans;
+}
+
+.iransansBold {
+  font-family: iransansBold;
+}
+
+.mainpic {
+  background-image: url(../pic/b5.jpg);
+  background-size: cover;
+}
+.headertitle {
+  font-weight: bolder;
+  font-size: 38px;
+  /* text-shadow: -1px 1px 0px black; */
+}
+.up {
+  font-weight: bolder;
+  font-size: 52px;
+  /* text-shadow: -1px 1px 5px black; */
+}
+.down {
+  font-weight: bold;
+  font-size: 23px;
+  /* text-shadow: -1px 1px 2px black; */
+}
+footer {
+  background-color: #151f33;
+}
+
+.photo {
+  /* width: 100%; */
+  height: 70px;
+}
+.maintitle {
+  padding: 48px;
+}
+.mainlogo {
+  padding-bottom: 3rem;
+  padding-top: 0;
+}
+.myphotoseterLeft {
+  text-align: left;
+}
+.myphotoseterRight {
+  text-align: right;
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 1200px) {
+  /* .photo { */
+  /* width: 70%; */
+  /* height: 70px;
+  } */
+  .mainpic {
+    height: 90%;
+  }
+  .maintitle {
+    padding-top: 10%;
+  }
+  .mainlogo {
+    padding-top: 5%;
+    padding-bottom: 5%;
+  }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 450px) {
+  .up {
+    font-weight: bolder;
+    font-size: 30px;
+    /* text-shadow: -1px 1px 5px black; */
+  }
+  .down {
+    font-weight: bold;
+    font-size: 14px;
+    /* text-shadow: -1px 1px 2px black; */
+  }
+  .headertitle {
+    font-weight: bolder;
+    font-size: 30px;
+    /* text-shadow: -1px 1px 0px black; */
+  }
+  .headerbtntext {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 290px) {
+  .up {
+    font-weight: bolder;
+    font-size: 27px;
+    /* text-shadow: -1px 1px 5px black; */
+  }
+  .down {
+    font-weight: bold;
+    font-size: 12px;
+    /* text-shadow: -1px 1px 2px black; */
+  }
+  .headertitle {
+    font-weight: bolder;
+    font-size: 27px;
+    /* text-shadow: -1px 1px 0px black; */
+  }
+  .headerbtntext {
+    font-size: 10px;
+  }
+}
+/* @media only screen and (max-width: 750px) {
+  .photo {
+    height: 60px;
+  }
+}
+
+@media only screen and (max-height: 670px) {
+  .photo {
+    height: 60px;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .photo {
+    height: 50px;
+  }
+}
+@media only screen and (max-width: 330px) {
+  .photo {
+    height: 45px;
+  }
+} */
+@media only screen and (max-width: 1100px) {
+  .mainpic {
+    background-image: url(../pic/b5-mobile.jpg);
+    background-size: cover;
+  }
+}
+@media only screen and (min-height: 1100px) {
+  .mainpic {
+    height: 50%;
+  }
+  .maintitle {
+    padding-top: 10%;
+  }
+  .mainlogo {
+    padding-top: 5%;
+    padding-bottom: 5%;
+  }
+}
+@media only screen and (max-width: 990px) {
+  .myphotoseterLeft {
+    text-align: center;
+  }
+  .myphotoseterRight {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .abtimagemobile {
+    display: block;
+  }
+  .abtimagepc {
+    display: none;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .abtimagemobile {
+    display: none;
+  }
+  .abtimagepc {
+    display: block;
+  }
+}
+
+.slides-control {
+  width: 100% !important;
+}

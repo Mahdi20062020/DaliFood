@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DaliFood.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210715084459_db-fix-customer")]
-    partial class dbfixcustomer
+    [Migration("20210717100352_dbset-test")]
+    partial class dbsettest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -121,6 +121,44 @@ namespace DaliFood.Models.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("DaliFood.Models.CustomerComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Family")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("CustomerComment");
                 });
 
             modelBuilder.Entity("DaliFood.Models.CustomerType", b =>
@@ -944,6 +982,17 @@ namespace DaliFood.Models.Migrations
                     b.Navigation("CustomerType");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.CustomerComment", b =>
+                {
+                    b.HasOne("DaliFood.Models.Customer", "Customer")
+                        .WithMany("CustomerComment")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("DaliFood.Models.CustomersProduct", b =>
                 {
                     b.HasOne("DaliFood.Models.Customer", "Customer")
@@ -1126,6 +1175,8 @@ namespace DaliFood.Models.Migrations
 
             modelBuilder.Entity("DaliFood.Models.Customer", b =>
                 {
+                    b.Navigation("CustomerComment");
+
                     b.Navigation("OrderItem");
 
                     b.Navigation("Product");
