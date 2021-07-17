@@ -54,9 +54,14 @@ namespace DaliFood.AdminPanel.Pages.Users
             }
             if (SearchQ != null)
             {
-                Users = Users.Where(p => p.Name.ToLower().Contains(SearchQ.ToLower()) ||
-                p.Family.ToLower().Contains(SearchQ.ToLower()) ||
-                p.Id.ToLower().Contains(SearchQ.ToLower()));
+
+                foreach (var item in SearchQ.ToLower().Split(' '))
+                {
+                    Users = Users.Where(p => p.Name.ToLower().Contains(item) ||
+                                p.Family.ToLower().Contains(item) ||
+                                p.Id.ToLower().Contains(item));
+                }
+            
             }
           
         }
