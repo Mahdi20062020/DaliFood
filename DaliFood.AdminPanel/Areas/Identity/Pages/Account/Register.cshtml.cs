@@ -121,6 +121,10 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, SelectedRole);
+                    if (SelectedRole==SD.AdminRole)
+                    {
+                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, SD.AdminCustomerId));
+                    }
                 _logger.LogInformation("User created a new account with password.");
                       await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request);
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
