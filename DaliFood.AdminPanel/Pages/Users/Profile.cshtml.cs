@@ -113,6 +113,14 @@ namespace DaliFood.AdminPanel.Pages.Users
             {
                 await _userManager.RemoveFromRolesAsync(user, (await _userManager.GetRolesAsync(user)));
                 await _userManager.AddToRoleAsync(user, SelectedRole);
+                if (SelectedRole==SD.AdminRole)
+                {
+                   await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, SD.AdminCustomerId));                 
+                }
+                else
+                {
+                   await _userManager.RemoveClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, SD.AdminCustomerId));               
+                }
             }
             await _signInManager.RefreshSignInAsync(user);
             return RedirectToPage("Index");

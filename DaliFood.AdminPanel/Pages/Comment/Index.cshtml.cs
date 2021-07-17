@@ -47,7 +47,10 @@ namespace DaliFood.AdminPanel.Pages.Comment
             }     
             if (SearchQ != null)
             {
-                //CustomerComment = CustomerComment.Where();
+                foreach (var item in SearchQ.ToLower().Split(' '))
+                {
+                    CustomerComment = CustomerComment.Where(p => p.Name.ToLower().Contains(item)|| p.Family.ToLower().Contains(item) || p.Text.ToLower().Contains(item) || p.Customer.Name.ToLower().Contains(item));
+                }
             }
             if (SearchStartDate != null)
             {
