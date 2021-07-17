@@ -151,7 +151,7 @@ namespace DaliFood.WebApi.Controllers
                         Family = model.Family,
                         PhoneNumber = phonenumber,
                         PhoneNumberConfirmed = true,
-                        UserName = model.Name + "_" + model.Family,
+                        UserName = "U"+Guid.NewGuid(),
                         ApplicationUserDetail = userDetail
                     };
                     var result = await _userManager.CreateAsync(user, model.Password);

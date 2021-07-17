@@ -19,7 +19,7 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
         }
         [HttpGet]    
-        public IActionResult GetCustomerProducts(int ItemPerPage, int PageNum, int? TypeId,int? CustomerId,int? MinPrice,int? MaxPrice)
+        public IActionResult GetCustomerProducts(int? ItemPerPage, int? PageNum, int? TypeId,int? CustomerId,int? MinPrice,int? MaxPrice)
         {
             var Items = unitofwork.CustomersProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
             List<CustomersProduct> ItemsforShow = new();
@@ -61,13 +61,17 @@ namespace DaliFood.WebApi.Controllers
                     return BadRequest("Out Of the Range");
                 }
             }
-            var Skipcount = (PageNum - 1) * ItemPerPage;
-            result = result.Skip(Skipcount);
-            result = result.Take(ItemPerPage);
 
-            if (result == null)
+            if (ItemPerPage.HasValue && PageNum.HasValue)
             {
-                return NotFound();
+                var Skipcount = (PageNum.Value - 1) * ItemPerPage.Value;
+                result = result.Skip(Skipcount);
+                result = result.Take(ItemPerPage.Value);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
             }
             return Ok(result);
         }

@@ -39,7 +39,7 @@ namespace DaliFood.WebApi.Controllers
             Models.Order order;
             if (OrderId.HasValue)
             {              
-                 order = unitofwork.OrderRepository.GetAll(where: p => p.Id == OrderId && p.Status == true).FirstOrDefault();
+                order = unitofwork.OrderRepository.GetAll(where: p => p.Id == OrderId && p.Status == true).FirstOrDefault();
                 if (order == null)
                     return NotFound();
             }
