@@ -160,8 +160,8 @@ namespace DaliFood.WebApi.Controllers
                         return BadRequest(result.Errors);
                     }
                     await _userManager.AddToRoleAsync(user, SD.NormalUserRole);
-                    var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString());
-                    if (unitofwork.PhoneNumbersTokenRepository.Delete(usertoken))
+                    var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString()).FirstOrDefault();
+                    if (unitofwork.PhoneNumbersTokenRepository.Delete(usertoken.Id))
                     {
                         unitofwork.PhoneNumbersTokenRepository.Save();
                     }
