@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="col-lg-2">
-                                <input class="form-control  cursor-pointer" id="enter_date" placeholder="از تاریخ">
+                                <input type="text" class="form-control  cursor-pointer" id="enter_date" placeholder="از تاریخ">
                                 <input type="text" id="enter_date_1"
                                        aria-label="enter_date" aria-describedby="enter_date" hidden="hidden" />
                                 <input class="form-control" type="hidden" name="SearchStartDate" id="enter_date_2"
@@ -159,7 +159,7 @@
 @section Scripts{
     <script type="text/javascript">
         $('#enter_date').MdPersianDateTimePicker({
-            targetTextSelector: '#enter_date_1',
+            targetTextSelector: '#enter_date',
             targetDateSelector: '#enter_date_2',
             fromDate: true,
             groupId: 'enter_date',
@@ -167,7 +167,7 @@
         });
 
         $('#exit_date').MdPersianDateTimePicker({
-            targetTextSelector: '#exit_date_1',
+            targetTextSelector: '#exit_date',
             targetDateSelector: '#exit_date_2',
             toDate: true,
             groupId: 'enter_date',

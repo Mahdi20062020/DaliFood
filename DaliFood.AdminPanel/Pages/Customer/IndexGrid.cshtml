@@ -1,0 +1,35 @@
+﻿@page
+@model DaliFood.AdminPanel.Pages.Customer.IndexGridModel
+
+@{ Layout = null; }
+
+@* Should only include grid declaration *@
+
+@(Html
+    .Grid(Model.Customer)
+    .Build(c =>
+    {
+        c.Add(model => model.Name).Titled("نام رستوران");
+        c.Add(model => model.OwnerName + " " + model.OwnerFamily).Titled("نام مالک");
+        c.Add(model => model.CustomerType.Name).Titled("گروه رستوران");
+
+        c.Add(model => model.City.Name).Titled("شهر");
+        c.Add(model => model.Status).Titled("وضعیت فعالیت")
+        .RenderedAs(model => model.Status == true ? "فعال" : "غیر فعال").UsingFilterOptions(new[]
+        {
+            new SelectListItem(),
+            new SelectListItem { Value = "false", Text = "فعال" },
+            new SelectListItem { Value = "true", Text = "غیر فعال" }
+        }); ;
+        c.Add(m => Html.Raw($"<div style='display:flex;'><a href='/Admin/Brand/Update?id={m.Id}'><i class='icon-pencil6 mr-3 text-info'></i></a>&nbsp;<a href='#' onclick='Delete({m.Id})'><i class='icon-eraser2 mr-3 text-danger'></i></button><div><span></span>")).Titled("عملیات");
+
+    })
+    .Empty("داده ای وجود ندارد")
+    .Pageable(pager =>
+    {
+        pager.PagesToDisplay = 2;
+        pager.RowsPerPage = 2;
+    })
+    .Filterable()
+    .Sortable()
+)

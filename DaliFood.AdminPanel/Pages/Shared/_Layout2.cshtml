@@ -13,6 +13,7 @@
     <link href="~/FarsiFont/FarsiFonts.css" rel="stylesheet" />
     <link href="~/PanelTheme/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" />
     @*<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">*@
+
     <link href="~/PanelTheme/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="~/PanelTheme/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
     <link href="~/PanelTheme/assets/css/layout.min.css" rel="stylesheet" type="text/css">
@@ -24,7 +25,7 @@
     <link href="~/css/toastr.min.css" rel="stylesheet" />
 
     <!--Mvc Grid stylesheets-->
-    <link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet" />
+    @* <link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet" />*@
 
     <!-- /global stylesheets -->
     <!-- Core JS files -->
@@ -89,12 +90,12 @@
     <script src="~/persianDatepicker-master/js/persianDatepicker.js"></script>
     <!-- /theme JS files -->
     <!--Grid js-->
-    <script src="~/js/mvc-grid/mvc-grid.js"></script>
     <script src="~/PersianDatepicker/jquery.md.bootstrap.datetimepicker.js"></script>
+    @*<script src="~/js/mvc-grid/mvc-grid.js"></script>
     <script>
         document.querySelectorAll(".mvc-grid")
             .forEach(element => new MvcGrid(element));
-    </script>
+    </script>*@
     @RenderSection("Scripts", required: false)
 </body>
 

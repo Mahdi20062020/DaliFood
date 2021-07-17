@@ -21,8 +21,11 @@ namespace DaliFood.AdminPanel.Pages.Comment
 
         public void OnGet(int? SearchStatus,int? CustomerId, string SearchQ = null, string SearchStartDate = null, string SearchEndDate = null)
         {
-            ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(), "Id", "Name");
+            ViewData["CustomerId"] = 
+                new SelectList(unitofwork.CustomerRepository.GetAll(), "Id", "Name");
+
             var customerId = User.Claims.Where(p => p.Type == SD.CustomerId).FirstOrDefault().Value;
+            
             if (customerId == SD.AdminCustomerId)
             {
                 CustomerComment = unitofwork.CustomerCommentRepository

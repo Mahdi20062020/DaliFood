@@ -3,13 +3,13 @@
 @{
 
     ViewData["Title"] = "لیست";
-    ViewData["Section"] = "مدیریت نظر ها";
+    ViewData["Section"] = "مدیریت نظرات";
     var Customer = (SelectList)ViewData["CustomerId"];
 }
 
 <div class="card">
     <div class="card-header header-elements-inline">
-        <h5 class="card-title">لیست واریزی ها</h5>
+        <h5 class="card-title">لیست نظرات</h5>
         <div class="header-elements">
             <div class="list-icons">
                 <a class="list-icons-item" data-action="collapse"></a>
@@ -142,7 +142,7 @@
 @section Scripts{
     <script type="text/javascript">
         $('#enter_date').MdPersianDateTimePicker({
-            targetTextSelector: '#enter_date_1',
+            targetTextSelector: '#enter_date',
             targetDateSelector: '#enter_date_2',
             fromDate: true,
             groupId: 'enter_date',
@@ -150,7 +150,7 @@
         });
 
         $('#exit_date').MdPersianDateTimePicker({
-            targetTextSelector: '#exit_date_1',
+            targetTextSelector: '#exit_date',
             targetDateSelector: '#exit_date_2',
             toDate: true,
             groupId: 'enter_date',
@@ -163,7 +163,6 @@
 @foreach (var item in Model.CustomerComment)
 {
     <div class="modal fade" id="@($"Modal{item.Id}")" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-
         @await Component.InvokeAsync("CommentDetail", new { CommentId = item.Id })
     </div>
 }
