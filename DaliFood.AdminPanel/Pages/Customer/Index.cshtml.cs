@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DaliFood.Models.Data;
 using DaliFood.Models.Identity;
 using DaliFood.Utilites;
 using Microsoft.AspNetCore.Identity;
@@ -14,10 +15,13 @@ namespace DaliFood.AdminPanel.Pages.Customer
     {
         readonly UnitOfWork unitofwork;
         readonly UserManager<ApplicationUser> userManager;
-        public IndexModel(UnitOfWork unitofwork, UserManager<ApplicationUser> userManager)
+        private readonly ApplicationDbContext context;
+        public IndexModel(UnitOfWork unitofwork, UserManager<ApplicationUser> userManager,
+            ApplicationDbContext context)
         {
             this.unitofwork = unitofwork;
             this.userManager = userManager;
+            this.context = context;
         }
 
 
@@ -38,11 +42,18 @@ namespace DaliFood.AdminPanel.Pages.Customer
 
         public async Task<ActionResult> OnGetDelete(int Id)
         {
-            var Customer = unitofwork.CustomerRepository.GetById(Id);
+            //var Customer = unitofwork.CustomerRepository.GetById(Id);
+            var Customer = context
+                .Customer.Find(Id);
             if (Customer == null)
                 return NotFound();
-            var customeruser = userManager.Users.Where(p => p.Id == Customer.UserId).FirstOrDefault();
-            await userManager.DeleteAsync(customeruser);
+            var deatail = Customer.ApplicationCustomerUser;
+            context.ApplicationUserDetail.Remove(deatail);
+            var user = await userManager.FindByIdAsync(Customer.UserId);
+            if (user is not null)
+            {
+                await userManager.DeleteAsync(user);
+            }
             unitofwork.CustomerRepository.Delete(Customer);
 
             var Customers = unitofwork.CustomerRepository

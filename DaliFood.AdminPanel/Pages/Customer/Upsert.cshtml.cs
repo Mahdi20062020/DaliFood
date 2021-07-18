@@ -73,7 +73,7 @@ namespace DaliFood.AdminPanel.Pages.Customer
             [MaxLength(10, ErrorMessage = "کد ملی باید حداکثر 10 رقم باشد.")]
             [MinLength(10, ErrorMessage = "کد ملی باید حداقل 10 رقم باشد.")]
             [Display(Name = "کدملی")]
-            [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
+            //[NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -193,16 +193,18 @@ namespace DaliFood.AdminPanel.Pages.Customer
                     await _userManager.AddToRoleAsync(user, SD.CustomerOwnerRole);
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request, returnUrl);
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return Redirect($"/Identity/Account/RegisterConfirmation?Email={Input.Email}");
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    //await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request, returnUrl);
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return Redirect($"/Identity/Account/RegisterConfirmation?Email={Input.Email}");
+                    //}
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
+
+                    return RedirectToPage("/Customer/Index");
                 }
                 foreach (var error in result.Errors)
                 {

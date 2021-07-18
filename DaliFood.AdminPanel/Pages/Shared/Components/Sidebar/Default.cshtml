@@ -89,7 +89,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item nav-item-submenu">
+                @*<li class="nav-item nav-item-submenu">
                     <a href="#" class="nav-link">
                         <i class="icon-equalizer"></i><span>مدیریت تنظیمات</span>
                     </a>
@@ -105,7 +105,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li>*@
 
                 <li class="nav-item">
                     <a asp-area="" asp-page="/Customer/Index" class="nav-link">
@@ -210,16 +210,16 @@
                     </li>
                 }
 
-
                 <li class="nav-item">
-                    <a asp-area="Identity" asp-page="/Account/Logout" class="nav-link">
-                        <i class="icon-exit3 text-danger"></i>
-                        <span>
-                            خروج
-                        </span>
-                    </a>
+                    <form  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <button type="submit" class="btn btn-block" style="width:100px;">
+                            <i class="icon-exit3 text-danger"></i>&nbsp;&nbsp;&nbsp;
+                            <span>
+                                خروج
+                            </span>
+                        </button>
+                    </form>
                 </li>
-
             </ul>
         </div>
         <!-- /main navigation -->
