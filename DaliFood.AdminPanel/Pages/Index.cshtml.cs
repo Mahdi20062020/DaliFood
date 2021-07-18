@@ -20,9 +20,24 @@ namespace DaliFood.AdminPanel.Pages
             this.userManager = userManager;
         }
 
-        public void OnGet()
-        {
 
+        [BindProperty]
+        public DateTime Then { get; set; }
+        [BindProperty]
+
+        public DateTime Now { get; set; }
+
+        public async Task<IActionResult> OnGet()
+        {
+            if (User.Identity.IsAuthenticated is false)
+            {
+                await unitofwork.Configure(roleManager, userManager);
+            }
+
+            Then = DateTime.Now;
+            Now = DateTime.Now;
+
+            return Page();
         }
     }
 }

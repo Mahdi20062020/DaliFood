@@ -83,7 +83,7 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 Microsoft.AspNetCore.Identity.SignInResult result = await
                     _signInManager.PasswordSignInAsync
-                    (Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false)
+                    (Input.UserName, Input.Password, false, lockoutOnFailure: false)
                     .ConfigureAwait(true);
                 if (result.Succeeded)
                 {

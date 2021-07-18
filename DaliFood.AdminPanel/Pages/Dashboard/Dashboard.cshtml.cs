@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DaliFood.Models.Identity;
 using DaliFood.Utilites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
 namespace DaliFood.AdminPanel.Pages.Dashboard
 {
@@ -21,22 +18,15 @@ namespace DaliFood.AdminPanel.Pages.Dashboard
             this.roleManager = roleManager;
             this.userManager = userManager;
         }
-        [BindProperty]
-        public DateTime Then { get; set; }
-        [BindProperty]
 
-        public DateTime Now { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
             if (User.Identity.IsAuthenticated is false)
             {
                 await unitofwork.Configure(roleManager, userManager);
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
 
-            Then = DateTime.Now;
-            Now = DateTime.Now;
             return Page();
         }
     }
