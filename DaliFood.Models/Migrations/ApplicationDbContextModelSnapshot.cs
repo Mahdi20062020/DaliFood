@@ -289,6 +289,32 @@ namespace DaliFood.Models.Migrations
                     b.ToTable("Discount");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorite");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Identity.Address", b =>
                 {
                     b.Property<int>("Id")
@@ -1030,6 +1056,25 @@ namespace DaliFood.Models.Migrations
                     b.Navigation("CustomersProduct");
                 });
 
+            modelBuilder.Entity("DaliFood.Models.Favorite", b =>
+                {
+                    b.HasOne("DaliFood.Models.Customer", "Customer")
+                        .WithMany("Favorite")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DaliFood.Models.Identity.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("DaliFood.Models.Identity.Address", b =>
                 {
                     b.HasOne("DaliFood.Models.Identity.ApplicationNormalUser", "ApplicationNormalUser")
@@ -1174,6 +1219,8 @@ namespace DaliFood.Models.Migrations
             modelBuilder.Entity("DaliFood.Models.Customer", b =>
                 {
                     b.Navigation("CustomerComment");
+
+                    b.Navigation("Favorite");
 
                     b.Navigation("OrderItem");
 

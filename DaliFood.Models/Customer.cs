@@ -69,6 +69,7 @@ namespace DaliFood.Models
         public virtual IEnumerable<Product> Product { get; set; }
         public virtual IEnumerable<OrderItem> OrderItem { get; set; }
         public virtual IEnumerable<CustomerComment> CustomerComment { get; set; }
+        public virtual IEnumerable<Favorite> Favorite { get; set; }
         public virtual CustomerType CustomerType { get; set; }
         public virtual ApplicationCustomerUser ApplicationCustomerUser { get; set; }
         public Customer()
