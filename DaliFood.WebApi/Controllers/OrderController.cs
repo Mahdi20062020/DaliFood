@@ -112,13 +112,21 @@ namespace DaliFood.WebApi.Controllers
             }
         }
         [HttpGet("Orders")]
-        public  IActionResult GetOrders(int ItemPerPage, int PageNum)
+        public  IActionResult GetOrders(int? ItemPerPage, int? PageNum)
         {
             var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
             var orders = unitofwork.OrderRepository.GetAll(where: p => p.UserId == userId);
-            var Skipcount = (PageNum - 1) * ItemPerPage;
-            orders = orders.Skip(Skipcount);
-            orders = orders.Take(ItemPerPage);
+             if (ItemPerPage.HasValue && PageNum.HasValue)
+             {
+                var Skipcount = (PageNum.Value - 1) * ItemPerPage.Value;
+                orders = orders.Skip(Skipcount);
+                orders = orders.Take(ItemPerPage.Value);
+
+                if (orders == null)
+                {
+                    return NotFound();
+                }
+             }
             IList<ViewModels.Order> ordersforshow=new List<ViewModels.Order>();
             foreach (var item in orders)
             {
