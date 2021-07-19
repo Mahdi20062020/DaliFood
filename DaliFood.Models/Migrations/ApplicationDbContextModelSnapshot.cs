@@ -931,34 +931,11 @@ namespace DaliFood.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Longitude")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NationalCardSaveAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerFamily")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phonenumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelePhonenumber1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelePhonenumber2")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationCustomerUser");

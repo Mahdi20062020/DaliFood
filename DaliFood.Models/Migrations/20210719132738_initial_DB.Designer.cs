@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DaliFood.Models.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210719073331_dbset-favAdd")]
-    partial class dbsetfavAdd
+    [Migration("20210719132738_initial_DB")]
+    partial class initial_DB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -933,34 +933,11 @@ namespace DaliFood.Models.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Longitude")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NationalCardSaveAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerFamily")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phonenumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelePhonenumber1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelePhonenumber2")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationCustomerUser");

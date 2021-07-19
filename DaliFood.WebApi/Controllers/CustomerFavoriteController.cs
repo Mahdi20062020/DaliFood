@@ -41,15 +41,22 @@ namespace DaliFood.WebApi.Controllers
                     bool IsSuccess = false;
                     if (model.Status)
                     {
-                        IsSuccess= unitofwork.FavoriteRepository.Create(favorite);
+                        if(!unitofwork.FavoriteRepository.GetAll(where:p=>p.UserId==favorite.UserId && p.CustomerId == favorite.CustomerId).Any())
+                        {
+                            IsSuccess = unitofwork.FavoriteRepository.Create(favorite);
+                        }
                     }
                     else
                     {
-                        IsSuccess = unitofwork.FavoriteRepository.Delete(favorite);
+                        if (unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == favorite.UserId && p.CustomerId == favorite.CustomerId).Any())
+                        {
+                            IsSuccess = unitofwork.FavoriteRepository.Delete(favorite);
+                        }
                     }
                     if (IsSuccess)
                     {
                         unitofwork.FavoriteRepository.Save();
+                        return Ok();
                     }
                 }
             }
@@ -62,7 +69,34 @@ namespace DaliFood.WebApi.Controllers
             var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
             if (userManager.Users.Any(p => p.Id == userId))
             {
-                return Ok(unitofwork.FavoriteRepository.GetAll(where:p => p.UserId == userId));
+                List<ViewModels.Customer> ItemsforShow = new();
+
+                var favorites = unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == userId);
+                foreach (var item in favorites)
+                {
+                    var customer = unitofwork.CustomerRepository.GetById(item.Id);
+                    ViewModels.Customer itemToViewModel = new()
+                    {
+                        Id = customer.Id,
+                        Name = customer.Name,
+                        OwnerName = customer.OwnerName,
+                        OwnerFamily = customer.OwnerFamily,
+                        TelePhonenumber1 = customer.TelePhonenumber1,
+                        TelePhonenumber2 = customer.TelePhonenumber2,
+                        SendingPrice = customer.SendingPrice,
+                        Latitude = customer.Latitude,
+                        Longitude = customer.Longitude,
+                        City = unitofwork.CityRepository.GetById(customer.CityId).Name,
+                        Phonenumber = customer.Phonenumber,
+                        Address = customer.Address,
+                        Description = customer.Description,
+                        Type = unitofwork.CustomerTypeRepository.GetById(customer.TypeId).Name,
+                        IsInMyFavorite=true
+                    };
+                    ItemsforShow.Add(itemToViewModel);
+                }
+
+                return Ok(ItemsforShow);
             }
             return BadRequest();
 

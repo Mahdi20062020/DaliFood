@@ -70,9 +70,10 @@ namespace DaliFood.WebApi.Controllers
         public IActionResult GetMyComments()
         {
             var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+            var Comments = unitofwork.CustomerCommentRepository.GetAll(where: p => p.UserId == userId);
 
-  
-            return Ok(unitofwork.CustomerCommentRepository.GetAll(where:p=>p.UserId==userId));
+
+            return Ok();
         }
     }
 }

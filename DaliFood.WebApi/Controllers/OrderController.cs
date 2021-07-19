@@ -59,7 +59,16 @@ namespace DaliFood.WebApi.Controllers
                 }
                 else
                 {
-                    order.AddressId = unitofwork.AddressRepository.GetAll(p => p.UserId == userId).First().Id;
+                    var Addresses = unitofwork.AddressRepository.GetAll(p => p.UserId == userId);
+                    if (Addresses.Any())
+                    {
+                        order.AddressId = Addresses.First().Id;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Address", "User has not any Address");
+                        return BadRequest(ModelState);
+                    }
                 }
                 if (unitofwork.OrderRepository.Create(order))
                 {
@@ -160,7 +169,7 @@ namespace DaliFood.WebApi.Controllers
                         Longitude = model.Longitude,
                         UserId = userId
                     };
-                    unitofwork.AddressRepository.Create(Address);
+                    unitofwork.AddressRepository.Create(address);
                     unitofwork.AddressRepository.Save();
                 }
                 Address = unitofwork.AddressRepository.GetAll(where: p => p.Latitude == model.Latitude && p.Longitude == model.Longitude).FirstOrDefault();

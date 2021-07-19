@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DaliFood.Models.Migrations
 {
-    public partial class dbsetfavAdd : Migration
+    public partial class initial_DB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -193,13 +193,6 @@ namespace DaliFood.Models.Migrations
                     NationalCardSaveAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentityCardAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NationalId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TelePhonenumber1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TelePhonenumber2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OwnerFamily = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Wallet = table.Column<int>(type: "int", nullable: true)

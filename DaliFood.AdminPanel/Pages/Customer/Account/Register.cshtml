@@ -4,6 +4,7 @@
 @{Layout = null; }
 @{
     ViewData["Title"] = "Register";
+    var City = (SelectList)ViewData["City"];
     var CustomerType = (SelectList)ViewData["CustomerTypeId"];
 }
 
@@ -70,7 +71,15 @@
                                 <input type="text" asp-for="Input.NationalId" class="numbersOnly" />
                                 <span asp-validation-for="Input.NationalId" class="field-validation-error text-danger"></span>
                             </div>
-
+                            <div class="form-group">
+                                <label for="state">شهر :</label>
+                                <div class="form-select">
+                                    <select asp-for="Input.CustomerType" asp-items="City">
+                                    </select>
+                                    <span class="select-icon"><i class="zmdi zmdi-chevron-down"></i></span>
+                                </div>
+                                <span asp-validation-for="Input.CustomerType" class="field-validation-error text-danger"></span>
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">

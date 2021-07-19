@@ -1,5 +1,7 @@
 ﻿using DaliFood.Utilites;
 using DaliFood.WebApi.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +14,7 @@ namespace DaliFood.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CustomerController : ControllerBase
     {
         readonly UnitOfWork unitofwork;
@@ -21,6 +24,7 @@ namespace DaliFood.WebApi.Controllers
             
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetCustomers(int? ItemPerPage, int? PageNum,int? CustomerId)
         {
 
@@ -28,8 +32,7 @@ namespace DaliFood.WebApi.Controllers
             List<Customer> ItemsforShow = new();
             foreach (var item in Customers)
             {
-                var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
-
+               
                 Customer itemToViewModel = new()
                 {
                     Id = item.Id,
@@ -46,10 +49,15 @@ namespace DaliFood.WebApi.Controllers
                     Address = item.Address,
                     Description = item.Description,
                     Type = unitofwork.CustomerTypeRepository.GetById(item.TypeId).Name,
-                    IsInMyFavorite = unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == userId && p.CustomerId == item.Id).Any()
                 };
-               
-              
+                var user = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier);
+                if (user.Any())
+                {
+                    var favorites = unitofwork.FavoriteRepository.GetAll();
+                    itemToViewModel.IsInMyFavorite = favorites.Any(p => p.UserId == user.FirstOrDefault().Value && p.CustomerId == item.Id);
+                }
+
+
 
                 ItemsforShow.Add(itemToViewModel);
             }
