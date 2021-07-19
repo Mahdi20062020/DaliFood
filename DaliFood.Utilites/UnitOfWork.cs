@@ -86,9 +86,21 @@ namespace DaliFood.Utilites
                 return _CustomerRepository;
             }
         }
-        
-        
-        
+
+        private Repository<Letter> _LetterRepository;
+        public Repository<Letter> LetterRepository
+        {
+            get
+            {
+                if (_LetterRepository == null)
+                {
+                    _LetterRepository = new Repository<Letter>(context);
+                }
+                return _LetterRepository;
+            }
+        }
+
+
         private Repository<Discount> _DiscountRepository;
         public Repository<Discount> DiscountRepository
         {

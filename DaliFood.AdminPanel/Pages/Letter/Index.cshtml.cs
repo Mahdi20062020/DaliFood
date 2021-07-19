@@ -1,35 +1,44 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DaliFood.AdminPanel.Helpers;
+using DaliFood.Models.Data;
 using DaliFood.Utilites;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DaliFood.AdminPanel.Pages.CustomerType
+namespace DaliFood.AdminPanel.Pages.Letter
 {
     public class IndexModel : PageModel
     {
         readonly UnitOfWork unitofwork;
-        public IndexModel(UnitOfWork unitofwork)
+        private readonly ApplicationDbContext context;
+
+        public IndexModel(UnitOfWork unitofwork, ApplicationDbContext context)
         {
             this.unitofwork = unitofwork;
+            this.context = context;
         }
-        [BindProperty]
-        public IEnumerable<Models.CustomerType> CustomerType { get; set; }
 
+        
+        [BindProperty]
+        public IEnumerable<Models.Letter> Letters { get; set; }
+        
+        
         public void OnGet()
         {
-            CustomerType = 
-                unitofwork.CustomerTypeRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
+            Letters = unitofwork.LetterRepository.GetAll();
         }
 
-        public ActionResult OnGetDelete(int Id)
+        public async Task<ActionResult> OnGetDelete(int Id)
         {
-            var CustomerType = unitofwork.CustomerTypeRepository.GetById(Id);
-            if (CustomerType == null)
+            var entity = context.Letters.Find(Id);
+            if (entity == null)
                 return NotFound();
-            unitofwork.CustomerTypeRepository.Delete(CustomerType);
+            context.Letters.Remove(entity);
+            await context.SaveChangesAsync();
+
             var products = unitofwork.ProductRepository.GetAll(where: p => p.CategorieId == Id);
             foreach (var item in products)
             {
@@ -38,8 +47,7 @@ namespace DaliFood.AdminPanel.Pages.CustomerType
             unitofwork.ProductRepository.Save();
             unitofwork.CustomerTypeRepository.Save();
             return RedirectToPage("Index");
-
         }
-    }
 
+    }
 }

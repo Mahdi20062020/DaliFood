@@ -87,7 +87,7 @@ namespace DaliFood.AdminPanel.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToPage("/Dashboard/Dashboard");
+                    return RedirectToPage("/Dashboard/Index");
                 }
                 if (result.RequiresTwoFactor)
                 {
