@@ -116,14 +116,60 @@
                             </ul>
                         </li>*@
 
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/Customer/Index" class="nav-link">
-                            <i class="icon-location3"></i>
-                            <span>
-                                مدیریت فروشگاه ها
-                            </span>
-                        </a>
-                    </li>
+                    @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                    {
+
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/ProductCategorie/Index" class="nav-link">
+                                <i class="icon-drawer3"></i>
+                                <span>
+                                    دسته بندی غذا ها
+                                </span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/CustomerType/Index" class="nav-link ">
+                                <i class="icon-cart"></i>
+                                <span>
+                                    انواع رستوران
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Customer/Index" class="nav-link">
+                                <i class="icon-location3"></i>
+                                <span>
+                                    مدیریت رستوران ها
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/CustomersProduct/Index" class="nav-link">
+                                <i class="icon-cart-add"></i>
+                                <span>
+                                    مدیریت غذای رستوران ها
+                                </span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                    {
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Product/Index" class="nav-link">
+                                <i class="icon-bag"></i>
+                                <span>
+                                    مدیریت غذا ها
+                                </span>
+                            </a>
+                        </li>
+
+                    }
 
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link">
@@ -151,42 +197,15 @@
 
                         </ul>
                     </li>
-                    @if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                    {
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/Product/Index" class="nav-link">
-                                <i class="icon-bag"></i>
-                                <span>
-                                    مدیریت غذا ها
-                                </span>
-                            </a>
-                        </li>
 
-
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/ProductCategorie/Index" class="nav-link">
-                                <i class="icon-drawer3"></i>
-                                <span>
-                                    مدیریت دسته بندی ها
-                                </span>
-                            </a>
-                        </li>
-                    }
 
                     @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
                     {
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/CustomerType/Index" class="nav-link ">
-                                <i class="icon-cart"></i>
-                                <span>
-                                    مدیریت انواع فروشنده ها
-                                </span>
-                            </a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a asp-area="" asp-page="/Letter/Index" class="nav-link ">
-                                <i class="icon-ticket"></i>
+                                <i class="icon-twitter"></i>
                                 <span>
                                     مدیریت پیام ها
                                 </span>
@@ -196,18 +215,11 @@
 
                     @if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
                     {
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/CustomersProduct/Index" class="nav-link">
-                                <i class="icon-cart-add"></i>
-                                <span>
-                                    مدیریت غذای فروشنده ها
-                                </span>
-                            </a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a asp-area="" asp-page="/Comment/Index" class="nav-link">
-                                <i class="icon-cart-add"></i>
+                                <i class="icon-ticket"></i>
                                 <span>
                                     مدیریت نظر ها
                                 </span>
