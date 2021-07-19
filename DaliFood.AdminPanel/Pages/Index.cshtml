@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="~/Index-Theme/css/animate.css" />
     <link rel="stylesheet" href="~/Index-Theme/css/owl.carousel.css" />
     <link rel="stylesheet" href="~/Index-Theme/css/magnific-popup.css" />
+    <link href="~/css/toastr.min.css" rel="stylesheet" />
 
     <!-- Google Web fonts -->
     <!-- Font icons -->
@@ -48,8 +49,8 @@
     <nav>
 
         <header class=" d-flex justify-content-between align-items-center p-3 byekan">
-                <h2 style="color: #FE9C03" class="headertitle text-left">Dali Food</h2>
-                <div style="background-color: #FE9C03;border-radius: 7px; font-weight: 600;" class=" p-2">
+            <h2 style="color: #FE9C03" class="headertitle text-left">Dali Food</h2>
+            <div style="background-color: #FE9C03;border-radius: 7px; font-weight: 600;" class=" p-2">
                 <a style="text-decoration: none;" class="text-white headerbtntext" href="#download">
                     همین حالا دانلود
                     کنید
@@ -162,6 +163,8 @@
 
 
     <!-- CONTACT -->
+
+
     <section class="contact byekan" id="contact">
         <div class="container">
 
@@ -172,22 +175,21 @@
                 <div class="page-title sub">
                     <h5>ارسال پیام</h5>
                 </div>
-                <form class="contact-form top_60" method="POST" action="mail.php">
+                <form class="contact-form top_60">
                     <div class="row">
                         <!--Name-->
                         <div class="col-md-6">
-                            <input id="con_name" name="con_name" class="form-inp requie" type="text" placeholder="نام">
+                            <input id="Name" class="form-inp requie" type="text" placeholder="نام و نام خانوادگی">
                         </div>
                         <!--Email-->
                         <div class="col-md-6">
-                            <input id="con_email" name="con_email" class="form-inp requie" type="text"
-                                   placeholder="ایمیل">
+                            <input id="Email" class="form-inp requie" type="email" placeholder="ایمیل">
                         </div>
                         <div class="col-md-12">
                             <!--Message-->
-                            <textarea name="con_message" id="con_message" class="requie" placeholder="متن"
-                                      rows="8"></textarea>
-                            <button id="con_submit" class=" sitebtn top_30 pull-right" type="submit">ارسال</button>
+                            <textarea id="Message" class="requie" placeholder="متن" rows="8"></textarea>
+
+                            <button id="con_submit" class=" sitebtn top_30 pull-right" type="button" onclick="Send()">ارسال</button>
                         </div>
                     </div>
                 </form>
@@ -203,8 +205,6 @@
     </footer>
 
     <!-- Javascripts -->
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="~/Index-Theme/js/jquery-2.1.4.min.js"></script><!-- jQuery library -->
@@ -216,6 +216,7 @@
     <script src="~/Index-Theme/js/jquery.superslides.min.js"></script>
     <script src="~/Index-Theme/js/owl.carousel.min.js"></script>
     <script src="~/Index-Theme/js/main.js"></script>
+    <script src="~/js/toastr.js"></script>
     <script>
 
         //SUPER SLİDER
@@ -225,6 +226,58 @@
         });
 
     </script>
+
+    <script>
+        function Send() {
+            var $name = "";
+            var $email = "";
+            var $message = "";
+
+            if ($("#Name").val().length > 0) {
+                $name = $("#Name").val();
+            }
+            if ($("#Message").val().length > 0) {
+                $message = $("#Message").val();
+            }
+
+            if ($('#Email').val().length > 0) {
+                $email = $('#Email').val();
+            }
+
+            if ($("#Message").val().length == 0) {
+                toastr["error"]("اطلاعات ضروری را تکمیل نمایید.");
+                $("#Message").addClass("redborder");
+            }
+            else {
+                $("#Message").removeClass("redborder");
+                $.ajax({
+                    type: 'Get',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+                    url: '/Lettersender',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val());
+                    },
+                    data: {
+                        Name: $name,
+                        Message: $message,
+                        Email: $email
+                    },
+                    success: function (data) {
+                        if (data.ResultType == data.success) {
+                            Command: toastr["success"]("پیام شما با موفقیت ارسال گردید.");
+                            document.getElementById("addcommentSec").setAttribute("hidden", "hidden");
+                        }
+                        else {
+                            Command: toastr["error"]("متاسفانه ارسال با خطا مواجه گردید مجددا تلاش فرمایید");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+    }
 </body>
 
 </html>

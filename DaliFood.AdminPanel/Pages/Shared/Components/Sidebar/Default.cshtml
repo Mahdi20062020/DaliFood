@@ -6,224 +6,247 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
-<div class="sidebar sidebar-light sidebar-main sidebar-expand-md">
-    <!-- Sidebar mobile toggler -->
-    <div class="sidebar-mobile-toggler text-center">
-        <a href="#" class="sidebar-mobile-main-toggle">
-            <i class="icon-arrow-right8"></i>
-        </a>
-        <span class="font-weight-semibold">Navigation</span>
-        <a href="#" class="sidebar-mobile-expand">
-            <i class="icon-screen-full"></i>
-            <i class="icon-screen-normal"></i>
-        </a>
-    </div>
-    <!-- /sidebar mobile toggler -->
-    <!-- Sidebar content -->
-    <div class="sidebar-content">
-        <!-- User menu -->
-        <div class="sidebar-user-material">
-            <div class="sidebar-user-material-body">
-                <div class="card-body text-center">
-                    <a href="#">
-                        <img src="~/PanelTheme/global_assets/images/demo/users/user-icon.jpg" class="img-fluid rounded-circle shadow-1 mb-3" width="80" height="80" alt="">
-                    </a>
-                    <h6 class="mb-0 text-white text-shadow-dark">دالی فود </h6>
-                    <span class="font-size-sm text-white text-shadow-dark">پنل مدیریت</span>
+@if (user != null)
+{
+    <div class="sidebar sidebar-light sidebar-main sidebar-expand-md">
+        <!-- Sidebar mobile toggler -->
+        <div class="sidebar-mobile-toggler text-center">
+            <a href="#" class="sidebar-mobile-main-toggle">
+                <i class="icon-arrow-right8"></i>
+            </a>
+            <span class="font-weight-semibold">Navigation</span>
+            <a href="#" class="sidebar-mobile-expand">
+                <i class="icon-screen-full"></i>
+                <i class="icon-screen-normal"></i>
+            </a>
+        </div>
+        <!-- /sidebar mobile toggler -->
+        <!-- Sidebar content -->
+        <div class="sidebar-content">
+            <!-- User menu -->
+            <div class="sidebar-user-material">
+                <div class="sidebar-user-material-body">
+                    <div class="card-body text-center">
+                        <a asp-area="" asp-page="/Index">
+                            <img src="~/PanelTheme/global_assets/images/demo/users/user-icon.jpg" class="img-fluid rounded-circle shadow-1 mb-3" width="80" height="80" alt="">
+                        </a>
+                        <h6 class="mb-0 text-white text-shadow-dark">@User.Identity.Name </h6>
+                        @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                        {
+                            <span class="font-size-sm text-white text-shadow-dark">پنل مدیریت</span>
+                        }
+                        else
+                        {
+                            <span class="font-size-sm text-white text-shadow-dark">پنل کاربری</span>
+                        }
+                    </div>
+
+                    <div class="sidebar-user-material-footer">
+                        <a href="#user-nav" class="d-flex justify-content-between align-items-center text-shadow-dark dropdown-toggle" data-toggle="collapse"><span>حساب کاربری من</span></a>
+                    </div>
                 </div>
 
-                <div class="sidebar-user-material-footer">
-                    <a href="#user-nav" class="d-flex justify-content-between align-items-center text-shadow-dark dropdown-toggle" data-toggle="collapse"><span>حساب کاربری من</span></a>
+                <div class="collapse" id="user-nav">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="icon-user-plus"></i>
+                                <span>پروفایل</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="icon-coins"></i>
+                                <span>گزارشات</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="icon-comment-discussion"></i>
+                                <span>پیام ها</span>
+                                <span class="badge bg-teal-400 badge-pill align-self-center ml-auto">58</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="icon-cog5"></i>
+                                <span>تنظیمات</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="icon-switch2"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            <!-- /user menu -->
+            <!-- Main navigation -->
 
-            <div class="collapse" id="user-nav">
-                <ul class="nav nav-sidebar">
+            <div class="card card-sidebar-mobile">
+                <ul class="nav nav-sidebar" data-nav-type="accordion">
+                    <!-- Main -->
+
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="icon-user-plus"></i>
-                            <span>پروفایل</span>
+                        <a href="/Dashboard/Index" class="nav-link active">
+                            <i class="icon-home4 text-success"></i>
+                            <span>
+                                خانه
+                            </span>
                         </a>
                     </li>
+
+                    @*<li class="nav-item nav-item-submenu">
+                            <a href="#" class="nav-link">
+                                <i class="icon-equalizer"></i><span>مدیریت تنظیمات</span>
+                            </a>
+                            <ul class="nav nav-group-sub">
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Setting" asp-action="Update" class="nav-link">
+                                        تنظیمات
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="ImageSetting" asp-action="Update" class="nav-link">
+                                        تنظیمات عکس
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>*@
+
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="icon-coins"></i>
-                            <span>گزارشات</span>
+                        <a asp-area="" asp-page="/Customer/Index" class="nav-link">
+                            <i class="icon-location3"></i>
+                            <span>
+                                مدیریت فروشگاه ها
+                            </span>
                         </a>
                     </li>
-                    <li class="nav-item">
+
+                    <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link">
-                            <i class="icon-comment-discussion"></i>
-                            <span>پیام ها</span>
-                            <span class="badge bg-teal-400 badge-pill align-self-center ml-auto">58</span>
+                            <i class="icon-price-tags"></i><span>حسابـداری</span>
                         </a>
+                        <ul class="nav nav-group-sub">
+                            <li class="nav-item">
+                                <a asp-area="" asp-page="/Financial/Deposit" class="nav-link">
+                                    <i class="icon-price-tag"></i>
+                                    واریزی ها
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-page="/Financial/Withdraw" class="nav-link">
+                                    <i class="icon-price-tag3"></i>
+                                    برداشت ها
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-page="/Financial/Transaction" class="nav-link">
+                                    <i class="icon-price-tag2"></i>
+                                    تراکنش ها
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
+                    @if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                    {
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Product/Index" class="nav-link">
+                                <i class="icon-bag"></i>
+                                <span>
+                                    مدیریت غذا ها
+                                </span>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/ProductCategorie/Index" class="nav-link">
+                                <i class="icon-drawer3"></i>
+                                <span>
+                                    مدیریت دسته بندی ها
+                                </span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                    {
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/CustomerType/Index" class="nav-link ">
+                                <i class="icon-cart"></i>
+                                <span>
+                                    مدیریت انواع فروشنده ها
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Letter/Index" class="nav-link ">
+                                <i class="icon-ticket"></i>
+                                <span>
+                                    مدیریت پیام ها
+                                </span>
+                            </a>
+                        </li>
+                    }
+
+                    @if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                    {
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/CustomersProduct/Index" class="nav-link">
+                                <i class="icon-cart-add"></i>
+                                <span>
+                                    مدیریت غذای فروشنده ها
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Comment/Index" class="nav-link">
+                                <i class="icon-cart-add"></i>
+                                <span>
+                                    مدیریت نظر ها
+                                </span>
+                            </a>
+                        </li>
+                    }
+
+
+                    @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                    {
+                        <li class="nav-item">
+                            <a asp-area="" asp-page="/Users/Index" class="nav-link">
+                                <i class="icon-user"></i>
+                                <span>
+                                    مدیریت کاربران
+                                </span>
+                            </a>
+                        </li>
+                    }
+
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="icon-cog5"></i>
-                            <span>تنظیمات</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="icon-switch2"></i>
-                            <span>Logout</span>
-                        </a>
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                            <button type="submit" class="btn btn-block" style="width:100px;">
+                                <i class="icon-exit3 text-danger"></i>&nbsp;&nbsp;&nbsp;
+                                <span>
+                                    خروج
+                                </span>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
+            <!-- /main navigation -->
+
         </div>
-        <!-- /user menu -->
-        <!-- Main navigation -->
-
-        <div class="card card-sidebar-mobile">
-            <ul class="nav nav-sidebar" data-nav-type="accordion">
-                <!-- Main -->
-
-                <li class="nav-item">
-                    <a asp-area="" asp-page="/Index" class="nav-link active">
-                        <i class="icon-home4 text-success"></i>
-                        <span>
-                            خانه
-                        </span>
-                    </a>
-                </li>
-
-                @*<li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link">
-                        <i class="icon-equalizer"></i><span>مدیریت تنظیمات</span>
-                    </a>
-                    <ul class="nav nav-group-sub">
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Setting" asp-action="Update" class="nav-link">
-                                تنظیمات
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="ImageSetting" asp-action="Update" class="nav-link">
-                                تنظیمات عکس
-                            </a>
-                        </li>
-                    </ul>
-                </li>*@
-
-                <li class="nav-item">
-                    <a asp-area="" asp-page="/Customer/Index" class="nav-link">
-                        <i class="icon-location3"></i>
-                        <span>
-                            مدیریت فروشگاه ها
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item nav-item-submenu">
-                    <a href="#" class="nav-link">
-                        <i class="icon-price-tags"></i><span>حسابـداری</span>
-                    </a>
-                    <ul class="nav nav-group-sub">
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/Financial/Deposit" class="nav-link">
-                                <i class="icon-price-tag"></i>
-                                واریزی ها
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/Financial/Withdraw" class="nav-link">
-                                <i class="icon-price-tag3"></i>
-                                برداشت ها
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/Financial/Transaction" class="nav-link">
-                                <i class="icon-price-tag2"></i>
-                                تراکنش ها
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-                @if (await UserManager.IsInRoleAsync(user, SD.ProductEditorRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                {
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/Product/Index" class="nav-link">
-                            <i class="icon-bag"></i>
-                            <span>
-                                مدیریت غذا ها
-                            </span>
-                        </a>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/ProductCategorie/Index" class="nav-link">
-                            <i class="icon-drawer3"></i>
-                            <span>
-                                مدیریت دسته بندی ها
-                            </span>
-                        </a>
-                    </li>
-                }
-
-                @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                {
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/CustomerType/Index" class="nav-link ">
-                            <i class="icon-cart"></i>
-                            <span>
-                                مدیریت انواع فروشنده ها
-                            </span>
-                        </a>
-                    </li>
-                }
-
-                @if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                {
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/CustomersProduct/Index" class="nav-link">
-                            <i class="icon-cart-add"></i>
-                            <span>
-                                مدیریت غذای فروشنده ها
-                            </span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/Comment/Index" class="nav-link">
-                            <i class="icon-cart-add"></i>
-                            <span>
-                                مدیریت نظر ها
-                            </span>
-                        </a>
-                    </li>
-                }
-
-
-                @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                {
-                    <li class="nav-item">
-                        <a asp-area="" asp-page="/Users/Index" class="nav-link">
-                            <i class="icon-user"></i>
-                            <span>
-                                مدیریت کاربران
-                            </span>
-                        </a>
-                    </li>
-                }
-
-                <li class="nav-item">
-                    <form  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                        <button type="submit" class="btn btn-block" style="width:100px;">
-                            <i class="icon-exit3 text-danger"></i>&nbsp;&nbsp;&nbsp;
-                            <span>
-                                خروج
-                            </span>
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-        <!-- /main navigation -->
-
+        <!-- /sidebar content -->
     </div>
-    <!-- /sidebar content -->
-</div>
+}
+else
+{
+    <h1>hey you</h1>
+}

@@ -1,4 +1,6 @@
-﻿using DaliFood.Models.Identity;
+﻿using DaliFood.AdminPanel.Helpers;
+using DaliFood.Models;
+using DaliFood.Models.Identity;
 using DaliFood.Utilites;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +22,6 @@ namespace DaliFood.AdminPanel.Pages
             this.userManager = userManager;
         }
 
-
         [BindProperty]
         public DateTime Then { get; set; }
         [BindProperty]
@@ -39,5 +40,37 @@ namespace DaliFood.AdminPanel.Pages
 
             return Page();
         }
+
+        [HttpPost]
+        public IActionResult OnPost(string Name, string Message, string Email)
+        {
+            var result = new ReturnAjaxForm();
+            var entity = new DaliFood.Models.Letter()
+            {
+                FullName = Name,
+                Message = Message,
+                Email = Email
+            };
+
+            try
+            {
+
+                unitofwork.LetterRepository
+                    .Create(entity);
+
+
+                result.ResultType = ResultType.Success;
+                result.Message = "پیام شما با موفقیت ارسال گردید.";
+                return new JsonResult(result);
+            }
+            catch (Exception e)
+            {
+
+                result.ResultType = ResultType.Failure;
+                result.Message = "متاسفانه ارسال با خطا مواجه گردید مجددا تلاش فرمایید";
+                return new JsonResult(result);
+            }
+        }
+
     }
 }
