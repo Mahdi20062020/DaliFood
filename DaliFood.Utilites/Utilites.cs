@@ -57,7 +57,7 @@ namespace DaliFood.Utilites
         }
         public static bool IsPhoneNumber(string number)
         {
-            var result = Regex.Match(number, @"(^(09|\+989)[1][1-9]\d{7}$)|(^(09|9)[3][12456]\d{7}$)").Success;
+            var result = Regex.Match(number, @"(^(09|\+989)[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$)|(^(09|9)[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$)").Success;
             return result;
         }
 
