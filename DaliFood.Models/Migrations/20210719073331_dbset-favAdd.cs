@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DaliFood.Models.Migrations
 {
-    public partial class addfavorite : Migration
+    public partial class dbsetfavAdd : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,6 +61,21 @@ namespace DaliFood.Models.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Letters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Letters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -826,6 +841,9 @@ namespace DaliFood.Models.Migrations
 
             migrationBuilder.DropTable(
                 name: "Favorite");
+
+            migrationBuilder.DropTable(
+                name: "Letters");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
