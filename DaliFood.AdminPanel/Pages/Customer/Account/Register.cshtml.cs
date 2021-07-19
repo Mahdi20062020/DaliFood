@@ -106,6 +106,9 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Compare("Password", ErrorMessage = "رمز عبور وارده ناهماهنگ است")]
             public string ConfirmPassword { get; set; }
 
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "شهر")]
+            public int City { get; set; }
 
             [Display(Name = "عرض جغرافیایی")]
             public string Latitude { get; set; }
@@ -121,6 +124,8 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             ReturnUrl = returnUrl;
             ViewData["CustomerTypeId"] = new
                 SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+            ViewData["City"] =
+              new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
 
         }
 
@@ -131,7 +136,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             {
                 ApplicationCustomerUser userDetail = new ApplicationCustomerUser()
                 {
-                    CustomerName = Input.CustomerName,
+                    CustomerName = Input.CustomerName,                 
                     NationalId = Input.NationalId,
                     CreateDate = DateTime.Now
                 };
@@ -154,6 +159,8 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     Address = Input.CustomerAddress,
                     Latitude=Input.Latitude,
                     Longitude=Input.Longitude,
+                    OwnerName=Input.CustomerOwnerName,
+                    OwnerFamily=Input.CustomerOwnerFamily,
                     ApplicationCustomerUser = userDetail
                 };
 

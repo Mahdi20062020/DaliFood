@@ -125,8 +125,8 @@ namespace DaliFood.AdminPanel.Pages.Customer
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ViewData["CustomerTypeId"] = new
-                SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+            ViewData["CustomerTypeId"] =
+                new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
 
             ViewData["City"] =
                 new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
@@ -143,8 +143,8 @@ namespace DaliFood.AdminPanel.Pages.Customer
                 {
                     CustomerName = Input.CustomerName,
                     NationalId = Input.NationalId,
-                    CreateDate = DateTime.Now,
-                    OwnerName = Input.Name,
+                    CreateDate = DateTime.Now
+                    
 
                 };
 
@@ -171,7 +171,7 @@ namespace DaliFood.AdminPanel.Pages.Customer
                     Latitude = Input.Latitude,
                     ApplicationCustomerUser = userDetail
                 };
-                customer.Latitude = Input.Latitude;
+      
 
                 var result = await 
                     _userManager.CreateAsync(user, Input.Password);

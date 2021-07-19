@@ -12,6 +12,7 @@ namespace DaliFood.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class CustomerController : ControllerBase
     {
         readonly UnitOfWork unitofwork;
@@ -28,8 +29,8 @@ namespace DaliFood.WebApi.Controllers
             List<Customer> ItemsforShow = new();
             foreach (var item in Customers)
             {
-                var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
-
+                var user = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier);
+               
                 Customer itemToViewModel = new()
                 {
                     Id = item.Id,
@@ -46,10 +47,14 @@ namespace DaliFood.WebApi.Controllers
                     Address = item.Address,
                     Description = item.Description,
                     Type = unitofwork.CustomerTypeRepository.GetById(item.TypeId).Name,
-                    IsInMyFavorite = unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == userId && p.CustomerId == item.Id).Any()
                 };
-               
-              
+                if (user != null)
+                {
+                    itemToViewModel.IsInMyFavorite = unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == user.FirstOrDefault().Value && p.CustomerId == item.Id).Any();
+                }
+
+
+
 
                 ItemsforShow.Add(itemToViewModel);
             }

@@ -41,15 +41,22 @@ namespace DaliFood.WebApi.Controllers
                     bool IsSuccess = false;
                     if (model.Status)
                     {
-                        IsSuccess= unitofwork.FavoriteRepository.Create(favorite);
+                        if(!unitofwork.FavoriteRepository.GetAll(where:p=>p.UserId==favorite.UserId && p.CustomerId == favorite.CustomerId).Any())
+                        {
+                            IsSuccess = unitofwork.FavoriteRepository.Create(favorite);
+                        }
                     }
                     else
                     {
-                        IsSuccess = unitofwork.FavoriteRepository.Delete(favorite);
+                        if (unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == favorite.UserId && p.CustomerId == favorite.CustomerId).Any())
+                        {
+                            IsSuccess = unitofwork.FavoriteRepository.Delete(favorite);
+                        }
                     }
                     if (IsSuccess)
                     {
                         unitofwork.FavoriteRepository.Save();
+                        return Ok();
                     }
                 }
             }

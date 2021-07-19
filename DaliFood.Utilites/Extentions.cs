@@ -65,7 +65,7 @@ namespace DaliFood.Utilites
                     EmailConfirmed = true,
                     PhoneNumber = "09122223322"
                 };
-                await userManager.CreateAsync(user, "admin@dalifood09122223322");
+                await userManager.CreateAsync(user, "admin@dalifood");
                 await userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, SD.AdminCustomerId));
                 await userManager.AddToRoleAsync(user, SD.AdminRole);
             }
