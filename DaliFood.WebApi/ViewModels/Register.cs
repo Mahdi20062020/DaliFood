@@ -21,9 +21,6 @@ namespace DaliFood.WebApi.ViewModels
         [Display(Name = "نام خانوادگی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Family { get; set; }
-        [Display(Name = "شماره تلفن")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [Phone]
-        public string Phonenumber { get; set; }
+       
     }
 }

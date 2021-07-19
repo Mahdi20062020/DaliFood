@@ -18,6 +18,14 @@ namespace DaliFood.WebApi.Controllers
         {
             this.unitofwork = unitofwork;
         }
+        /// <summary>دریافت لیست غذا ها
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
+        /// <param name="TypeId">شناسه دسته بندی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام دسته بندی ها نمایش داده میشود</param>
+        /// <param name="CustomerId">شناسه فورشگاهی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام فروشگاه ها نمایش داده میشود</param>
+        /// <param name="MinPrice">حداقل قیمت</param>
+        /// <param name="MaxPrice">حداکثر قیمت</param>
         [HttpGet]    
         public IActionResult GetCustomerProducts(int? ItemPerPage, int? PageNum, int? TypeId,int? CustomerId,int? MinPrice,int? MaxPrice)
         {
@@ -75,8 +83,17 @@ namespace DaliFood.WebApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>دریافت لیست غذا ها
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
+        /// <param name="TypeId">شناسه دسته بندی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام دسته بندی ها نمایش داده میشود</param>
+        /// <param name="CustomerId">شناسه فورشگاهی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام فروشگاه ها نمایش داده میشود</param>
+        /// <param name="MinPrice">حداقل قیمت</param>
+        /// <param name="MaxPrice">حداکثر قیمت</param>
+        /// <param name="q">متن سرچ شده</param>
         [HttpGet("CustomerProducts/Search")]
-        public IActionResult GetCustomerProductSearch(int? ItemPerPage, int? PageNum, string q, int? TypeId, int? CustomerId, int? MinPrice, int? MaxPrice)
+        public IActionResult GetCustomerProductSearch(int? ItemPerPage, int? PageNum, int? TypeId, int? CustomerId, int? MinPrice, int? MaxPrice, string q="")
         {
             var Items = unitofwork.CustomersProductRepository.GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate));
             List<CustomersProduct> ItemsforShow = new();
@@ -135,6 +152,10 @@ namespace DaliFood.WebApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>دریافت غذا
+        /// </summary>
+        /// <param name="Id">شناسه غذای درخواستی</param>
+
         [HttpGet("CustomerProducts/{Id}")]
         public IActionResult GetCustomerProduct(int Id)
         {

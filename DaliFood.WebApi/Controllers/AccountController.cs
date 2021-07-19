@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 
 namespace DaliFood.WebApi.Controllers
 {
+    /// <summary>اکشن های مرتبط با ثبت نام و ورود کاربر
+    /// </summary>
     [Route("api/")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -118,6 +120,34 @@ namespace DaliFood.WebApi.Controllers
             unitofwork.PhoneNumbersTokenRepository.Save();
             return token;
         }
+        /// <summary>گام اول برای ثبت نام که خروجی آن توکن است      
+        /// </summary>
+        /// <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+        [HttpPost("Register/SetPhoneNumber")]
+        public IActionResult SetPhoneNumber(string phonenumber)
+        {
+            if (Utilites.Utilites.IsPhoneNumber(phonenumber))
+            {
+                var users = _userManager.Users;
+                if (!users.Any(p => p.PhoneNumber == phonenumber))
+                {
+                    //Gnerate Token
+                    string token = GenerateToken(phonenumber);
+                    return Ok(token);
+                }
+                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is Exist");
+            }
+            else
+            {
+                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is InCorrect");
+            }
+            return BadRequest(ModelState);
+        }
+
+        /// <summary>گام دوم برای ثبت نام(و فراموشی رمز) بررسی اعتبار توکن ساخته شده، خروجی آبجکت توکن است که در آن فیلد tokenhash مورد نیاز است
+        /// </summary>
+        /// <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+        /// <param name="token">توکن ارسال شده به تلفن کاربر </param>
         [HttpPost("Register/VerifyPhoneNumber")]
         public IActionResult VerifyPhoneNumber(string phonenumber, string token)
         {
@@ -133,6 +163,12 @@ namespace DaliFood.WebApi.Controllers
             ModelState.AddModelError("Token Validation", "Token Is inValid");
             return BadRequest(ModelState);
         }
+
+        /// <summary>گام سوم برای ثبت نام ورود مشخصات فرد
+        /// </summary>  
+        /// <param name="model">اطلاعات کاربر</param>
+        /// <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+        /// <param name="token">توکن هش ساخته شده در عملبات قبلی </param>
         [HttpPost("Register")]
         public async Task<IActionResult> Register(Register model, string phonenumber, int token)
         {
@@ -170,28 +206,9 @@ namespace DaliFood.WebApi.Controllers
             }
             return BadRequest();
         }
-
-        [HttpPost("Register/SetPhoneNumber")]
-        public IActionResult SetPhoneNumber(string phonenumber)
-        {
-            if (Utilites.Utilites.IsPhoneNumber(phonenumber))
-            {
-                var users = _userManager.Users;
-                if (!users.Any(p => p.PhoneNumber == phonenumber))
-                {
-                    //Gnerate Token
-                    string token = GenerateToken(phonenumber);
-                    return Ok(token);
-                }
-                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is Exist");
-            }
-            else
-            {
-                ModelState.AddModelError("PhoneNumber", "The PhoneNumber Is InCorrect");
-            }
-            return BadRequest(ModelState);
-        }
-
+        /// <summary>فراموشی رمز عبور که خروجی آن توکن است
+        /// </summary>
+        /// <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
         [HttpPost("Register/ForgetPassword")]
         public IActionResult ForgetPassword(string phonenumber)
         {
@@ -212,8 +229,13 @@ namespace DaliFood.WebApi.Controllers
             }
             return BadRequest(ModelState);
         }
+        /// <summary>فراموشی رمز عبور که خروجی آن توکن است
+        /// </summary>
+        /// <param name="model">رمز عبور</param>
+        /// <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+        /// <param name="token">توکن هش ساخته شده در عملبات قبلی </param>
         [HttpPost("Register/SetPassword")]
-        public async Task<IActionResult> SetPassword(SetPassword model,[Phone(ErrorMessage ="شماره تلفن وارد شده نامعتبر است")] string phonenumber, int token)
+        public async Task<IActionResult> SetPassword(SetPassword model, string phonenumber, int token)
         {
             if (ModelState.IsValid)
             {
@@ -229,12 +251,12 @@ namespace DaliFood.WebApi.Controllers
                     {
                         return BadRequest(result.Errors);
                     }
-                    var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString());
-                    if (unitofwork.PhoneNumbersTokenRepository.Delete(usertoken))
-                    {
-                        unitofwork.PhoneNumbersTokenRepository.Save();
-                    }
-                    return Ok(user);
+                        var usertoken = unitofwork.PhoneNumbersTokenRepository.GetAll(where: p => p.Phonenumber == phonenumber && p.TokenHash == token.ToString()).FirstOrDefault();
+                        if (unitofwork.PhoneNumbersTokenRepository.Delete(usertoken.Id))
+                        {
+                            unitofwork.PhoneNumbersTokenRepository.Save();
+                        }
+                        return Ok(user);
                 }
                 }
                 else

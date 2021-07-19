@@ -4,5 +4,147 @@
         <name>DaliFood.WebApi</name>
     </assembly>
     <members>
+        <member name="T:DaliFood.WebApi.Controllers.AccountController">
+            <summary>اکشن های مرتبط با ثبت نام و ورود کاربر
+            </summary>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.AccountController.SetPhoneNumber(System.String)">
+            <summary>گام اول برای ثبت نام که خروجی آن توکن است      
+            </summary>
+            <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.AccountController.VerifyPhoneNumber(System.String,System.String)">
+            <summary>گام دوم برای ثبت نام(و فراموشی رمز) بررسی اعتبار توکن ساخته شده، خروجی آبجکت توکن است که در آن فیلد tokenhash مورد نیاز است
+            </summary>
+            <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+            <param name="token">توکن ارسال شده به تلفن کاربر </param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.AccountController.Register(DaliFood.WebApi.ViewModels.Register,System.String,System.Int32)">
+            <summary>گام سوم برای ثبت نام ورود مشخصات فرد
+            </summary>  
+            <param name="model">اطلاعات کاربر</param>
+            <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+            <param name="token">توکن هش ساخته شده در عملبات قبلی </param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.AccountController.ForgetPassword(System.String)">
+            <summary>فراموشی رمز عبور که خروجی آن توکن است
+            </summary>
+            <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.AccountController.SetPassword(DaliFood.WebApi.ViewModels.SetPassword,System.String,System.Int32)">
+            <summary>فراموشی رمز عبور که خروجی آن توکن است
+            </summary>
+            <param name="model">رمز عبور</param>
+            <param name="phonenumber">شماره تلفن کاربر متقاضی</param>
+            <param name="token">توکن هش ساخته شده در عملبات قبلی </param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CommentController.GetCustomerComments(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Int32)">
+            <summary>دریافت تمام کامنت های موجود
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+            <param name="CustomerId">شناسه فورشگاهی که قرار است کامنت های آن نمایش داده شود</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CommentController.PostCustomerComment(DaliFood.WebApi.ViewModels.CustomerComment)">
+            <summary>افزودن کامنت (در صورت لاگین نبودن کاربر، نظر به عنوان مهمان ثبت خواهد شد)
+            </summary>
+            <param name="model">داده های کامنت</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CommentController.PutCustomerComment(DaliFood.WebApi.ViewModels.CustomerComment,System.Int32)">
+            <summary>ویرایش کامنت(تنها افرادی که لاگین شده اند میتوانند نظرشان را تغییر دهند)
+            </summary>
+            <param name="model">داده های کامنت</param>
+            <param name="id">آیدی کامنت مورد تغییر</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CustomerController.GetCustomers(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>دریافت اطلاعات فروشگاه ها
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+            <param name="CustomerId">شناسه فورشگاهی که قرار است نمایش داده شود، در صورت خالی بودن، تمام فروشگاه ها نمایش داده میشود</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CustomerFavoriteController.PostOnMyFavorite(DaliFood.WebApi.ViewModels.CustomerFavorite)">
+            <summary>افزودن رستوران به لیست علاقه‌مندی ها و یا حذف ات از لیست علاقه مندی ها
+            </summary>
+            <param name="model">داده های مربوط به لیست علاقه مندی ها</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CustomerFavoriteController.GetMyFavorites(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>دریافت لیست علاقه‌مندی ها
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CustomerProductController.GetCustomerProducts(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>دریافت لیست غذا ها
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+            <param name="TypeId">شناسه دسته بندی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام دسته بندی ها نمایش داده میشود</param>
+            <param name="CustomerId">شناسه فورشگاهی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام فروشگاه ها نمایش داده میشود</param>
+            <param name="MinPrice">حداقل قیمت</param>
+            <param name="MaxPrice">حداکثر قیمت</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CustomerProductController.GetCustomerProductSearch(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>دریافت لیست غذا ها
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+            <param name="TypeId">شناسه دسته بندی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام دسته بندی ها نمایش داده میشود</param>
+            <param name="CustomerId">شناسه فورشگاهی که قرار است غذا های آن نمایش داده شود، در صورت خالی بودن، غذای تمام فروشگاه ها نمایش داده میشود</param>
+            <param name="MinPrice">حداقل قیمت</param>
+            <param name="MaxPrice">حداکثر قیمت</param>
+            <param name="q">متن سرچ شده</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.CustomerProductController.GetCustomerProduct(System.Int32)">
+            <summary>دریافت غذا
+            </summary>
+            <param name="Id">شناسه غذای درخواستی</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.OrderController.PostAddToCart(System.Int32,System.Int32,System.Nullable{System.Int32})">
+            <summary>افزودن غذا به سبد خرید
+            </summary>
+            <param name="CustomerProductId">شناسه غذا سفارش داده شده</param>
+            <param name="Count">تعداد غذای سفارش داده شده</param>
+            <param name="OrderId">شناسه فاکتور(اگر کاربر فاکتور فعالی داشته باشد، باید شناسه آن وارد گردد، در غیر اینصورت فاکتور جدیدی ساخته خواهد شد.)</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.OrderController.GetOrders(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>لیست فاکتور(سفارش) های کاربر
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.OrderController.GetOrder(System.Int32)">
+            <summary>دریافت فاکتور از طریق شناسه ان 
+            </summary>
+            <param name="Id">شناسه فاکتور درخواستی برای نمایش</param>    
+            
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.OrderController.PutOrderAddress(DaliFood.WebApi.ViewModels.Address,System.Int32)">
+            <summary>تغییر آدرس محل دریافت غذای مشتری
+            </summary>
+            <param name="model">آدرس</param>
+            <param name="Id">شناسه فاکتور </param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.UserController.PostAddAddress(DaliFood.WebApi.ViewModels.Address)">
+            <summary>افزودن آدرس 
+            </summary>
+            <param name="model">آدرس</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.UserController.GetProfileDetail">
+            <summary>دریافت اطلاعات کاربر
+            </summary>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.UserController.GetMyComments(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>لیست نظر های کاربر
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+        </member>
+        <member name="M:DaliFood.WebApi.Controllers.UserController.GetMyAddress(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>لیست آدرس های کاربر
+            </summary>
+            <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+            <param name="PageNum">صفحه مورد نمایش</param>
+        </member>
     </members>
 </doc>

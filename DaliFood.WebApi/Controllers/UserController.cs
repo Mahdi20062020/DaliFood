@@ -29,7 +29,9 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
             this.userManager = userManager;
         }
-     
+        /// <summary>افزودن آدرس 
+        /// </summary>
+        /// <param name="model">آدرس</param>
         [HttpPost("AddAddress")]
         public IActionResult PostAddAddress(ViewModels.Address model)
         {
@@ -56,7 +58,8 @@ namespace DaliFood.WebApi.Controllers
             }
             return Ok();
         }
-       
+        /// <summary>دریافت اطلاعات کاربر
+        /// </summary>
         [HttpGet("Profile")]
         public IActionResult GetProfileDetail()
         {
@@ -66,6 +69,10 @@ namespace DaliFood.WebApi.Controllers
             var userdetail = unitofwork.ApplicationNormalUserRepository.GetById(userId);
             return Ok(new{name= user.Name,family=user.Family, Wallet= userdetail.Wallet});
         }
+        /// <summary>لیست نظر های کاربر
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
         [HttpGet("MyComments")]
         public IActionResult GetMyComments(int? ItemPerPage, int? PageNum)
         {
@@ -92,6 +99,34 @@ namespace DaliFood.WebApi.Controllers
                 }
             }
             return Ok(result);
+        }
+        /// <summary>لیست آدرس های کاربر
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
+        [HttpGet("MyAddress")]
+        public IActionResult GetMyAddress(int? ItemPerPage, int? PageNum)
+        {
+            var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+            var addresses = unitofwork.AddressRepository.GetAll(where: p => p.UserId == userId);
+            List<object> Addresses = new List<object>();
+            foreach (var item in addresses)
+            {
+                Addresses.Add(new { Id = item.Id, Latitude = item.Latitude, Longitude = item.Longitude, TextAddress = item.TextAddress });
+            }
+            IEnumerable<object> result = Addresses;
+            if(ItemPerPage.HasValue && PageNum.HasValue)
+            {
+                var Skipcount = (PageNum.Value - 1) * ItemPerPage.Value;
+                result = result.Skip(Skipcount);
+                result = result.Take(ItemPerPage.Value);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+            }
+            return Ok(Addresses);
         }
     }
 }

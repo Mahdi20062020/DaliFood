@@ -27,6 +27,11 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
         }
         // GET: api/<OrderController>
+        /// <summary>افزودن غذا به سبد خرید
+        /// </summary>
+        /// <param name="CustomerProductId">شناسه غذا سفارش داده شده</param>
+        /// <param name="Count">تعداد غذای سفارش داده شده</param>
+        /// <param name="OrderId">شناسه فاکتور(اگر کاربر فاکتور فعالی داشته باشد، باید شناسه آن وارد گردد، در غیر اینصورت فاکتور جدیدی ساخته خواهد شد.)</param>
         [HttpPost("AddToCart")]
         public IActionResult PostAddToCart(int CustomerProductId,int Count,int? OrderId)
         {
@@ -111,6 +116,12 @@ namespace DaliFood.WebApi.Controllers
                 return BadRequest();
             }
         }
+
+        // GET: api/<OrderController>
+        /// <summary>لیست فاکتور(سفارش) های کاربر
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
         [HttpGet("Orders")]
         public  IActionResult GetOrders(int? ItemPerPage, int? PageNum)
         {
@@ -139,6 +150,10 @@ namespace DaliFood.WebApi.Controllers
             }
             return Ok(ordersforshow);
         }
+        /// <summary>دریافت فاکتور از طریق شناسه ان 
+        /// </summary>
+        /// <param name="Id">شناسه فاکتور درخواستی برای نمایش</param>    
+        /// 
         [HttpGet("Orders/{Id}")]
         public IActionResult GetOrder(int Id)
         {
@@ -152,6 +167,11 @@ namespace DaliFood.WebApi.Controllers
             ViewModels.Order orderforshow = order;
             return Ok(orderforshow);
         }
+
+        /// <summary>تغییر آدرس محل دریافت غذای مشتری
+        /// </summary>
+        /// <param name="model">آدرس</param>
+        /// <param name="Id">شناسه فاکتور </param>
         [HttpPut("Orders/{Id}/ChangeAddress")]
         public IActionResult PutOrderAddress(Address model,int Id)
         {

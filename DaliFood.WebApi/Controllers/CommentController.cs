@@ -25,7 +25,11 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
             _userManager = userManager;
         }
-
+        /// <summary>دریافت تمام کامنت های موجود
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
+        /// <param name="CustomerId">شناسه فورشگاهی که قرار است کامنت های آن نمایش داده شود</param>
         [HttpGet("/api/Customer/{CustomerId}/Comments")]
         public IActionResult GetCustomerComments(int? ItemPerPage, int? PageNum, int CustomerId)
         { 
@@ -54,6 +58,9 @@ namespace DaliFood.WebApi.Controllers
             }
             return Ok(result);
         }
+        /// <summary>افزودن کامنت (در صورت لاگین نبودن کاربر، نظر به عنوان مهمان ثبت خواهد شد)
+        /// </summary>
+        /// <param name="model">داده های کامنت</param>
         [HttpPost("Add")]
         [AllowAnonymous]
         public IActionResult PostCustomerComment(CustomerComment model)
@@ -91,8 +98,11 @@ namespace DaliFood.WebApi.Controllers
             return BadRequest(ModelState);
 
         }
+        /// <summary>ویرایش کامنت(تنها افرادی که لاگین شده اند میتوانند نظرشان را تغییر دهند)
+        /// </summary>
+        /// <param name="model">داده های کامنت</param>
+        /// <param name="id">آیدی کامنت مورد تغییر</param>
         [HttpPut("Edit")]
-      
         public IActionResult PutCustomerComment(CustomerComment model,int id)
         {
             if (ModelState.IsValid)
@@ -104,7 +114,7 @@ namespace DaliFood.WebApi.Controllers
                     ModelState.AddModelError("403", "Not Authorized");
                     return BadRequest(ModelState);
                 }
-                if (string.IsNullOrWhiteSpace(model.Text))
+                if (!string.IsNullOrWhiteSpace(model.Text))
                 {
                     CustomerComment.Text = model.Text;
                 }

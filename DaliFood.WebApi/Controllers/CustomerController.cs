@@ -23,6 +23,11 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
             
         }
+        /// <summary>دریافت اطلاعات فروشگاه ها
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
+        /// <param name="CustomerId">شناسه فورشگاهی که قرار است نمایش داده شود، در صورت خالی بودن، تمام فروشگاه ها نمایش داده میشود</param>
         [HttpGet]
         [AllowAnonymous]
         public IActionResult GetCustomers(int? ItemPerPage, int? PageNum,int? CustomerId)

@@ -28,6 +28,9 @@ namespace DaliFood.WebApi.Controllers
             this.unitofwork = unitofwork;
             this.userManager = userManager;
         }
+        /// <summary>افزودن رستوران به لیست علاقه‌مندی ها و یا حذف ات از لیست علاقه مندی ها
+        /// </summary>
+        /// <param name="model">داده های مربوط به لیست علاقه مندی ها</param>
         [HttpPost("OnMyFavorite")]
         public ActionResult PostOnMyFavorite(CustomerFavorite model)
         {
@@ -63,8 +66,12 @@ namespace DaliFood.WebApi.Controllers
             return BadRequest(ModelState);
 
         }
+        /// <summary>دریافت لیست علاقه‌مندی ها
+        /// </summary>
+        /// <param name="ItemPerPage">تعداد آیتم های نمایشی</param>
+        /// <param name="PageNum">صفحه مورد نمایش</param>
         [HttpGet()]
-        public ActionResult GetMyFavorites()
+        public ActionResult GetMyFavorites(int? ItemPerPage, int? PageNum)
         {
             var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
             if (userManager.Users.Any(p => p.Id == userId))
@@ -95,7 +102,19 @@ namespace DaliFood.WebApi.Controllers
                     };
                     ItemsforShow.Add(itemToViewModel);
                 }
+                IEnumerable<ViewModels.Customer> result = ItemsforShow;
 
+                if (ItemPerPage.HasValue && PageNum.HasValue)
+                {
+                    var Skipcount = (PageNum.Value - 1) * ItemPerPage.Value;
+                    result = result.Skip(Skipcount);
+                    result = result.Take(ItemPerPage.Value);
+
+                    if (result == null)
+                    {
+                        return NotFound();
+                    }
+                }
                 return Ok(ItemsforShow);
             }
             return BadRequest();
