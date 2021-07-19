@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DaliFood.WebApi.Controllers
@@ -27,7 +28,10 @@ namespace DaliFood.WebApi.Controllers
             List<Customer> ItemsforShow = new();
             foreach (var item in Customers)
             {
-                Customer itemToViewModel = new() {
+                var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
+
+                Customer itemToViewModel = new()
+                {
                     Id = item.Id,
                     Name = item.Name,
                     OwnerName = item.OwnerName,
@@ -38,11 +42,14 @@ namespace DaliFood.WebApi.Controllers
                     Latitude = item.Latitude,
                     Longitude = item.Longitude,
                     City = unitofwork.CityRepository.GetById(item.CityId).Name,
-                    Phonenumber=item.Phonenumber,
-                    Address=item.Address,
-                    Description=item.Description,
-                    Type=unitofwork.CustomerTypeRepository.GetById(item.TypeId).Name
+                    Phonenumber = item.Phonenumber,
+                    Address = item.Address,
+                    Description = item.Description,
+                    Type = unitofwork.CustomerTypeRepository.GetById(item.TypeId).Name,
+                    IsInMyFavorite = unitofwork.FavoriteRepository.GetAll(where: p => p.UserId == userId && p.CustomerId == item.Id).Any()
                 };
+               
+              
 
                 ItemsforShow.Add(itemToViewModel);
             }

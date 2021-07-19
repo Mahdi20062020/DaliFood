@@ -279,6 +279,30 @@ namespace DaliFood.Utilites
                 return _CustomerCommentRepository;
             }
         }
+        private Repository<Favorite> _FavoriteRepository;
+        public Repository<Favorite> FavoriteRepository
+        {
+            get
+            {
+                if (_FavoriteRepository == null)
+                {
+                    _FavoriteRepository = new Repository<Favorite>(context);
+                }
+                return _FavoriteRepository;
+            }
+        } 
+        private Repository<ApplicationNormalUser> _ApplicationNormalUserRepository;
+        public Repository<ApplicationNormalUser> ApplicationNormalUserRepository
+        {
+            get
+            {
+                if (_ApplicationNormalUserRepository == null)
+                {
+                    _ApplicationNormalUserRepository = new Repository<ApplicationNormalUser>(context);
+                }
+                return _ApplicationNormalUserRepository;
+            }
+        }
 
 
 

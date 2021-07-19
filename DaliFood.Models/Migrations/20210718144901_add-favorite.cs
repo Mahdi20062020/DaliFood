@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DaliFood.Models.Migrations
 {
-    public partial class dbsettest3 : Migration
+    public partial class addfavorite : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -509,6 +509,33 @@ namespace DaliFood.Models.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Favorite",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorite", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Favorite_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Favorite_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -718,6 +745,16 @@ namespace DaliFood.Models.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Favorite_CustomerId",
+                table: "Favorite",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorite_UserId",
+                table: "Favorite",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Order_TransactionId",
                 table: "Order",
                 column: "TransactionId");
@@ -786,6 +823,9 @@ namespace DaliFood.Models.Migrations
 
             migrationBuilder.DropTable(
                 name: "Discount");
+
+            migrationBuilder.DropTable(
+                name: "Favorite");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");

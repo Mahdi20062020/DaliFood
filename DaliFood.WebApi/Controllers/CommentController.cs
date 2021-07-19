@@ -91,5 +91,38 @@ namespace DaliFood.WebApi.Controllers
             return BadRequest(ModelState);
 
         }
+        [HttpPut("Edit")]
+      
+        public IActionResult PutCustomerComment(CustomerComment model,int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var CustomerComment = unitofwork.CustomerCommentRepository.GetById(id);
+                var user = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+                if (CustomerComment.UserId!=user.Value)
+                {
+                    ModelState.AddModelError("403", "Not Authorized");
+                    return BadRequest(ModelState);
+                }
+                if (string.IsNullOrWhiteSpace(model.Text))
+                {
+                    CustomerComment.Text = model.Text;
+                }
+                if (unitofwork.CustomerRepository.GetAll(p=>p.Id==model.CustomerId).Any())
+                {
+                    CustomerComment.CustomerId = model.CustomerId;
+                }
+
+                if (unitofwork.CustomerCommentRepository.Modifie(CustomerComment))
+                {
+                    if (unitofwork.CustomerCommentRepository.Save())
+                    {
+                        return Ok();
+                    }
+                }
+                ModelState.AddModelError("400", "Somthing is wrong");
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

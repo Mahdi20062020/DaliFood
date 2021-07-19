@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -71,7 +72,8 @@ namespace DaliFood.WebApi
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
-
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "DaliFood.WebApi.xml");
+                c.IncludeXmlComments(filePath);
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                    {
                        {

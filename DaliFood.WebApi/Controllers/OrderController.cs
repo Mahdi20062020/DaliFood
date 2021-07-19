@@ -135,7 +135,7 @@ namespace DaliFood.WebApi.Controllers
             ViewModels.Order orderforshow = order;
             return Ok(orderforshow);
         }
-        [HttpGet("Orders/{Id}/ChangeAddress")]
+        [HttpPut("Orders/{Id}/ChangeAddress")]
         public IActionResult PutOrderAddress(Address model,int Id)
         {
             var userId = User.Claims.Where(p => p.Type == ClaimTypes.NameIdentifier).FirstOrDefault().Value;
