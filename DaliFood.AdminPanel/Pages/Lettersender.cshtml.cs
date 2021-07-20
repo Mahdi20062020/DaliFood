@@ -5,22 +5,21 @@ using System.Threading.Tasks;
 using DaliFood.AdminPanel.Helpers;
 using DaliFood.Models.Data;
 using DaliFood.Utilites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DaliFood.AdminPanel.Pages
 {
+    [AllowAnonymous]
     public class LettersenderModel : PageModel
     {
-        private readonly UnitOfWork unitofwork;
         private readonly ApplicationDbContext context;
-        public LettersenderModel(UnitOfWork unitofwork, ApplicationDbContext context)
+        public LettersenderModel(ApplicationDbContext context)
         {
-            this.unitofwork = unitofwork;
             this.context = context;
 
         }
-
 
         public JsonResult OnGet(string Name, string Message, string Email)
         {

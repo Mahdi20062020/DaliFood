@@ -72,7 +72,6 @@ namespace DaliFood.AdminPanel
                 options.AddPolicy(SD.CustomerOwnerPolicy, policy => { policy.RequireRole(SD.CustomerOwnerRole); });
 
             });
-
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
