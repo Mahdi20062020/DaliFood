@@ -99,22 +99,22 @@
                     </li>
 
                     @*<li class="nav-item nav-item-submenu">
-                            <a href="#" class="nav-link">
-                                <i class="icon-equalizer"></i><span>مدیریت تنظیمات</span>
-                            </a>
-                            <ul class="nav nav-group-sub">
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="Setting" asp-action="Update" class="nav-link">
-                                        تنظیمات
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-area="Admin" asp-controller="ImageSetting" asp-action="Update" class="nav-link">
-                                        تنظیمات عکس
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>*@
+            <a href="#" class="nav-link">
+                <i class="icon-equalizer"></i><span>مدیریت تنظیمات</span>
+            </a>
+            <ul class="nav nav-group-sub">
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="Setting" asp-action="Update" class="nav-link">
+                        تنظیمات
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-area="Admin" asp-controller="ImageSetting" asp-action="Update" class="nav-link">
+                        تنظیمات عکس
+                    </a>
+                </li>
+            </ul>
+        </li>*@
 
                     @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
                     {
@@ -147,7 +147,9 @@
                                 </span>
                             </a>
                         </li>
-
+                    }
+                    @if (await UserManager.IsInRoleAsync(user, SD.AdminRole) || await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole))
+                    {
                         <li class="nav-item">
                             <a asp-area="" asp-page="/CustomersProduct/Index" class="nav-link">
                                 <i class="icon-cart-add"></i>
@@ -170,87 +172,89 @@
                         </li>
 
                     }
-
-                    <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link">
-                            <i class="icon-price-tags"></i><span>حسابـداری</span>
-                        </a>
-                        <ul class="nav nav-group-sub">
-                            <li class="nav-item">
-                                <a asp-area="" asp-page="/Financial/Deposit" class="nav-link">
-                                    <i class="icon-price-tag"></i>
-                                    واریزی ها
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-area="" asp-page="/Financial/Withdraw" class="nav-link">
-                                    <i class="icon-price-tag3"></i>
-                                    برداشت ها
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a asp-area="" asp-page="/Financial/Transaction" class="nav-link">
-                                    <i class="icon-price-tag2"></i>
-                                    تراکنش ها
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-
-
                     @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
                     {
 
+                        <li class="nav-item nav-item-submenu">
+                            <a href="#" class="nav-link">
+                                <i class="icon-price-tags"></i><span>حسابـداری</span>
+                            </a>
+                            <ul class="nav nav-group-sub">
+                                <li class="nav-item">
+                                    <a asp-area="" asp-page="/Financial/Deposit" class="nav-link">
+                                        <i class="icon-price-tag"></i>
+                                        واریزی ها
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-page="/Financial/Withdraw" class="nav-link">
+                                        <i class="icon-price-tag3"></i>
+                                        برداشت ها
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-area="" asp-page="/Financial/Transaction" class="nav-link">
+                                        <i class="icon-price-tag2"></i>
+                                        تراکنش ها
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>}
+
+
+                        @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                        {
+
+
+                            <li class="nav-item">
+                                <a asp-area="" asp-page="/Letter/Index" class="nav-link ">
+                                    <i class="icon-twitter"></i>
+                                    <span>
+                                        مدیریت پیام ها
+                                    </span>
+                                </a>
+                            </li>
+                        }
+
+                        @if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                        {
+
+
+                            <li class="nav-item">
+                                <a asp-area="" asp-page="/Comment/Index" class="nav-link">
+                                    <i class="icon-ticket"></i>
+                                    <span>
+                                        مدیریت نظر ها
+                                    </span>
+                                </a>
+                            </li>
+                        }
+
+
+                        @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
+                        {
+                            <li class="nav-item">
+                                <a asp-area="" asp-page="/Users/Index" class="nav-link">
+                                    <i class="icon-user"></i>
+                                    <span>
+                                        مدیریت کاربران
+                                    </span>
+                                </a>
+                            </li>
+                        }
 
                         <li class="nav-item">
-                            <a asp-area="" asp-page="/Letter/Index" class="nav-link ">
-                                <i class="icon-twitter"></i>
-                                <span>
-                                    مدیریت پیام ها
-                                </span>
-                            </a>
+                            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                                <button type="submit" class="btn btn-block" style="width:100px;">
+                                    <i class="icon-exit3 text-danger"></i>&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                        خروج
+                                    </span>
+                                </button>
+                            </form>
                         </li>
-                    }
-
-                    @if (await UserManager.IsInRoleAsync(user, SD.CustomerOwnerRole) || await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                    {
-
-
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/Comment/Index" class="nav-link">
-                                <i class="icon-ticket"></i>
-                                <span>
-                                    مدیریت نظر ها
-                                </span>
-                            </a>
-                        </li>
-                    }
-
-
-                    @if (await UserManager.IsInRoleAsync(user, SD.AdminRole))
-                    {
-                        <li class="nav-item">
-                            <a asp-area="" asp-page="/Users/Index" class="nav-link">
-                                <i class="icon-user"></i>
-                                <span>
-                                    مدیریت کاربران
-                                </span>
-                            </a>
-                        </li>
-                    }
-
-                    <li class="nav-item">
-                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                            <button type="submit" class="btn btn-block" style="width:100px;">
-                                <i class="icon-exit3 text-danger"></i>&nbsp;&nbsp;&nbsp;
-                                <span>
-                                    خروج
-                                </span>
-                            </button>
-                        </form>
-                    </li>
-                </ul>
+                    </ul>
             </div>
             <!-- /main navigation -->
 

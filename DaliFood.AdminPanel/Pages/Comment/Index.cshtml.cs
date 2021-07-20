@@ -38,6 +38,8 @@ namespace DaliFood.AdminPanel.Pages.Comment
             }
             else
             {
+                ViewData["CustomerId"] = new SelectList(unitofwork.CustomerRepository.GetAll(where:p=>p.Id== int.Parse(customerId)), "Id", "Name");
+
                 CustomerComment = unitofwork.CustomerCommentRepository
                .GetAll(orderby: p => p.OrderByDescending(p => p.CreateDate),where:p=>p.CustomerId == int.Parse(customerId));
             }
