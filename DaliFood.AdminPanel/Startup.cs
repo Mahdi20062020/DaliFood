@@ -32,7 +32,7 @@ namespace DaliFood.AdminPanel
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(
              options =>
@@ -50,13 +50,17 @@ namespace DaliFood.AdminPanel
             services.AddControllersWithViews();
             services.AddRazorPages(options =>
             {
+                options.Conventions.AuthorizeFolder("/").AllowAnonymousToPage("/Index");
+                options.Conventions.AllowAnonymousToPage("/Customer/Account/Register");
                 options.Conventions.AuthorizeFolder("/CustomersProduct", SD.CustomerPolicy);
                 options.Conventions.AuthorizeFolder("/Product", SD.ProductEditorPolicy);
                 options.Conventions.AuthorizeFolder("/ProductCategorie", SD.ProductEditorPolicy);
                 options.Conventions.AuthorizePage("/Order/Index", SD.AdminPolicy);
+                options.Conventions.AuthorizeFolder("/Financial", SD.AdminPolicy);
+                options.Conventions.AuthorizeFolder("/Letter", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/CustomerType", SD.AdminPolicy);
                 options.Conventions.AuthorizeFolder("/Customer/Index", SD.AdminPolicy);
-                options.Conventions.AuthorizeFolder("/Order/Item", SD.CustomerPolicy);
+                options.Conventions.AuthorizeFolder("/Order/Item", SD.CustomerPolicy);    
                 options.Conventions.AuthorizeFolder("/Customer/Account/Manage", SD.CustomerOwnerPolicy);
                 options.Conventions.AuthorizeAreaPage("Identity", "/Account/register", SD.AdminRole);
             });

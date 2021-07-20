@@ -157,11 +157,12 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-                    Latitude=Input.Latitude,
-                    Longitude=Input.Longitude,
-                    OwnerName=Input.CustomerOwnerName,
-                    OwnerFamily=Input.CustomerOwnerFamily,
-                    ApplicationCustomerUser = userDetail
+                    Latitude = Input.Latitude,
+                    Longitude = Input.Longitude,
+                    OwnerName = Input.CustomerOwnerName,
+                    OwnerFamily = Input.CustomerOwnerFamily,
+                    ApplicationCustomerUser = userDetail,
+                    CityId = Input.City
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -171,7 +172,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     string UserId = await _userManager.GetUserIdAsync(user);
                     customer.UserId = UserId;
                     unitofwork.CustomerRepository.Create(customer);
-                    await unitofwork.CustomerRepository.SaveAsync();
+                    await unitofwork.CustomerRepository.SaveAsync();     
                     string CustomerId = unitofwork.CustomerRepository.GetAll(where: p => p.UserId == UserId).FirstOrDefault().Id.ToString();
                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, CustomerId));
                     await _userManager.AddToRoleAsync(user, SD.CustomerOwnerRole);
