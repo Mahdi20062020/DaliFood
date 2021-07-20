@@ -17,6 +17,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 {
     public class RegisterModel : PageModel
     {
+        #region Lazy loading
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UnitOfWork unitofwork;
@@ -24,22 +25,23 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
 
-            
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-             IEmailSender emailSender,
-             ApplicationDbContext db,
-             UnitOfWork _unitofwork)
+            IEmailSender emailSender,
+            ApplicationDbContext db,
+            UnitOfWork unitofwork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _db = db;
-            unitofwork = _unitofwork;
+            this.unitofwork = unitofwork;
         }
+        #endregion
+
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -49,13 +51,11 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 
         public class InputModel
         {
-
-
-
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام")]
             [MaxLength(100)]
             public string Name { get; set; }
+
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام خانوادگی")]
@@ -65,10 +65,12 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [MaxLength(10, ErrorMessage = "کد ملی باید حداکثر 10 رقم باشد.")]
             [MinLength(10, ErrorMessage = "کد ملی باید حداقل 10 رقم باشد.")]
             [Display(Name = "کدملی")]
-            [NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
+            //[NationalId(ErrorMessage = "{0} وارد شده نامعتبر است")]
             public string NationalId { get; set; }
-          
 
+            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+            [Display(Name = "شهر")]
+            public int City { get; set; }
 
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام فروشگاه")]
@@ -81,6 +83,7 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "آدرس فروشگاه")]
             [MaxLength(100)]
             public string CustomerAddress { get; set; }
+
             [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
             [Display(Name = "نام مالک فروشگاه")]
             public string CustomerOwnerName { get; set; }
@@ -105,27 +108,20 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             [Display(Name = "تکرار رمز عبور")]
             [Compare("Password", ErrorMessage = "رمز عبور وارده ناهماهنگ است")]
             public string ConfirmPassword { get; set; }
-
-            [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-            [Display(Name = "شهر")]
-            public int City { get; set; }
-
-            [Display(Name = "عرض جغرافیایی")]
-            public string Latitude { get; set; }
-
-            [Display(Name = "طول جغرافیایی")]
-            public string Longitude { get; set; }
             //[MaxLength(250)]
             //public string profileImage { get; set; }
         }
 
+
+
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ViewData["CustomerTypeId"] = new
-                SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+            ViewData["CustomerTypeId"] =
+                new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
+
             ViewData["City"] =
-              new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
+                new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
 
         }
 
@@ -134,11 +130,14 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
             returnUrl ??= Url.Content("~/");
             if (ModelState.IsValid)
             {
+
                 ApplicationCustomerUser userDetail = new ApplicationCustomerUser()
                 {
-                    CustomerName = Input.CustomerName,                 
+                    CustomerName = Input.CustomerName,
                     NationalId = Input.NationalId,
                     CreateDate = DateTime.Now
+
+
                 };
 
                 ApplicationUser user = new ApplicationUser
@@ -157,37 +156,45 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
                     CreateDate = DateTime.Now,
                     TypeId = Input.CustomerType,
                     Address = Input.CustomerAddress,
-                    Latitude = Input.Latitude,
-                    Longitude = Input.Longitude,
+                    CityId = Input.City,
                     OwnerName = Input.CustomerOwnerName,
-                    OwnerFamily = Input.CustomerOwnerFamily,
-                    ApplicationCustomerUser = userDetail,
-                    CityId = Input.City
+                    OwnerFamily = Input.CustomerOwnerFamily,            
+                    ApplicationCustomerUser = userDetail
                 };
 
-                var result = await _userManager.CreateAsync(user, Input.Password);
+
+                var result = await
+                    _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
 
                     string UserId = await _userManager.GetUserIdAsync(user);
+
                     customer.UserId = UserId;
-                    unitofwork.CustomerRepository.Create(customer);
-                    await unitofwork.CustomerRepository.SaveAsync();     
-                    string CustomerId = unitofwork.CustomerRepository.GetAll(where: p => p.UserId == UserId).FirstOrDefault().Id.ToString();
+                    unitofwork.CustomerRepository
+                        .Create(customer);
+                    await unitofwork
+                        .CustomerRepository.SaveAsync();
+
+                    string CustomerId =
+                        unitofwork.CustomerRepository.GetAll(where: p => p.UserId == UserId).FirstOrDefault().Id.ToString();
                     await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim(SD.CustomerId, CustomerId));
                     await _userManager.AddToRoleAsync(user, SD.CustomerOwnerRole);
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request, returnUrl);
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return Redirect($"/Identity/Account/RegisterConfirmation?Email={Input.Email}");
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    //await _emailSender.SendConfirmationEmail(_userManager, user, Url, Request, returnUrl);
+                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    //{
+                    //    return Redirect($"/Identity/Account/RegisterConfirmation?Email={Input.Email}");
+                    //}
+                    //else
+                    //{
+                    //    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //    return LocalRedirect(returnUrl);
+                    //}
+
+                    return RedirectToPage("/Customer/Index");
                 }
                 foreach (var error in result.Errors)
                 {
@@ -197,7 +204,9 @@ namespace DaliFood.AdminPanel.Pages.Customer.Account
 
             //// If we got this far, something failed, redisplay form
             ViewData["CustomerTypeId"] = new SelectList(unitofwork.CustomerTypeRepository.GetAll(), "Id", "Name");
-           
+            ViewData["City"] =
+                new SelectList(unitofwork.CityRepository.GetAll(), "Id", "Name");
+
             return Page();
         }
 
